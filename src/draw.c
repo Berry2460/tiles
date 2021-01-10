@@ -57,7 +57,7 @@ void initLight(float lightMap[MAP_Y][MAP_X]){
 	computeLightMap(lightMap, lights,1,false);
 }
 
-void drawMap(int map[MAP_Y][MAP_X], float lightMap[MAP_Y][MAP_X], int mouseX, int mouseY, int fps){
+void drawMap(int map[MAP_Y][MAP_X], float lightMap[MAP_Y][MAP_X]){
 	float tileX=(TILE_X/WIN_X)*scale;
 	float tileY=(TILE_Y/WIN_Y)*scale;
 	//culling

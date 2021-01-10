@@ -1,8 +1,8 @@
 #include "window.h"
 
 void mouse(GLFWwindow* window, double x, double y){ //update mouse
-	mx=x;
-	my=y;
+	mouseX=x;
+	mouseY=y;
 }
 
 void scroll(GLFWwindow* window, double xoffset, double yoffset){ //zoom

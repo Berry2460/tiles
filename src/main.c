@@ -69,6 +69,6 @@ int main(){
 	//render
 	while (windowLoop()){
 		move();
-		drawMap(map, lightMap, mx, my, fps);
+		drawMap(map, lightMap);
 	}	
 }

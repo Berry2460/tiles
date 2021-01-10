@@ -19,8 +19,8 @@
 #define LMB 5
 
 char* title;
-int mx;
-int my;
+int mouseX;
+int mouseY;
 int fps;
 bool keys[KEYS];
 int frames;

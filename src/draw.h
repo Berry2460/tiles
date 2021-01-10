@@ -27,5 +27,5 @@ void clearLight(float lightMap[MAP_Y][MAP_X]);
 void computeLightMap(float lightMap[MAP_Y][MAP_X], Light *lights, int total, bool neg);
 void addLight(float lightMap[MAP_Y][MAP_X], int x, int y, int size, bool neg);
 void initLight(float lightMap[MAP_Y][MAP_X]);
-void drawMap(int map[MAP_Y][MAP_X], float lightMap[MAP_Y][MAP_X], int mouseX, int mouseY, int fps);
+void drawMap(int map[MAP_Y][MAP_X], float lightMap[MAP_Y][MAP_X]);
 #endif
