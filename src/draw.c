@@ -118,3 +118,20 @@ void drawMap(int map[MAP_Y][MAP_X], float lightMap[MAP_Y][MAP_X]){
 	}
 	glEnd();
 }
+
+/*GLuint initTexture(char* name){ //need image reader library :(
+	FILE* f=NULL;
+	f=fopen(name, "r");
+	if (f == NULL){
+		exit(1);
+	}
+	GLuint t=0; //LOAD IMAGE HERE!
+	glGenTextures(1, &t);
+	glBindTexture(GL_TEXTURE_2D, t);
+	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_NEAREST);
+	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_NEAREST);
+	unsigned char data[] = {255,0,0,255};
+	glTexImage2D(GL_TEXTURE_2D, 0, GL_RGBA, 1, 1, 0, GL_RGBA, GL_UNSIGNED_BYTE, data);
+	return t;
+}
+GLuint texture;*/
