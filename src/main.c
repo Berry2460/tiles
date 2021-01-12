@@ -53,5 +53,5 @@ int main(){
 	while (windowLoop()){
 		move();
 		drawMap(map, lightMap);
-	}	
+	}
 }

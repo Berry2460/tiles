@@ -27,6 +27,6 @@ int frames;
 float start;
 
 GLFWwindow* window;
-int startWindow(char* title);
+int startWindow(char* winTitle);
 bool windowLoop();
 #endif
