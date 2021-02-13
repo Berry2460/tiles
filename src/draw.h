@@ -1,6 +1,9 @@
 #ifndef DRAW_H
 #define DRAW_H
 
+//#define DEBUG
+//#define BAD
+
 #include <windows.h>
 #include <math.h>
 #include <stdbool.h>

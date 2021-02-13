@@ -51,6 +51,7 @@ int main(){
 	addLight(lightMap, camX, camY, 2*WIN_Y/TILE_Y,false);
 	//render
 	while (windowLoop()){
+		//glClear(GL_COLOR_BUFFER_BIT);
 		move();
 		drawMap(map, lightMap);
 	}

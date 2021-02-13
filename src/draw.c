@@ -57,21 +57,25 @@ void initLight(float lightMap[MAP_Y][MAP_X]){
 	computeLightMap(lightMap, lights,1,false);
 }
 
+//for culling
+float screenSize=sqrt((WIN_X*WIN_X)+(WIN_Y*WIN_Y));
+float tileSize=sqrt((TILE_X*TILE_X)+(TILE_Y*TILE_Y));
+
 void drawMap(int map[MAP_Y][MAP_X], float lightMap[MAP_Y][MAP_X]){
 	float tileX=(TILE_X/WIN_X)*scale;
 	float tileY=(TILE_Y/WIN_Y)*scale;
 	//culling
-	int xMax=(WIN_X)/(TILE_Y*scale)+camX;
-	int yMax=(WIN_Y)/(TILE_Y*scale)+camY;
-	int endX=xMax-camX;
-	int endY=yMax-camY;
+	float offset=3.0f/scale+1; //adjustments
+	int xMax=screenSize/(tileSize*scale)+camX+offset;
+	int yMax=screenSize/(tileSize*scale)+camY+offset;
+	int endX=xMax-camX-1/scale;
+	int endY=yMax-camY-1/scale;
 	if (xMax > MAP_X){
 		xMax=MAP_X;
 	}
 	if (yMax > MAP_Y){
 		yMax=MAP_Y;
 	}
-	bool draw=true;
 	int startX=camX-endX;
 	int startY=camY-endY;
 	if (startX < 0){
@@ -80,6 +84,12 @@ void drawMap(int map[MAP_Y][MAP_X], float lightMap[MAP_Y][MAP_X]){
 	if (startY < 0){
 		startY=0;
 	}
+	#ifdef BAD
+	xMax=MAP_X;
+	yMax=MAP_Y;
+	startX=0;
+	startY=0;
+	#endif
 	//drawing
 	float dx=(mouseX*2.0f)/WIN_X-1.0f;
 	float dy=((mouseY*2.0f)/WIN_Y-1.0f)*-1.0f;
@@ -91,9 +101,8 @@ void drawMap(int map[MAP_Y][MAP_X], float lightMap[MAP_Y][MAP_X]){
 			float ty=((y+x)*tileY)*-1 + ((camY+camX)*tileY);
 			//collision and light
 			glColor3f(map[y][x]*lightMap[y][x], map[y][x]*lightMap[y][x], map[y][x]*lightMap[y][x]);
-			if (fabs(dx-tx)+fabs(dy-ty) < tileX && keys[LMB] && draw){
-				lightMap[y][x]+=12.0f/(fps*scale);
-				draw=false;
+			if (fabs(dx-tx)+fabs(dy-ty) < tileX && keys[LMB]){
+				lightMap[y][x]+=6.0f/(fps*scale);
 				//LMB=false; //prevents rapid firing
 			}
 			//glTexEnvf(GL_TEXTURE_ENV, GL_TEXTURE_ENV_MODE, GL_DECAL);
@@ -107,13 +116,22 @@ void drawMap(int map[MAP_Y][MAP_X], float lightMap[MAP_Y][MAP_X]){
 			glVertex2f(tx+tileX,ty);
 			//glTexCoord2f(2.0,0.0);
 			glVertex2f(tx,ty-tileY);
-			//debug
-			/*
+			
+			//sprite
+			if (x == (int)camX && y == (int)camY){
+				glColor3f(0*lightMap[y][x],1.1*lightMap[y][x],0*lightMap[y][x]);
+				glVertex2f(tx+((20.0f*scale)/WIN_X),ty);
+				glVertex2f(tx-((20.0f*scale)/WIN_X),ty);
+				glVertex2f(tx-((20.0f*scale)/WIN_X),ty+((90.0f*scale)/WIN_Y));
+				glVertex2f(tx+((20.0f*scale)/WIN_X),ty+((90.0f*scale)/WIN_Y));
+			}
+			#ifdef DEBUG
 			glColor3f(0,1,0);
 			glVertex2f(tx,ty);
 			glVertex2f(tx-(6.0/WIN_X),ty);
 			glVertex2f(tx-(6.0/WIN_X),ty+(6.0/WIN_Y));
-			glVertex2f(tx,ty+(6.0/WIN_Y));*/
+			glVertex2f(tx,ty+(6.0/WIN_Y));
+			#endif
 		}
 	}
 	glEnd();
