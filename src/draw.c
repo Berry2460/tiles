@@ -61,7 +61,8 @@ void initLight(float lightMap[MAP_Y][MAP_X]){
 float screenSize=sqrt((WIN_X*WIN_X)+(WIN_Y*WIN_Y));
 float tileSize=sqrt((TILE_X*TILE_X)+(TILE_Y*TILE_Y));
 
-void drawMap(int map[MAP_Y][MAP_X], float lightMap[MAP_Y][MAP_X]){
+void drawMap(int map[MAP_Y][MAP_X], float lightMap[MAP_Y][MAP_X], Sprite sprites[MAX_SPRITES]){
+	clickProcessed=false;
 	float tileX=(TILE_X/WIN_X)*scale;
 	float tileY=(TILE_Y/WIN_Y)*scale;
 	//culling
@@ -102,8 +103,9 @@ void drawMap(int map[MAP_Y][MAP_X], float lightMap[MAP_Y][MAP_X]){
 			//collision and light
 			glColor3f(map[y][x]*lightMap[y][x], map[y][x]*lightMap[y][x], map[y][x]*lightMap[y][x]);
 			if (fabs(dx-tx)+fabs(dy-ty) < tileX && keys[LMB]){
-				lightMap[y][x]+=6.0f/(fps*scale);
-				//LMB=false; //prevents rapid firing
+				mouseTileX=x;
+				mouseTileY=y;
+				clickProcessed=true;
 			}
 			//glTexEnvf(GL_TEXTURE_ENV, GL_TEXTURE_ENV_MODE, GL_DECAL);
 			//glBindTexture(GL_TEXTURE_2D, texture);
@@ -116,14 +118,24 @@ void drawMap(int map[MAP_Y][MAP_X], float lightMap[MAP_Y][MAP_X]){
 			glVertex2f(tx+tileX,ty);
 			//glTexCoord2f(2.0,0.0);
 			glVertex2f(tx,ty-tileY);
-			
-			//sprite
-			if (x == (int)camX && y == (int)camY){
-				glColor3f(0*lightMap[y][x],1.1*lightMap[y][x],0*lightMap[y][x]);
-				glVertex2f(tx+((20.0f*scale)/WIN_X),ty);
-				glVertex2f(tx-((20.0f*scale)/WIN_X),ty);
-				glVertex2f(tx-((20.0f*scale)/WIN_X),ty+((90.0f*scale)/WIN_Y));
-				glVertex2f(tx+((20.0f*scale)/WIN_X),ty+((90.0f*scale)/WIN_Y));
+
+			//sprites
+			for(int i=0; i<MAX_SPRITES; i++){
+				if(sprites[i].x == NULL){
+					break;
+				}
+				else if (x-1 == sprites[i].x && y-1 == sprites[i].y){
+					glColor3f(0*lightMap[sprites[i].y][sprites[i].x],1.1*lightMap[sprites[i].y][sprites[i].x],0*lightMap[sprites[i].y][sprites[i].x]);
+					float sx=sprites[i].x+sprites[i].offx;
+					float sy=sprites[i].y-sprites[i].offy;
+					tx=(sx-sy)*tileX - ((camX-camY)*tileX);
+					ty=((sy+sx)*tileY)*-1 + ((camY+camX)*tileY);
+					//offy=0.0f;
+					glVertex2f(tx+((20.0f*scale)/WIN_X), ty);
+					glVertex2f(tx-((20.0f*scale)/WIN_X), ty);
+					glVertex2f(tx-((20.0f*scale)/WIN_X), ty+((90.0f*scale)/WIN_Y));
+					glVertex2f(tx+((20.0f*scale)/WIN_X), ty+((90.0f*scale)/WIN_Y));
+				}
 			}
 			#ifdef DEBUG
 			glColor3f(0,1,0);

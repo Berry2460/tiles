@@ -1,9 +1,8 @@
 #ifndef WINDOW_H
 #define WINDOW_H
 
+#include <stdio.h>
 #include "GLFW/glfw3.h"
-#include "stdbool.h"
-#include "stdio.h"
 #include "draw.h"
 
 #define WIN_X 800
@@ -18,13 +17,14 @@
 #define SPACE 4
 #define LMB 5
 
-char* title;
+static char* title;
+static int frames;
+static float start;
+
+int fps;
 int mouseX;
 int mouseY;
-int fps;
 bool keys[KEYS];
-int frames;
-float start;
 
 GLFWwindow* window;
 int startWindow(char* winTitle);
