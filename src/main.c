@@ -7,7 +7,7 @@ int map[MAP_Y][MAP_X];
 float lightMap[MAP_Y][MAP_X];
 
 void moveCam(){
-	float speed=(float)((WIN_Y+WIN_X)>>8)/(fps); //camera moving
+	float speed=(float)((WIN_Y+WIN_X)>>8)/(fps); //camera moving for keyboard
 	int oldX=camX;
 	int oldY=camY;
 	if (keys[W]){
@@ -68,7 +68,7 @@ int main(){
 	//render
 	while (windowLoop()){
 		//glClear(GL_COLOR_BUFFER_BIT);
-		moveCam();
+		//moveCam();
 		move(&sprites[0]);
 		drawMap(map, lightMap, sprites);
 	}
