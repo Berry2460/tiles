@@ -3,6 +3,7 @@
 
 //#define DEBUG
 //#define BAD
+//#define NO_SMOOTHING
 
 #include <windows.h>
 #include <math.h>
@@ -26,6 +27,12 @@ bool clickProcessed;
 typedef struct Sprite{
 	int x;
 	int y;
+	int nextX;
+	int nextY;
+	int toStepX;
+	int toStepY;
+	int stepDestX;
+	int stepDestY;
 	float offx;
 	float offy;
 	bool walk;

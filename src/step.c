@@ -1,45 +1,44 @@
 #include "step.h"
 
-void nextStep(Sprite *s){ //private
-	s->x=toStepX;
+void nextStep(Sprite *s){
+	//reset
+	s->x=s->toStepX;
 	s->offx=0.0f;
-	s->y=toStepY;
+	s->y=s->toStepY;
 	s->offy=0.0f;
-	nextX=round((stepDestX-s->x)/(abs(s->x-stepDestX)+0.00001f));
-	nextY=round((stepDestY-s->y)/(abs(s->y-stepDestY)+0.00001f));
-	toStepX+=nextX;
-	toStepY+=nextY;
-	cX=0.0f;
-	cY=0.0f;
-	printf("%d %d\n",nextX,nextY);
-	if (steps >= maxSteps || (s->x == stepDestX && s->y == stepDestY)){
+	s->nextX=round((s->stepDestX-s->x)/(abs(s->x-s->stepDestX)+0.0001f)); //get direction
+	s->nextY=round((s->stepDestY-s->y)/(abs(s->y-s->stepDestY)+0.0001f));
+	s->toStepX=s->toStepX+s->nextX;
+	s->toStepY=s->toStepY+s->nextY;
+	if (s->x == s->stepDestX && s->y == s->stepDestY){
 		s->walk=false;
 	}
 }
 
 void newDest(Sprite *s, int x, int y){
-	s->walk=true;
-	stepDestX=x;
-	stepDestY=y;
-	toStepX=s->x;
-	toStepY=s->y;
-	maxSteps=abs(s->x-stepDestX)+abs(s->y-stepDestY);
-	steps=0;
-	nextStep(s);
+	if (s->walk){ //add to cycle
+		s->stepDestX=x;
+		s->stepDestY=y;
+	}else{ //new cycle
+		s->walk=true;
+		s->stepDestX=x;
+		s->stepDestY=y;
+		s->toStepX=s->x;
+		s->toStepY=s->y;
+		nextStep(s);
+	}
 }
 
 void step(Sprite *s){
+	//offset
 	if (s->walk){
-		if (cX >= 1 || cY >= 1){
-			steps++;
+		if (fabs(s->offx) >= 1 || fabs(s->offy) >= 1){
 			nextStep(s);
 		}else{
-			float offx=(speed/(float)fps)*(s->x-toStepX);
-			float offy=(speed/(float)fps)*(s->y-toStepY);
+			float offx=(speed/(float)fps)*(s->x-s->toStepX);
+			float offy=(speed/(float)fps)*(s->y-s->toStepY);
 			s->offx=s->offx-offx;
 			s->offy=s->offy+offy;
-			cX+=fabs(offx);
-			cY+=fabs(offy);
 		}
 	}
 }

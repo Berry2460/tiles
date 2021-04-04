@@ -100,7 +100,7 @@ void drawMap(int map[MAP_Y][MAP_X], float lightMap[MAP_Y][MAP_X], Sprite sprites
 			//tile X and Y
 			float tx=(x-y)*tileX - ((camX-camY)*tileX);
 			float ty=((y+x)*tileY)*-1 + ((camY+camX)*tileY);
-			//collision and light
+			//mouse collision and light
 			glColor3f(map[y][x]*lightMap[y][x], map[y][x]*lightMap[y][x], map[y][x]*lightMap[y][x]);
 			if (fabs(dx-tx)+fabs(dy-ty) < tileX && keys[LMB]){
 				mouseTileX=x;
@@ -121,16 +121,22 @@ void drawMap(int map[MAP_Y][MAP_X], float lightMap[MAP_Y][MAP_X], Sprite sprites
 
 			//sprites
 			for(int i=0; i<MAX_SPRITES; i++){
-				if(sprites[i].x == NULL){
+				if(sprites[i].x == NULL){ //this gives warnings but its all fine :P
 					break;
 				}
 				else if (x-1 == sprites[i].x && y-1 == sprites[i].y){
 					glColor3f(0*lightMap[sprites[i].y][sprites[i].x],1.1*lightMap[sprites[i].y][sprites[i].x],0*lightMap[sprites[i].y][sprites[i].x]);
+					//recalculate X and Y for sprites with offsets
 					float sx=sprites[i].x+sprites[i].offx;
 					float sy=sprites[i].y-sprites[i].offy;
+					#ifdef NO_SMOOTHING
+					sx=sprites[i].x;
+					sy=sprites[i].y;
+					#endif
+					//retransform X and Y to tiles
 					tx=(sx-sy)*tileX - ((camX-camY)*tileX);
 					ty=((sy+sx)*tileY)*-1 + ((camY+camX)*tileY);
-					//offy=0.0f;
+					//verts
 					glVertex2f(tx+((20.0f*scale)/WIN_X), ty);
 					glVertex2f(tx-((20.0f*scale)/WIN_X), ty);
 					glVertex2f(tx-((20.0f*scale)/WIN_X), ty+((90.0f*scale)/WIN_Y));
