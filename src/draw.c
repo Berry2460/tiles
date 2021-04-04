@@ -49,8 +49,8 @@ void addLight(float lightMap[MAP_Y][MAP_X], int x, int y, int size, bool neg){ /
 void initLight(float lightMap[MAP_Y][MAP_X]){
 	Light lights[1];
 	for (int i=0; i < 1; i++){
-		lights[i].x=512;
-		lights[i].y=512;
+		lights[i].x=MAP_X/2;
+		lights[i].y=MAP_Y/2;
 		lights[i].size=31;
 		lights[i].brightness=1.5f;
 	}
@@ -85,7 +85,7 @@ void drawMap(int map[MAP_Y][MAP_X], float lightMap[MAP_Y][MAP_X], Sprite sprites
 	if (startY < 0){
 		startY=0;
 	}
-	#ifdef BAD
+	#ifdef NO_CULLING
 	xMax=MAP_X;
 	yMax=MAP_Y;
 	startX=0;

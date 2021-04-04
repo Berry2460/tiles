@@ -2,10 +2,9 @@
 #include "draw.h"
 #include "window.h"
 
-
 int map[MAP_Y][MAP_X];
 float lightMap[MAP_Y][MAP_X];
-
+/*
 void moveCam(){
 	float speed=(float)((WIN_Y+WIN_X)>>8)/(fps); //camera moving for keyboard
 	int oldX=camX;
@@ -35,7 +34,7 @@ void moveCam(){
 	else if (camY > MAP_Y){camY=MAP_Y;}
 	if (camX < 0){camX=0;}
 	else if (camX > MAP_X){camX=MAP_X;}
-}
+}*/
 
 void move(Sprite *s){
 	addLight(lightMap, s->x, s->y, 2*WIN_Y/TILE_Y,true);
@@ -53,8 +52,8 @@ void move(Sprite *s){
 
 int main(){
 	scale=1.0f;
-	camX=512.0f;
-	camY=512.0f;
+	camX=MAP_X/2.0f;
+	camY=MAP_Y/2.0f;
 	startWindow("tiles");
 	fillScreen(map);
 	initLight(lightMap);
@@ -69,7 +68,7 @@ int main(){
 	while (windowLoop()){
 		//glClear(GL_COLOR_BUFFER_BIT);
 		//moveCam();
-		move(&sprites[0]);
 		drawMap(map, lightMap, sprites);
+		move(&sprites[0]);
 	}
 }

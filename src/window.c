@@ -61,7 +61,7 @@ int startWindow(char* winTitle){
 	glfwSetCursorPosCallback(window, mouse);
 	glfwSetScrollCallback(window, scroll);
 	glfwSetMouseButtonCallback(window, mouseControl);
-	glfwSwapInterval(0);
+	glfwSwapInterval(V_SYNC);
 	glMatrixMode(GL_PROJECTION);
 	glLoadIdentity();
 }

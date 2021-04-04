@@ -2,7 +2,7 @@
 #define DRAW_H
 
 //#define DEBUG
-//#define BAD
+//#define NO_CULLING
 //#define NO_SMOOTHING
 
 #include <windows.h>
@@ -10,10 +10,10 @@
 #include <stdbool.h>
 #include "window.h"
 
-#define MAP_X 1024
-#define MAP_Y 1024
-#define MAX_LIGHTS 1024
-#define MAX_SPRITES 1024
+#define MAP_X 512
+#define MAP_Y 512
+#define MAX_LIGHTS 512
+#define MAX_SPRITES 512
 #define TILE_X 64.0f
 #define TILE_Y 32.0f
 
