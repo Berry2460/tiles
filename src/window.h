@@ -7,7 +7,7 @@
 
 #define WIN_X 800
 #define WIN_Y 600
-#define V_SYNC 0
+#define V_SYNC 1
 
 #define KEYS 6
 

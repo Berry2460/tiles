@@ -8,11 +8,11 @@ void mouse(GLFWwindow* window, double x, double y){ //update mouse
 void scroll(GLFWwindow* window, double xoffset, double yoffset){ //zoom
 	if (yoffset > 0){
 		scale+=0.06f*scale;
-		if (scale > 2.5f){scale=2.5f;}
+		if (scale > 2.0f){scale=2.0f;}
 	}
 	else if (yoffset < 0){
 		scale-=0.06f*scale;
-		if (scale < 0.25f){scale=0.25f;}
+		if (scale < 0.5f){scale=0.5f;}
 	}
 }
 
