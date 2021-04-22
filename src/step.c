@@ -1,6 +1,6 @@
 #include "step.h"
 
-void nextStep(Sprite *s){
+static void nextStep(Sprite *s){
 	//reset
 	s->x=s->toStepX;
 	s->offx=0.0f;

@@ -1,11 +1,11 @@
 #include "window.h"
 
-void mouse(GLFWwindow* window, double x, double y){ //update mouse
+static void mouse(GLFWwindow* window, double x, double y){ //update mouse
 	mouseX=x;
 	mouseY=y;
 }
 
-void scroll(GLFWwindow* window, double xoffset, double yoffset){ //zoom
+static void scroll(GLFWwindow* window, double xoffset, double yoffset){ //zoom
 	if (yoffset > 0){
 		scale+=0.06f*scale;
 		if (scale > 2.0f){scale=2.0f;}
@@ -16,7 +16,7 @@ void scroll(GLFWwindow* window, double xoffset, double yoffset){ //zoom
 	}
 }
 
-void mouseControl(GLFWwindow* window, int key, int action, int mods){
+static void mouseControl(GLFWwindow* window, int key, int action, int mods){
 	switch(key){
 		case GLFW_MOUSE_BUTTON_LEFT:
 			if (action == GLFW_PRESS){keys[LMB]=true;}
@@ -25,7 +25,7 @@ void mouseControl(GLFWwindow* window, int key, int action, int mods){
 	}
 }
 
-void buttons(GLFWwindow* window, int key, int scancode, int action, int mods){
+static void buttons(GLFWwindow* window, int key, int scancode, int action, int mods){
 	switch (key){
 		case GLFW_KEY_SPACE:
 			if (action == GLFW_PRESS){keys[SPACE]=true;}
