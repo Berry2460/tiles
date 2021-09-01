@@ -24,6 +24,9 @@ int mouseTileX;
 int mouseTileY;
 bool clickProcessed;
 
+static float screenSize;
+static float tileSize;
+
 typedef struct Sprite{
 	int x;
 	int y;

@@ -1,6 +1,6 @@
-#include "step.h"
 #include "draw.h"
 #include "window.h"
+#include "step.h"
 
 int map[MAP_Y][MAP_X];
 float lightMap[MAP_Y][MAP_X];

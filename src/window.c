@@ -64,6 +64,7 @@ int startWindow(char* winTitle){
 	glfwSwapInterval(V_SYNC);
 	glMatrixMode(GL_PROJECTION);
 	glLoadIdentity();
+	return 0;
 }
 
 bool windowLoop(){

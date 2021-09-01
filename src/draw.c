@@ -1,6 +1,8 @@
 #include "draw.h"
 
 void fillScreen(int map[MAP_Y][MAP_X]){
+	screenSize=sqrt((WIN_X*WIN_X)+(WIN_Y*WIN_Y));
+	tileSize=sqrt((TILE_X*TILE_X)+(TILE_Y*TILE_Y));
 	for (int i=0; i < MAP_Y; i++){
 		for (int j=0; j < MAP_X; j++){
 			map[i][j]=1;
@@ -58,8 +60,7 @@ void initLight(float lightMap[MAP_Y][MAP_X]){
 }
 
 //for culling
-float screenSize=sqrt((WIN_X*WIN_X)+(WIN_Y*WIN_Y));
-float tileSize=sqrt((TILE_X*TILE_X)+(TILE_Y*TILE_Y));
+
 
 void drawMap(int map[MAP_Y][MAP_X], float lightMap[MAP_Y][MAP_X], Sprite sprites[MAX_SPRITES]){
 	clickProcessed=false;
