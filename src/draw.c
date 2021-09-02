@@ -120,9 +120,9 @@ void drawMap(int map[MAP_Y][MAP_X], float lightMap[MAP_Y][MAP_X], Sprite sprites
 			//glTexCoord2f(2.0,0.0);
 			glVertex2f(tx,ty-tileY);
 
-			//sprites
+			//sprites (remove MAX_SPRITES in favor for Tile structure to improve speed)
 			for(int i=0; i<MAX_SPRITES; i++){
-				if(sprites[i].x == NULL){ //this gives warnings but its all fine :P
+				if(sprites[i].x == 0){
 					break;
 				}
 				else if (x-1 == sprites[i].x && y-1 == sprites[i].y){

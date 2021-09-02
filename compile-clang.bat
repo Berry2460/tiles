@@ -1,7 +1,7 @@
-set debug=false
+set debug=true
 
 if not exist release md release
-if "%debug%"=="false" set window=-mwindows
-clang src/main.c src/step.c src/draw.c src/window.c -o release/main-clang.exe %window% -L lib\vs2019 -lglfw3 -lglfw3dll -lopengl32 -lglu32 -lgdi32
-release\main.exe
+if "%debug%"=="false" set window=-Wl,--subsystem,windows 
+clang src/main.c src/step.c src/draw.c src/window.c -o release/main-clang.exe %window%-L lib\vs2019 -lglfw3 -lglfw3dll -lopengl32 -lglu32 -lgdi32 -lmsvcrt -lvcruntime -lshell32 -luser32 -Xlinker /NODEFAULTLIB:libcmt.lib
+release\main-clang.exe
 pause

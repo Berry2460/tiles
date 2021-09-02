@@ -2,6 +2,21 @@
 #include "window.h"
 #include "step.h"
 
+//draw globals
+float scale;
+float camX;
+float camY;
+int mouseTileX;
+int mouseTileY;
+bool clickProcessed;
+
+//window globals
+int fps;
+int mouseX;
+int mouseY;
+bool keys[KEYS];
+
+
 int map[MAP_Y][MAP_X];
 float lightMap[MAP_Y][MAP_X];
 /*

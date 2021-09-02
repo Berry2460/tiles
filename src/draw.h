@@ -17,12 +17,12 @@
 #define TILE_X 64.0f
 #define TILE_Y 32.0f
 
-float scale;
-float camX;
-float camY;
-int mouseTileX;
-int mouseTileY;
-bool clickProcessed;
+extern float scale;
+extern float camX;
+extern float camY;
+extern int mouseTileX;
+extern int mouseTileY;
+extern bool clickProcessed;
 
 static float screenSize;
 static float tileSize;
@@ -40,6 +40,11 @@ typedef struct Sprite{
 	float offy;
 	bool walk;
 }Sprite;
+
+typedef struct Tile{ //integrate soon...
+	Sprite sprite;
+	float brightness;
+}Tile;
 
 typedef struct Light{
 	int x;

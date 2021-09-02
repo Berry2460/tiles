@@ -21,13 +21,12 @@
 static char* title;
 static int frames;
 static float start;
+static GLFWwindow* window;
 
-int fps;
-int mouseX;
-int mouseY;
-bool keys[KEYS];
-
-GLFWwindow* window;
+extern int fps;
+extern int mouseX;
+extern int mouseY;
+extern bool keys[KEYS];
 
 static void mouse(GLFWwindow* window, double x, double y);
 static void scroll(GLFWwindow* window, double xoffset, double yoffset);
