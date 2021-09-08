@@ -9,6 +9,7 @@ float camY;
 int mouseTileX;
 int mouseTileY;
 bool clickProcessed;
+Sprite sprites[MAX_SPRITES];
 
 //window globals
 int fps;
@@ -73,7 +74,7 @@ int main(){
 	fillScreen(map);
 	initLight(lightMap);
 	addLight(lightMap, camX, camY, 2*WIN_Y/TILE_Y,false);
-	Sprite sprites[MAX_SPRITES];
+	
 	sprites[0].x=round(camX);
 	sprites[0].y=round(camY);
 	sprites[0].offx=0.0f;
@@ -83,7 +84,7 @@ int main(){
 	while (windowLoop()){
 		//glClear(GL_COLOR_BUFFER_BIT);
 		//moveCam();
-		drawMap(map, lightMap, sprites);
+		drawMap(map, lightMap);
 		move(&sprites[0]);
 	}
 }

@@ -13,19 +13,9 @@
 #define MAP_X 512
 #define MAP_Y 512
 #define MAX_LIGHTS 512
-#define MAX_SPRITES 512
+#define MAX_SPRITES 255 //byte limit
 #define TILE_X 64.0f
 #define TILE_Y 32.0f
-
-extern float scale;
-extern float camX;
-extern float camY;
-extern int mouseTileX;
-extern int mouseTileY;
-extern bool clickProcessed;
-
-static float screenSize;
-static float tileSize;
 
 typedef struct Sprite{
 	int x;
@@ -42,7 +32,7 @@ typedef struct Sprite{
 }Sprite;
 
 typedef struct Tile{ //integrate soon...
-	Sprite sprite;
+	unsigned char spriteIndex; //to save memory
 	float brightness;
 }Tile;
 
@@ -53,10 +43,21 @@ typedef struct Light{
 	float brightness;
 }Light;
 
+extern float scale;
+extern float camX;
+extern float camY;
+extern int mouseTileX;
+extern int mouseTileY;
+extern bool clickProcessed;
+extern Sprite sprites[MAX_SPRITES];
+
+static float screenSize;
+static float tileSize;
+
 void fillScreen(int map[MAP_Y][MAP_X]);
 void clearLight(float lightMap[MAP_Y][MAP_X]);
 void computeLightMap(float lightMap[MAP_Y][MAP_X], Light *lights, int total, bool neg);
 void addLight(float lightMap[MAP_Y][MAP_X], int x, int y, int size, bool neg);
 void initLight(float lightMap[MAP_Y][MAP_X]);
-void drawMap(int map[MAP_Y][MAP_X], float lightMap[MAP_Y][MAP_X], Sprite sprites[MAX_SPRITES]);
+void drawMap(int map[MAP_Y][MAP_X], float lightMap[MAP_Y][MAP_X]);
 #endif

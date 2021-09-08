@@ -9,5 +9,4 @@ static void nextStep(Sprite *s);
 
 void newDest(Sprite *s, int x, int y);
 void step(Sprite *s);
-
 #endif
