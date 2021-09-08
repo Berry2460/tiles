@@ -9,6 +9,7 @@ float camY;
 int mouseTileX;
 int mouseTileY;
 bool clickProcessed;
+Tile map[MAP_Y][MAP_X];
 Sprite sprites[MAX_SPRITES];
 
 //window globals
@@ -17,9 +18,6 @@ int mouseX;
 int mouseY;
 bool keys[KEYS];
 
-
-int map[MAP_Y][MAP_X];
-float lightMap[MAP_Y][MAP_X];
 /*
 void moveCam(){
 	float speed=(float)((WIN_Y+WIN_X)>>8)/(fps); //camera moving for keyboard
@@ -52,18 +50,19 @@ void moveCam(){
 	else if (camX > MAP_X){camX=MAP_X;}
 }*/
 
-void move(Sprite *s){
-	addLight(lightMap, s->x, s->y, 2*WIN_Y/TILE_Y,true);
+void move(int index){
+	Sprite *s=&sprites[index];
+	addLight(s->x, s->y, 2*WIN_Y/TILE_Y,true);
 	if (keys[LMB] && clickProcessed){
-		newDest(s, mouseTileX, mouseTileY);
+		newDest(0, mouseTileX, mouseTileY);
 		keys[LMB]=false;
 	}else{
-		step(s);
+		step(0);
 		//follow cam
 		camX=s->x+s->offx;
 		camY=s->y-s->offy;
 	}
-	addLight(lightMap, s->x, s->y, 2*WIN_Y/TILE_Y,false);
+	addLight(s->x, s->y, 2*WIN_Y/TILE_Y,false);
 }
 
 int main(){
@@ -71,20 +70,15 @@ int main(){
 	camX=MAP_X/2.0f;
 	camY=MAP_Y/2.0f;
 	startWindow("tiles");
-	fillScreen(map);
-	initLight(lightMap);
-	addLight(lightMap, camX, camY, 2*WIN_Y/TILE_Y,false);
-	
-	sprites[0].x=round(camX);
-	sprites[0].y=round(camY);
-	sprites[0].offx=0.0f;
-	sprites[0].offy=0.0f;
-	sprites[0].walk=false;
+	initMap();
+	initLight();
+	addLight(camX, camY, 2*WIN_Y/TILE_Y,false);
+	addSprite(round(camX), round(camY));
 	//render
 	while (windowLoop()){
 		//glClear(GL_COLOR_BUFFER_BIT);
 		//moveCam();
-		drawMap(map, lightMap);
-		move(&sprites[0]);
+		drawMap();
+		move(0);
 	}
 }

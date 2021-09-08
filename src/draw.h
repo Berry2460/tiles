@@ -5,6 +5,7 @@
 //#define NO_CULLING
 //#define NO_SMOOTHING
 
+#include <stdio.h>
 #include <windows.h>
 #include <math.h>
 #include <stdbool.h>
@@ -12,8 +13,8 @@
 
 #define MAP_X 512
 #define MAP_Y 512
-#define MAX_LIGHTS 512
-#define MAX_SPRITES 255 //byte limit
+#define MAX_LIGHTS 255
+#define MAX_SPRITES 128
 #define TILE_X 64.0f
 #define TILE_Y 32.0f
 
@@ -32,7 +33,7 @@ typedef struct Sprite{
 }Sprite;
 
 typedef struct Tile{ //integrate soon...
-	unsigned char spriteIndex; //to save memory
+	char spriteIndex;
 	float brightness;
 }Tile;
 
@@ -49,15 +50,17 @@ extern float camY;
 extern int mouseTileX;
 extern int mouseTileY;
 extern bool clickProcessed;
+extern Tile map[MAP_Y][MAP_X];
 extern Sprite sprites[MAX_SPRITES];
 
+static int spriteCount;
 static float screenSize;
 static float tileSize;
 
-void fillScreen(int map[MAP_Y][MAP_X]);
-void clearLight(float lightMap[MAP_Y][MAP_X]);
-void computeLightMap(float lightMap[MAP_Y][MAP_X], Light *lights, int total, bool neg);
-void addLight(float lightMap[MAP_Y][MAP_X], int x, int y, int size, bool neg);
-void initLight(float lightMap[MAP_Y][MAP_X]);
-void drawMap(int map[MAP_Y][MAP_X], float lightMap[MAP_Y][MAP_X]);
+void initMap();
+void addSprite(int x, int y);
+void computeLightMap(Light *lights, int total, bool neg);
+void addLight(int x, int y, int size, bool neg);
+void initLight();
+void drawMap();
 #endif

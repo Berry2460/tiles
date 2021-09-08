@@ -1,6 +1,9 @@
 #include "step.h"
 
-static void nextStep(Sprite *s){
+static void nextStep(int index){
+	Sprite *s=&sprites[index];
+	map[s->y][s->x].spriteIndex=-1;
+	map[s->toStepY][s->toStepX].spriteIndex=index;
 	//reset
 	s->x=s->toStepX;
 	s->offx=0.0f;
@@ -15,7 +18,8 @@ static void nextStep(Sprite *s){
 	}
 }
 
-void newDest(Sprite *s, int x, int y){
+void newDest(int index, int x, int y){
+	Sprite *s=&sprites[index];
 	if (s->walk){ //add to cycle
 		s->stepDestX=x;
 		s->stepDestY=y;
@@ -25,15 +29,16 @@ void newDest(Sprite *s, int x, int y){
 		s->stepDestY=y;
 		s->toStepX=s->x;
 		s->toStepY=s->y;
-		nextStep(s);
+		nextStep(index);
 	}
 }
 
-void step(Sprite *s){
+void step(int index){
+	Sprite *s=&sprites[index];
 	//offset
 	if (s->walk){
 		if (fabs(s->offx) >= 1 || fabs(s->offy) >= 1){
-			nextStep(s);
+			nextStep(index);
 		}else{
 			float offx=(speed/(float)fps)*(s->x-s->toStepX);
 			float offy=(speed/(float)fps)*(s->y-s->toStepY);

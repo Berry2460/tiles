@@ -5,8 +5,8 @@
 
 static float speed=2.2f;
 
-static void nextStep(Sprite *s);
+static void nextStep(int index);
 
-void newDest(Sprite *s, int x, int y);
-void step(Sprite *s);
+void newDest(int index, int x, int y);
+void step(int index);
 #endif
