@@ -54,10 +54,10 @@ void move(int index){
 	Sprite *s=&sprites[index];
 	addLight(s->x, s->y, 2*WIN_Y/TILE_Y,true);
 	if (keys[LMB] && clickProcessed){
-		newDest(0, mouseTileX, mouseTileY);
+		newDest(index, mouseTileX, mouseTileY);
 		keys[LMB]=false;
 	}else{
-		step(0);
+		step(index);
 		//follow cam
 		camX=s->x+s->offx;
 		camY=s->y-s->offy;
@@ -73,12 +73,12 @@ int main(){
 	initMap();
 	initLight();
 	addLight(camX, camY, 2*WIN_Y/TILE_Y,false);
-	addSprite(round(camX), round(camY));
+	int player=addSprite(round(camX), round(camY));
 	//render
 	while (windowLoop()){
 		//glClear(GL_COLOR_BUFFER_BIT);
 		//moveCam();
 		drawMap();
-		move(0);
+		move(player);
 	}
 }

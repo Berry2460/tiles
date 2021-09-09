@@ -13,26 +13,25 @@
 
 #define MAP_X 512
 #define MAP_Y 512
-#define MAX_LIGHTS 255
-#define MAX_SPRITES 128
+#define MAX_SPRITES 128 //signed char limit
 #define TILE_X 64.0f
 #define TILE_Y 32.0f
 
 typedef struct Sprite{
-	int x;
+	int x; //current coords
 	int y;
-	int nextX;
-	int nextY;
-	int toStepX;
+	char nextX; //plus or minus 1 to step
+	char nextY;
+	int toStepX; //next step
 	int toStepY;
-	int stepDestX;
+	int stepDestX; //destination
 	int stepDestY;
-	float offx;
+	float offx; //tile offset
 	float offy;
-	bool walk;
+	bool walk; //is moving
 }Sprite;
 
-typedef struct Tile{ //integrate soon...
+typedef struct Tile{
 	char spriteIndex;
 	float brightness;
 }Tile;
@@ -40,7 +39,7 @@ typedef struct Tile{ //integrate soon...
 typedef struct Light{
 	int x;
 	int y;
-	int size;
+	unsigned char size; //light diameter
 	float brightness;
 }Light;
 
@@ -58,7 +57,7 @@ static float screenSize;
 static float tileSize;
 
 void initMap();
-void addSprite(int x, int y);
+int addSprite(int x, int y);
 void computeLightMap(Light *lights, int total, bool neg);
 void addLight(int x, int y, int size, bool neg);
 void initLight();

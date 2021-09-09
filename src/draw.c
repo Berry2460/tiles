@@ -14,14 +14,21 @@ void initMap(){
 	}
 }
 
-void addSprite(int x, int y){
-	sprites[spriteCount].x=x;
-	sprites[spriteCount].y=y;
-	sprites[spriteCount].offx=0.0f;
-	sprites[spriteCount].offy=0.0f;
-	sprites[spriteCount].walk=false;
-	map[y][x].spriteIndex=spriteCount;
-	spriteCount++;
+int addSprite(int x, int y){
+	if (spriteCount < MAX_SPRITES){
+		int out=spriteCount;
+		sprites[spriteCount].x=x;
+		sprites[spriteCount].y=y;
+		sprites[spriteCount].offx=0.0f;
+		sprites[spriteCount].offy=0.0f;
+		sprites[spriteCount].walk=false;
+		map[y][x].spriteIndex=spriteCount;
+		spriteCount++;
+		return out;
+	}
+	else{
+		return -1;
+	}
 }
 
 void computeLightMap(Light *lights, int total, bool neg){
