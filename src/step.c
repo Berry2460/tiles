@@ -1,18 +1,24 @@
 #include "step.h"
 
 static void nextStep(int index){
-	Sprite *s=&sprites[index];
+	Sprite *s=&sprites[index];	
+	//reset
 	map[s->y][s->x].spriteIndex=-1;
 	map[s->toStepY][s->toStepX].spriteIndex=index;
-	//reset
 	s->x=s->toStepX;
 	s->offx=0.0f;
 	s->y=s->toStepY;
 	s->offy=0.0f;
 	s->nextX=round((s->stepDestX-s->x)/(abs(s->x-s->stepDestX)+0.0001f)); //get direction
 	s->nextY=round((s->stepDestY-s->y)/(abs(s->y-s->stepDestY)+0.0001f));
-	s->toStepX=s->toStepX+s->nextX;
-	s->toStepY=s->toStepY+s->nextY;
+	//collision
+	if (map[s->toStepY+s->nextY][s->toStepX+s->nextX].spriteIndex != -1){
+		s->stepDestX=s->x; //collisions halt travel
+		s->stepDestY=s->y;
+	}else{
+		s->toStepX=s->toStepX+s->nextX;
+		s->toStepY=s->toStepY+s->nextY;
+	}
 	if (s->x == s->stepDestX && s->y == s->stepDestY){
 		s->walk=false;
 	}

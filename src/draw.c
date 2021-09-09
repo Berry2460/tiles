@@ -14,9 +14,14 @@ void initMap(){
 	}
 }
 
-int addSprite(int x, int y){
+char addSprite(int x, int y){
 	if (spriteCount < MAX_SPRITES){
-		int out=spriteCount;
+		char out=spriteCount;
+		if (spriteCount > 0){
+			sprites[spriteCount].test=1;
+		}else{
+			sprites[spriteCount].test=0;
+		}
 		sprites[spriteCount].x=x;
 		sprites[spriteCount].y=y;
 		sprites[spriteCount].offx=0.0f;
@@ -136,7 +141,7 @@ void drawMap(){
 				int i=map[y-1][x-1].spriteIndex;
 				//draw sprite per tile
 				if (x-1 == sprites[i].x && y-1 == sprites[i].y){
-					glColor3f(0, 1.1*map[sprites[i].y][sprites[i].x].brightness, 0);
+					glColor3f(sprites[i].test*map[sprites[i].y][sprites[i].x].brightness, map[sprites[i].y][sprites[i].x].brightness-sprites[i].test, 0);
 					//recalculate X and Y for sprites with offsets
 					float sx=sprites[i].x+sprites[i].offx;
 					float sy=sprites[i].y-sprites[i].offy;

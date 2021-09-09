@@ -73,7 +73,8 @@ int main(){
 	initMap();
 	initLight();
 	addLight(camX, camY, 2*WIN_Y/TILE_Y,false);
-	int player=addSprite(round(camX), round(camY));
+	char player=addSprite(round(camX), round(camY));
+	addSprite(round(camX)-3, round(camY)+1); //test
 	//render
 	while (windowLoop()){
 		//glClear(GL_COLOR_BUFFER_BIT);

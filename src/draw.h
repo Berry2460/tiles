@@ -13,11 +13,12 @@
 
 #define MAP_X 512
 #define MAP_Y 512
-#define MAX_SPRITES 128 //signed char limit
+#define MAX_SPRITES 127 //signed char limit
 #define TILE_X 64.0f
 #define TILE_Y 32.0f
 
 typedef struct Sprite{
+	int test; //arbitrary testing value
 	int x; //current coords
 	int y;
 	char nextX; //plus or minus 1 to step
@@ -52,12 +53,12 @@ extern bool clickProcessed;
 extern Tile map[MAP_Y][MAP_X];
 extern Sprite sprites[MAX_SPRITES];
 
-static int spriteCount;
+static char spriteCount;
 static float screenSize;
 static float tileSize;
 
 void initMap();
-int addSprite(int x, int y);
+char addSprite(int x, int y);
 void computeLightMap(Light *lights, int total, bool neg);
 void addLight(int x, int y, int size, bool neg);
 void initLight();
