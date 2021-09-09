@@ -10,6 +10,7 @@
 #include <math.h>
 #include <stdbool.h>
 #include "window.h"
+#include "ai.h"
 
 #define MAP_X 512
 #define MAP_Y 512
@@ -17,8 +18,12 @@
 #define TILE_X 64.0f
 #define TILE_Y 32.0f
 
+//sprite IDs
+#define PLAYER_ID 0
+#define BOT_ID 1
+
 typedef struct Sprite{
-	int test; //arbitrary testing value
+	unsigned char id; //sprite identifier
 	int x; //current coords
 	int y;
 	char nextX; //plus or minus 1 to step
@@ -33,8 +38,10 @@ typedef struct Sprite{
 }Sprite;
 
 typedef struct Tile{
+	//char typeIndex;
 	char spriteIndex;
 	float brightness;
+	bool occupied;
 }Tile;
 
 typedef struct Light{
@@ -52,13 +59,16 @@ extern int mouseTileY;
 extern bool clickProcessed;
 extern Tile map[MAP_Y][MAP_X];
 extern Sprite sprites[MAX_SPRITES];
+//AI
+extern char bots[MAX_SPRITES];
+extern char botCount; //draw culls bots on screen to iterate
 
 static char spriteCount;
 static float screenSize;
 static float tileSize;
 
 void initMap();
-char addSprite(int x, int y);
+char addSprite(unsigned char id, int x, int y);
 void computeLightMap(Light *lights, int total, bool neg);
 void addLight(int x, int y, int size, bool neg);
 void initLight();

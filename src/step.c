@@ -4,23 +4,28 @@ static void nextStep(int index){
 	Sprite *s=&sprites[index];	
 	//reset
 	map[s->y][s->x].spriteIndex=-1;
-	map[s->toStepY][s->toStepX].spriteIndex=index;
+	map[s->y][s->x].occupied=false;
 	s->x=s->toStepX;
 	s->offx=0.0f;
 	s->y=s->toStepY;
 	s->offy=0.0f;
+	map[s->y][s->x].spriteIndex=index;
+	map[s->y][s->x].occupied=true;
+	//get next step
 	s->nextX=round((s->stepDestX-s->x)/(abs(s->x-s->stepDestX)+0.0001f)); //get direction
 	s->nextY=round((s->stepDestY-s->y)/(abs(s->y-s->stepDestY)+0.0001f));
 	//collision
-	if (map[s->toStepY+s->nextY][s->toStepX+s->nextX].spriteIndex != -1){
-		s->stepDestX=s->x; //collisions halt travel
-		s->stepDestY=s->y;
-	}else{
-		s->toStepX=s->toStepX+s->nextX;
-		s->toStepY=s->toStepY+s->nextY;
-	}
 	if (s->x == s->stepDestX && s->y == s->stepDestY){
 		s->walk=false;
+	}
+	else if (map[s->y+s->nextY][s->x+s->nextX].occupied){
+		//collisions halt travel
+		s->walk=false;
+	}else{
+		//set next step
+		s->toStepX=s->x+s->nextX;
+		s->toStepY=s->y+s->nextY;
+		map[s->toStepY][s->toStepX].occupied=true;
 	}
 }
 

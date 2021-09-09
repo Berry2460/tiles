@@ -1,6 +1,4 @@
 #include "draw.h"
-#include "window.h"
-#include "step.h"
 
 //draw globals
 float scale;
@@ -18,39 +16,12 @@ int mouseX;
 int mouseY;
 bool keys[KEYS];
 
-/*
-void moveCam(){
-	float speed=(float)((WIN_Y+WIN_X)>>8)/(fps); //camera moving for keyboard
-	int oldX=camX;
-	int oldY=camY;
-	if (keys[W]){
-		camY-=speed;
-		camX-=speed;
-	}
-	if (keys[S]){
-		camY+=speed;
-		camX+=speed;
-	}
-	if (keys[A]){
-		camX-=speed;
-		camY+=speed;
-		
-	}
-	if (keys[D]){
-		camX+=speed;
-		camY-=speed;
-	}
-	if (keys[SPACE]){
-		keys[SPACE]=false;
-		clearLight(lightMap);
-	}
-	if (camY < 0){camY=0;}
-	else if (camY > MAP_Y){camY=MAP_Y;}
-	if (camX < 0){camX=0;}
-	else if (camX > MAP_X){camX=MAP_X;}
-}*/
+//ai globals
+char bots[MAX_SPRITES];
+char botCount;
 
-void move(int index){
+//player movement with mouse
+void movePlayer(int index){
 	Sprite *s=&sprites[index];
 	addLight(s->x, s->y, 2*WIN_Y/TILE_Y,true);
 	if (keys[LMB] && clickProcessed){
@@ -65,6 +36,7 @@ void move(int index){
 	addLight(s->x, s->y, 2*WIN_Y/TILE_Y,false);
 }
 
+//game loop
 int main(){
 	scale=1.0f;
 	camX=MAP_X/2.0f;
@@ -73,13 +45,15 @@ int main(){
 	initMap();
 	initLight();
 	addLight(camX, camY, 2*WIN_Y/TILE_Y,false);
-	char player=addSprite(round(camX), round(camY));
-	addSprite(round(camX)-3, round(camY)+1); //test
+	char player=addSprite(PLAYER_ID, round(camX), round(camY));
+	char bot=addSprite(BOT_ID, round(camX)-3, round(camY)+1); //test
 	//render
 	while (windowLoop()){
 		//glClear(GL_COLOR_BUFFER_BIT);
-		//moveCam();
+		newDest(bot, camX-1, camY+2);
 		drawMap();
-		move(player);
+		movePlayer(player);
+		moveBots();
 	}
+	return 0;
 }

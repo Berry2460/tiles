@@ -10,24 +10,22 @@ void initMap(){
 		for (int j=0; j < MAP_X; j++){
 			map[i][j].brightness=0.0f;
 			map[i][j].spriteIndex=-1;
+			map[i][j].occupied=false;
 		}
 	}
 }
 
-char addSprite(int x, int y){
+char addSprite(unsigned char id, int x, int y){
 	if (spriteCount < MAX_SPRITES){
 		char out=spriteCount;
-		if (spriteCount > 0){
-			sprites[spriteCount].test=1;
-		}else{
-			sprites[spriteCount].test=0;
-		}
+		sprites[spriteCount].id=id;
 		sprites[spriteCount].x=x;
 		sprites[spriteCount].y=y;
 		sprites[spriteCount].offx=0.0f;
 		sprites[spriteCount].offy=0.0f;
 		sprites[spriteCount].walk=false;
 		map[y][x].spriteIndex=spriteCount;
+		map[y][x].occupied=true;
 		spriteCount++;
 		return out;
 	}
@@ -78,10 +76,12 @@ void initLight(){
 }
 
 void drawMap(){
+	//bot culling
+	botCount=0;
+	//culling
 	clickProcessed=false;
 	float tileX=(TILE_X/WIN_X)*scale;
 	float tileY=(TILE_Y/WIN_Y)*scale;
-	//culling
 	float offset=3.0f/scale+1; //adjustments
 	int xMax=screenSize/(tileSize*scale)+camX+offset;
 	int yMax=screenSize/(tileSize*scale)+camY+offset;
@@ -117,31 +117,36 @@ void drawMap(){
 			float tx=(x-y)*tileX - ((camX-camY)*tileX);
 			float ty=((y+x)*tileY)*-1 + ((camY+camX)*tileY);
 			//mouse collision and light
-			glColor3f(map[y][x].brightness, map[y][x].brightness, map[y][x].brightness);
+			int pathing=1;
+			//pathing debugging
+			#ifdef DEBUG
+			if (map[y][x].occupied){
+				pathing=0;
+			}
+			#endif
+			glColor3f(map[y][x].brightness, map[y][x].brightness * pathing, map[y][x].brightness);
 			if (fabs(dx-tx)+fabs(dy-ty) < tileX && keys[LMB]){
 				mouseTileX=x;
 				mouseTileY=y;
 				clickProcessed=true;
 			}
-			//glTexEnvf(GL_TEXTURE_ENV, GL_TEXTURE_ENV_MODE, GL_DECAL);
-			//glBindTexture(GL_TEXTURE_2D, texture);
-			//glEnable(GL_TEXTURE_2D);
-			//glTexCoord2f(0.0,0.0);
 			glVertex2f(tx-tileX,ty);
-			//glTexCoord2f(0.0,2.0);
 			glVertex2f(tx,ty+tileY);
-			//glTexCoord2f(2.0,2.0);
 			glVertex2f(tx+tileX,ty);
-			//glTexCoord2f(2.0,0.0);
 			glVertex2f(tx,ty-tileY);
 
 			//draw sprite
-			if(map[y-1][x-1].spriteIndex != -1){
+			if (map[y-1][x-1].spriteIndex != -1){
 				//-1 offset for overdraw
 				int i=map[y-1][x-1].spriteIndex;
+				//add bot to visible
+				if (sprites[i].id == BOT_ID){
+					bots[botCount]=map[y-1][x-1].spriteIndex;
+					botCount++;
+				}
 				//draw sprite per tile
 				if (x-1 == sprites[i].x && y-1 == sprites[i].y){
-					glColor3f(sprites[i].test*map[sprites[i].y][sprites[i].x].brightness, map[sprites[i].y][sprites[i].x].brightness-sprites[i].test, 0);
+					glColor3f(sprites[i].id*map[sprites[i].y][sprites[i].x].brightness, map[sprites[i].y][sprites[i].x].brightness-sprites[i].id, 0);
 					//recalculate X and Y for sprites with offsets
 					float sx=sprites[i].x+sprites[i].offx;
 					float sy=sprites[i].y-sprites[i].offy;
@@ -170,20 +175,3 @@ void drawMap(){
 	}
 	glEnd();
 }
-
-/*GLuint initTexture(char* name){ //need image reader library :(
-	FILE* f=NULL;
-	f=fopen(name, "r");
-	if (f == NULL){
-		exit(1);
-	}
-	GLuint t=0; //LOAD IMAGE HERE!
-	glGenTextures(1, &t);
-	glBindTexture(GL_TEXTURE_2D, t);
-	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_NEAREST);
-	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_NEAREST);
-	unsigned char data[] = {255,0,0,255};
-	glTexImage2D(GL_TEXTURE_2D, 0, GL_RGBA, 1, 1, 0, GL_RGBA, GL_UNSIGNED_BYTE, data);
-	return t;
-}
-GLuint texture;*/
