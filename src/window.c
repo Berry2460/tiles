@@ -71,7 +71,7 @@ bool windowLoop(){
 	if (!glfwWindowShouldClose(window)){
 		//fps
 		frames++;
-		fps=frames/(glfwGetTime()-start+0.0001f);
+		fps=frames/(glfwGetTime()-start+0.00001f);
 		glColor3f(1,1,1);
 		glRasterPos2f(-0.97, 0.97);
 		char out[128];
