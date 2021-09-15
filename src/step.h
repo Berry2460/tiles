@@ -2,10 +2,9 @@
 #define STEP_H
 
 #include "draw.h"
+//#include "missiles.h"
 
-static float speed=2.2f; //walk speed
-
-static void nextStep(int index);
+void nextStep(int index);
 void newDest(int index, int x, int y);
 void step(int index);
 #endif

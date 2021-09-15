@@ -1,16 +1,9 @@
 #ifndef DRAW_H
 #define DRAW_H
 
-//#define DEBUG
+#define DEBUG
 //#define NO_CULLING
 //#define NO_SMOOTHING
-
-#include <stdio.h>
-#include <windows.h>
-#include <math.h>
-#include <stdbool.h>
-#include "window.h"
-#include "ai.h"
 
 #define MAP_X 512
 #define MAP_Y 512
@@ -19,11 +12,20 @@
 #define TILE_Y 32.0f
 
 //sprite IDs
-#define PLAYER_ID 0
-#define BOT_ID 1
+#define ID_PLAYER 0
+#define ID_BOT 1
+#define ID_PROJECTILE 2
+
+#include <stdio.h>
+#include <windows.h>
+#include <math.h>
+#include <stdbool.h>
+#include "window.h"
+#include "ai.h"
 
 typedef struct Sprite{
 	unsigned char id; //sprite identifier
+	unsigned char index; //other stat assignment
 	int x; //current coords
 	int y;
 	char nextX; //plus or minus 1 to step
@@ -36,10 +38,10 @@ typedef struct Sprite{
 	float offy;
 	bool walk; //is moving
 	float time; //timer
+	float speed; //movement
 }Sprite;
 
 typedef struct Tile{
-	//char typeIndex;
 	char spriteIndex;
 	float brightness;
 	bool occupied;
@@ -60,16 +62,13 @@ extern int mouseTileY;
 extern bool clickProcessed;
 extern Tile map[MAP_Y][MAP_X];
 extern Sprite sprites[MAX_SPRITES];
-//AI
-extern char bots[MAX_SPRITES];
-extern char botCount; //draw culls bots on screen to iterate
+extern char spriteCount;
 
-static char spriteCount;
 static float screenSize;
 static float tileSize;
 
 void initMap();
-char addSprite(unsigned char id, int x, int y);
+char addSprite(unsigned char id, int x, int y, float speed);
 void computeLightMap(Light *lights, int total, bool neg);
 void addLight(int x, int y, int size, bool neg);
 void initLight();

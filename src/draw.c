@@ -15,7 +15,7 @@ void initMap(){
 	}
 }
 
-char addSprite(unsigned char id, int x, int y){
+char addSprite(unsigned char id, int x, int y, float speed){
 	if (spriteCount < MAX_SPRITES){
 		char out=spriteCount;
 		sprites[spriteCount].id=id;
@@ -25,6 +25,7 @@ char addSprite(unsigned char id, int x, int y){
 		sprites[spriteCount].offy=0.0f;
 		sprites[spriteCount].walk=false;
 		sprites[spriteCount].time=0.0f;
+		sprites[spriteCount].speed=speed;
 		map[y][x].spriteIndex=spriteCount;
 		map[y][x].occupied=true;
 		spriteCount++;
@@ -137,11 +138,11 @@ void drawMap(){
 			glVertex2f(tx,ty-tileY);
 
 			//draw sprite
-			if (map[y-1][x-1].spriteIndex != -1){
+			if (map[y-1][x-1].spriteIndex != -1 || map[y-1][x-1].occupied){
 				//-1 offset for overdraw
 				int i=map[y-1][x-1].spriteIndex;
 				//add bot to visible
-				if (sprites[i].id == BOT_ID){
+				if (sprites[i].id == ID_BOT){
 					bots[botCount]=map[y-1][x-1].spriteIndex;
 					botCount++;
 				}

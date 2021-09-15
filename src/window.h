@@ -1,10 +1,6 @@
 #ifndef WINDOW_H
 #define WINDOW_H
 
-#include <stdio.h>
-#include "GLFW/glfw3.h"
-#include "draw.h"
-
 #define WIN_X 800
 #define WIN_Y 600
 #define V_SYNC 1
@@ -17,6 +13,10 @@
 #define D 3
 #define SPACE 4
 #define LMB 5
+
+#include <stdio.h>
+#include "GLFW/glfw3.h"
+#include "draw.h"
 
 static char* title;
 static int frames;

@@ -1,6 +1,6 @@
 #include "step.h"
 
-static void nextStep(int index){
+void nextStep(int index){
 	Sprite *s=&sprites[index];	
 	//reset
 	map[s->y][s->x].spriteIndex=-1;
@@ -18,7 +18,19 @@ static void nextStep(int index){
 	if ((s->x == s->stepDestX && s->y == s->stepDestY) || map[s->y+s->nextY][s->x+s->nextX].occupied){
 		//collisions halt travel
 		s->walk=false;
-
+		switch(s->id){
+			case ID_BOT:
+				//check if hit player
+				break;
+			case ID_PLAYER:
+				//check if it bot
+				break;
+			case ID_PROJECTILE:
+				//map[s->y][s->x].spriteIndex=-1;
+				//map[s->y][s->x].occupied=false;
+				//check if hit bot or player
+				break;
+		}
 	}else{
 		//advance RNG
 		newSeed();
@@ -51,8 +63,8 @@ void step(int index){
 		if (fabs(s->offx) >= 1 || fabs(s->offy) >= 1){
 			nextStep(index);
 		}else{
-			float offx=(speed/(float)fps)*(s->x-s->toStepX);
-			float offy=(speed/(float)fps)*(s->y-s->toStepY);
+			float offx=(s->speed/(float)fps)*(s->x-s->toStepX);
+			float offy=(s->speed/(float)fps)*(s->y-s->toStepY);
 			s->offx=s->offx-offx;
 			s->offy=s->offy+offy;
 		}
