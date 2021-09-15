@@ -15,13 +15,13 @@ static void nextStep(int index){
 	s->nextX=round((s->stepDestX-s->x)/(abs(s->x-s->stepDestX)+0.0001f)); //get direction
 	s->nextY=round((s->stepDestY-s->y)/(abs(s->y-s->stepDestY)+0.0001f));
 	//collision
-	if (s->x == s->stepDestX && s->y == s->stepDestY){
-		s->walk=false;
-	}
-	else if (map[s->y+s->nextY][s->x+s->nextX].occupied){
+	if ((s->x == s->stepDestX && s->y == s->stepDestY) || map[s->y+s->nextY][s->x+s->nextX].occupied){
 		//collisions halt travel
 		s->walk=false;
+
 	}else{
+		//advance RNG
+		newSeed();
 		//set next step
 		s->toStepX=s->x+s->nextX;
 		s->toStepY=s->y+s->nextY;

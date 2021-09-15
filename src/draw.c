@@ -24,6 +24,7 @@ char addSprite(unsigned char id, int x, int y){
 		sprites[spriteCount].offx=0.0f;
 		sprites[spriteCount].offy=0.0f;
 		sprites[spriteCount].walk=false;
+		sprites[spriteCount].time=0.0f;
 		map[y][x].spriteIndex=spriteCount;
 		map[y][x].occupied=true;
 		spriteCount++;
@@ -60,7 +61,7 @@ void addLight(int x, int y, int size, bool neg){ //add light
 	light[0].x=x;
 	light[0].y=y;
 	light[0].size=size;
-	light[0].brightness=0.9f;
+	light[0].brightness=1.1f;
 	computeLightMap(light, 1, neg);
 }
 
@@ -70,7 +71,7 @@ void initLight(){
 		lights[i].x=MAP_X/2;
 		lights[i].y=MAP_Y/2;
 		lights[i].size=31;
-		lights[i].brightness=1.5f;
+		lights[i].brightness=1.3f;
 	}
 	computeLightMap(lights,1,false);
 }

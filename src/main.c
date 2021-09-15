@@ -20,6 +20,9 @@ bool keys[KEYS];
 char bots[MAX_SPRITES];
 char botCount;
 
+//RNG
+int seed=0;
+
 //player movement with mouse
 void movePlayer(int index){
 	Sprite *s=&sprites[index];
@@ -46,13 +49,11 @@ int main(){
 	initLight();
 	addLight(camX, camY, 2*WIN_Y/TILE_Y,false);
 	char player=addSprite(PLAYER_ID, round(camX), round(camY));
-	char bot1=addSprite(BOT_ID, round(camX)-3, round(camY)+1); //test 1
-	char bot2=addSprite(BOT_ID, round(camX)-3, round(camY)+2); //test 2
+	addSprite(BOT_ID, round(camX)-3, round(camY)+1); //test bot 1
+	addSprite(BOT_ID, round(camX)-3, round(camY)+2); //test bot 2
 	//render
 	while (windowLoop()){
 		//glClear(GL_COLOR_BUFFER_BIT);
-		newDest(bot1, sprites[bot2].x-2, sprites[bot2].y+3); //test 1
-		newDest(bot2, sprites[bot1].x+2, sprites[bot1].y-3); //test 2
 		drawMap();
 		movePlayer(player);
 		moveBots();

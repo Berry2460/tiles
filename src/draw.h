@@ -35,6 +35,7 @@ typedef struct Sprite{
 	float offx; //tile offset
 	float offy;
 	bool walk; //is moving
+	float time; //timer
 }Sprite;
 
 typedef struct Tile{
