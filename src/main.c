@@ -1,5 +1,6 @@
 #include "draw.h"
 #include "missiles.h"
+#include "player.h"
 
 //draw globals
 float scale;
@@ -28,28 +29,6 @@ unsigned char projectileCount;
 
 //RNG
 int seed=0;
-
-void playerControl(int index){
-	if (keys[A] && keys[LMB]){
-		addProjectile(sprites[index].x, sprites[index].y, mouseTileX, mouseTileY, 5.0f); //test projectile
-		//keys[LMB]=false;
-	}
-	//player movement with mouse
-	else if (keys[LMB]){
-		newDest(index, mouseTileX, mouseTileY);
-		keys[LMB]=false;
-	}
-}
-
-void movePlayer(int index){
-	Sprite *s=&sprites[index];
-	addLight(s->x, s->y, 2*WIN_Y/TILE_Y,true);
-	step(index);
-	//follow cam
-	camX=s->x+s->offx;
-	camY=s->y-s->offy;
-	addLight(s->x, s->y, 2*WIN_Y/TILE_Y,false);
-}
 
 //game loop
 int main(){

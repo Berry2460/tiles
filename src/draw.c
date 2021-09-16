@@ -81,8 +81,8 @@ void drawMap(){
 	//bot culling
 	botCount=0;
 	//culling
-	float tileX=(TILE_X/WIN_X)*scale;
-	float tileY=(TILE_Y/WIN_Y)*scale;
+	tileX=(TILE_X/WIN_X)*scale;
+	tileY=(TILE_Y/WIN_Y)*scale;
 	float offset=3.0f/scale+1; //adjustments
 	int xMax=screenSize/(tileSize*scale)+camX+offset;
 	int yMax=screenSize/(tileSize*scale)+camY+offset;
@@ -115,11 +115,11 @@ void drawMap(){
 	for (int x=startX; x < xMax; x++){
 		for (int y=startY; y < yMax; y++){
 			//tile X and Y
-			float tx=(x-y)*tileX - ((camX-camY)*tileX);
-			float ty=((y+x)*tileY)*-1 + ((camY+camX)*tileY);
-			//mouse collision and light
-			int pathing=1;
+			Coordinates coord=transform(x, y);
+			float tx=coord.x;
+			float ty=coord.y;
 			//pathing debugging
+			int pathing=1;
 			#ifdef DEBUG
 			if (map[y][x].occupied){
 				pathing=0;
@@ -155,8 +155,9 @@ void drawMap(){
 					sy=sprites[i].y;
 					#endif
 					//retransform X and Y to tiles
-					tx=(sx-sy)*tileX - ((camX-camY)*tileX);
-					ty=((sy+sx)*tileY)*-1 + ((camY+camX)*tileY);
+					coord=transform(sx, sy);
+					tx=coord.x;
+					ty=coord.y;
 					//verts
 					glVertex2f(tx+((20.0f*scale)/WIN_X), ty);
 					glVertex2f(tx-((20.0f*scale)/WIN_X), ty);
@@ -171,8 +172,9 @@ void drawMap(){
 						float px=projectiles[i].x;
 						float py=projectiles[i].y;
 						//transform
-						tx=(px-py)*tileX - ((camX-camY)*tileX);
-						ty=((py+px)*tileY)*-1 + ((camY+camX)*tileY);
+						coord=transform(px, py);
+						tx=coord.x;
+						ty=coord.y;
 						glColor3f(map[y][x].brightness, map[y][x].brightness, 0);
 						glVertex2f(tx+((15.0f*scale)/WIN_X), ty+((30.0f*scale)/WIN_Y));
 						glVertex2f(tx-((15.0f*scale)/WIN_X), ty+((30.0f*scale)/WIN_Y));
@@ -191,4 +193,11 @@ void drawMap(){
 		}
 	}
 	glEnd();
+}
+
+static Coordinates transform(float x, float y){
+	Coordinates out;
+	out.x=(x-y)*tileX - ((camX-camY)*tileX);
+	out.y=((y+x)*tileY)*-1 + ((camY+camX)*tileY);
+	return out;
 }

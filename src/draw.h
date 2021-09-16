@@ -24,6 +24,11 @@
 #include "ai.h"
 #include "missiles.h"
 
+typedef struct Coordinates{
+	float x;
+	float y;
+}Coordinates;
+
 typedef struct Sprite{
 	unsigned char id; //sprite identifier
 	unsigned char index; //other stat assignment
@@ -66,6 +71,8 @@ extern char spriteCount;
 
 static float screenSize;
 static float tileSize;
+static float tileX;
+static float tileY;
 
 void initMap();
 char addSprite(unsigned char id, int x, int y, float speed);
@@ -73,4 +80,6 @@ void computeLightMap(Light *lights, int total, bool neg);
 void addLight(int x, int y, int size, bool neg);
 void initLight();
 void drawMap();
+
+static Coordinates transform(float x, float y);
 #endif

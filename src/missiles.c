@@ -10,10 +10,10 @@ static void removeProjectile(int index){
 void moveProjectiles(){
 	for (int i=0; i<projectileCount; i++){
 		if ((int)projectiles[i].x != (int)projectiles[i].destX){
-			projectiles[i].x+=(projectiles[i].stepX/fps)*projectiles[i].speed;
+			projectiles[i].x+=projectiles[i].stepX/fps;
 		}
 		if ((int)projectiles[i].y != (int)projectiles[i].destY){
-			projectiles[i].y+=(projectiles[i].stepY/fps)*projectiles[i].speed;
+			projectiles[i].y+=projectiles[i].stepY/fps;
 		}
 		if (((int)projectiles[i].x == (int)projectiles[i].destX && (int)projectiles[i].y == (int)projectiles[i].destY)){
 			removeProjectile(i);
@@ -30,8 +30,8 @@ void addProjectile(int x, int y, int destX, int destY, float speed){
 		float xlen=projectiles[projectileCount].destX-projectiles[projectileCount].x;
 		float ylen=projectiles[projectileCount].destY-projectiles[projectileCount].y;
 		float hyp=sqrt((xlen*xlen)+(ylen*ylen));
-		projectiles[projectileCount].stepX=xlen/hyp;
-		projectiles[projectileCount].stepY=ylen/hyp;
+		projectiles[projectileCount].stepX=xlen/hyp*speed;
+		projectiles[projectileCount].stepY=ylen/hyp*speed;
 		//integer rounding correction
 		if (projectiles[projectileCount].stepX < 0.0f){
 			projectiles[projectileCount].destX-=1;
@@ -39,7 +39,6 @@ void addProjectile(int x, int y, int destX, int destY, float speed){
 		if (projectiles[projectileCount].stepY < 0.0f){
 			projectiles[projectileCount].destY-=1;
 		}
-		projectiles[projectileCount].speed=speed;
 		projectileCount++;
 	}
 }

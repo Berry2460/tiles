@@ -12,7 +12,6 @@ typedef struct Projectile{
 	float destY;
 	float stepX;
 	float stepY;
-	float speed;
 }Projectile;
 
 extern Projectile projectiles[MAX_PROJECTILES];
