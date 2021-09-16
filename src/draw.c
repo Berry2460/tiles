@@ -81,7 +81,6 @@ void drawMap(){
 	//bot culling
 	botCount=0;
 	//culling
-	clickProcessed=false;
 	float tileX=(TILE_X/WIN_X)*scale;
 	float tileY=(TILE_Y/WIN_Y)*scale;
 	float offset=3.0f/scale+1; //adjustments
@@ -130,7 +129,6 @@ void drawMap(){
 			if (fabs(dx-tx)+fabs(dy-ty) < tileX && keys[LMB]){
 				mouseTileX=x;
 				mouseTileY=y;
-				clickProcessed=true;
 			}
 			glVertex2f(tx-tileX,ty);
 			glVertex2f(tx,ty+tileY);
@@ -164,6 +162,23 @@ void drawMap(){
 					glVertex2f(tx-((20.0f*scale)/WIN_X), ty);
 					glVertex2f(tx-((20.0f*scale)/WIN_X), ty+((90.0f*scale)/WIN_Y));
 					glVertex2f(tx+((20.0f*scale)/WIN_X), ty+((90.0f*scale)/WIN_Y));
+				}
+			}
+			//draw projectile
+			else{
+				for(int i=0; i<projectileCount; i++){
+					if ((int)projectiles[i].x == x-1 && (int)projectiles[i].y == y-1){
+						float px=projectiles[i].x;
+						float py=projectiles[i].y;
+						//transform
+						tx=(px-py)*tileX - ((camX-camY)*tileX);
+						ty=((py+px)*tileY)*-1 + ((camY+camX)*tileY);
+						glColor3f(map[y][x].brightness, map[y][x].brightness, 0);
+						glVertex2f(tx+((15.0f*scale)/WIN_X), ty+((30.0f*scale)/WIN_Y));
+						glVertex2f(tx-((15.0f*scale)/WIN_X), ty+((30.0f*scale)/WIN_Y));
+						glVertex2f(tx-((15.0f*scale)/WIN_X), ty+((60.0f*scale)/WIN_Y));
+						glVertex2f(tx+((15.0f*scale)/WIN_X), ty+((60.0f*scale)/WIN_Y));
+					}
 				}
 			}
 			#ifdef DEBUG

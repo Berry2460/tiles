@@ -1,7 +1,7 @@
 #ifndef DRAW_H
 #define DRAW_H
 
-#define DEBUG
+//#define DEBUG
 //#define NO_CULLING
 //#define NO_SMOOTHING
 
@@ -22,6 +22,7 @@
 #include <stdbool.h>
 #include "window.h"
 #include "ai.h"
+#include "missiles.h"
 
 typedef struct Sprite{
 	unsigned char id; //sprite identifier
@@ -59,7 +60,6 @@ extern float camX;
 extern float camY;
 extern int mouseTileX;
 extern int mouseTileY;
-extern bool clickProcessed;
 extern Tile map[MAP_Y][MAP_X];
 extern Sprite sprites[MAX_SPRITES];
 extern char spriteCount;

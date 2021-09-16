@@ -7,7 +7,6 @@ float camX;
 float camY;
 int mouseTileX;
 int mouseTileY;
-bool clickProcessed;
 Tile map[MAP_Y][MAP_X];
 Sprite sprites[MAX_SPRITES];
 char spriteCount;
@@ -24,20 +23,21 @@ char bots[MAX_SPRITES];
 char botCount;
 
 //missile globals
-char projectiles[MAX_SPRITES];
+Projectile projectiles[MAX_PROJECTILES];
+unsigned char projectileCount;
 
 //RNG
 int seed=0;
 
 void playerControl(int index){
-	/* BROKEN
 	if (keys[A] && keys[LMB]){
-		addProjectile(round(camX), round(camY), mouseTileX, mouseTileY, 10.0f); //test projectile
+		addProjectile(sprites[index].x, sprites[index].y, mouseTileX, mouseTileY, 5.0f); //test projectile
 		//keys[LMB]=false;
-	}*/
+	}
 	//player movement with mouse
-	if (keys[LMB]){
+	else if (keys[LMB]){
 		newDest(index, mouseTileX, mouseTileY);
+		keys[LMB]=false;
 	}
 }
 
@@ -59,7 +59,7 @@ int main(){
 	startWindow("tiles");
 	initMap();
 	initLight();
-	addLight(camX, camY, 2*WIN_Y/TILE_Y,false);
+	addLight(camX, camY, 2*WIN_Y/TILE_Y,false); //demo light
 	char player=addSprite(ID_PLAYER, round(camX), round(camY), 2.2f);
 	addSprite(ID_BOT, round(camX)-3, round(camY)+1, 1.9f); //test bot 1
 	addSprite(ID_BOT, round(camX)-3, round(camY)+2, 1.5f); //test bot 2

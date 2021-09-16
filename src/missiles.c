@@ -1,43 +1,45 @@
 #include "missiles.h"
 
-static void removeProjectile(int pindex){
+static void removeProjectile(int index){
 	projectileCount--;
-	spriteCount--;
-	map[sprites[projectiles[pindex]].y][sprites[projectiles[pindex]].x].spriteIndex=-1;
-	map[sprites[projectiles[pindex]].y][sprites[projectiles[pindex]].x].occupied=false;
-	for(int i=projectiles[pindex]; i<spriteCount; i++){
-		sprites[i]=sprites[i+1];
-	}
-	for(int i=0; i<projectileCount; i++){
-		if (projectiles[i] >= projectiles[pindex]){
-			projectiles[i]=projectiles[i+1]-1;
-			map[sprites[projectiles[i]].y][sprites[projectiles[i]].x].spriteIndex=projectiles[i];
-		}
+	for(int i=index; i<projectileCount; i++){
+		projectiles[i]=projectiles[i+1];
 	}
 }
 
 void moveProjectiles(){
-
 	for (int i=0; i<projectileCount; i++){
-		if(sprites[projectiles[i]].walk){
-			step(projectiles[i]);
+		if ((int)projectiles[i].x != (int)projectiles[i].destX){
+			projectiles[i].x+=(projectiles[i].stepX/fps)*projectiles[i].speed;
 		}
-		else{
+		if ((int)projectiles[i].y != (int)projectiles[i].destY){
+			projectiles[i].y+=(projectiles[i].stepY/fps)*projectiles[i].speed;
+		}
+		if (((int)projectiles[i].x == (int)projectiles[i].destX && (int)projectiles[i].y == (int)projectiles[i].destY)){
 			removeProjectile(i);
 		}
 	}
 }
 
 void addProjectile(int x, int y, int destX, int destY, float speed){
-	char oldIndex=map[y][x].spriteIndex;
-	char oldOccupied=map[y][x].occupied;
-	int index=addSprite(ID_PROJECTILE, x, y, speed);
-	if (index != -1){
-		newDest(index, destX, destY);
-		nextStep(index);
-		map[y][x].spriteIndex=oldIndex;
-		map[y][x].occupied=oldOccupied;
-		projectiles[projectileCount]=index;
+	if (projectileCount < MAX_PROJECTILES){
+		projectiles[projectileCount].x=x;
+		projectiles[projectileCount].y=y;
+		projectiles[projectileCount].destX=destX;
+		projectiles[projectileCount].destY=destY;
+		float xlen=projectiles[projectileCount].destX-projectiles[projectileCount].x;
+		float ylen=projectiles[projectileCount].destY-projectiles[projectileCount].y;
+		float hyp=sqrt((xlen*xlen)+(ylen*ylen));
+		projectiles[projectileCount].stepX=xlen/hyp;
+		projectiles[projectileCount].stepY=ylen/hyp;
+		//integer rounding correction
+		if (projectiles[projectileCount].stepX < 0.0f){
+			projectiles[projectileCount].destX-=1;
+		}
+		if (projectiles[projectileCount].stepY < 0.0f){
+			projectiles[projectileCount].destY-=1;
+		}
+		projectiles[projectileCount].speed=speed;
 		projectileCount++;
 	}
 }
