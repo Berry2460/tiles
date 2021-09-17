@@ -172,6 +172,10 @@ void drawMap(){
 					if ((int)projectiles[i].x == x-1 && (int)projectiles[i].y == y-1){
 						float px=projectiles[i].x;
 						float py=projectiles[i].y;
+						#ifdef NO_SMOOTHING
+						px=(int)px;
+						py=(int)py;
+						#endif
 						//transform
 						coord=transform(px, py);
 						tx=coord.x;
