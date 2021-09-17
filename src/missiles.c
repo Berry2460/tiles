@@ -16,7 +16,7 @@ void moveProjectiles(){
 		int testY=round(projectiles[i].y);
 		if (testX != round(projectiles[i].destX) || testY != round(projectiles[i].destY)){
 			//collision
-			if (testX != projectiles[i].startX && testY != projectiles[i].startY){
+			if (testX != projectiles[i].startX || testY != projectiles[i].startY){
 				if (map[testY][testX].spriteIndex != -1){
 					if (sprites[map[testY][testX].spriteIndex].id == ID_BOT){
 						sprites[map[testY][testX].spriteIndex].show=false;

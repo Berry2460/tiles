@@ -70,8 +70,6 @@ extern Tile map[MAP_Y][MAP_X];
 extern Sprite sprites[MAX_SPRITES];
 extern char spriteCount;
 
-static float screenSize;
-static float tileSize;
 static float tileX;
 static float tileY;
 

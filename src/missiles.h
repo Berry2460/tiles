@@ -4,7 +4,6 @@
 #define MAX_PROJECTILES 255
 #define PROJECTILE_RANGE 15
 
-#include <stdbool.h>
 #include "draw.h"
 
 typedef struct Projectile{
@@ -25,5 +24,4 @@ extern unsigned char projectileCount;
 static void removeProjectile(int index);
 void moveProjectiles();
 void addProjectile(int x, int y, int destX, int destY, float speed, bool glow);
-
 #endif

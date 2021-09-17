@@ -1,9 +1,6 @@
 #include "draw.h"
 
 void initMap(){
-	//init culling vars
-	screenSize=sqrt((WIN_X*WIN_X)+(WIN_Y*WIN_Y));
-	tileSize=sqrt((TILE_X*TILE_X)+(TILE_Y*TILE_Y));
 	//init
 	int spriteCount=0;
 	for (int i=0; i < MAP_Y; i++){
@@ -73,7 +70,7 @@ void initLight(){
 		lights[i].x=MAP_X/2;
 		lights[i].y=MAP_Y/2;
 		lights[i].size=31;
-		lights[i].brightness=1.5f;
+		lights[i].brightness=1.1f;
 	}
 	computeLightMap(lights,1,false);
 }
@@ -82,6 +79,8 @@ void drawMap(){
 	//bot culling
 	botCount=0;
 	//culling
+	float screenSize=WIN_X+WIN_Y;
+	float tileSize=TILE_X+TILE_Y;
 	tileX=(TILE_X/WIN_X)*scale;
 	tileY=(TILE_Y/WIN_Y)*scale;
 	float offset=3.0f/scale+1; //adjustments
@@ -160,10 +159,10 @@ void drawMap(){
 					tx=coord.x;
 					ty=coord.y;
 					//verts
-					glVertex2f(tx+((20.0f*scale)/WIN_X), ty);
-					glVertex2f(tx-((20.0f*scale)/WIN_X), ty);
-					glVertex2f(tx-((20.0f*scale)/WIN_X), ty+((90.0f*scale)/WIN_Y));
-					glVertex2f(tx+((20.0f*scale)/WIN_X), ty+((90.0f*scale)/WIN_Y));
+					glVertex2f(tx+((TILE_X*0.3f*scale)/WIN_X), ty);
+					glVertex2f(tx-((TILE_X*0.3f*scale)/WIN_X), ty);
+					glVertex2f(tx-((TILE_X*0.3f*scale)/WIN_X), ty+((TILE_Y*3.0f*scale)/WIN_Y));
+					glVertex2f(tx+((TILE_X*0.3f*scale)/WIN_X), ty+((TILE_Y*3.0f*scale)/WIN_Y));
 				}
 			}
 			//draw projectile
@@ -181,10 +180,10 @@ void drawMap(){
 						tx=coord.x;
 						ty=coord.y;
 						glColor3f(map[y][x].brightness, map[y][x].brightness, 0);
-						glVertex2f(tx+((15.0f*scale)/WIN_X), ty+((30.0f*scale)/WIN_Y));
-						glVertex2f(tx-((15.0f*scale)/WIN_X), ty+((30.0f*scale)/WIN_Y));
-						glVertex2f(tx-((15.0f*scale)/WIN_X), ty+((60.0f*scale)/WIN_Y));
-						glVertex2f(tx+((15.0f*scale)/WIN_X), ty+((60.0f*scale)/WIN_Y));
+						glVertex2f(tx+((TILE_Y*0.5f*scale)/WIN_X), ty+((TILE_Y*scale)/WIN_Y));
+						glVertex2f(tx-((TILE_Y*0.5f*scale)/WIN_X), ty+((TILE_Y*scale)/WIN_Y));
+						glVertex2f(tx-((TILE_Y*0.5f*scale)/WIN_X), ty+((TILE_Y*2.0f*scale)/WIN_Y));
+						glVertex2f(tx+((TILE_Y*0.5f*scale)/WIN_X), ty+((TILE_Y*2.0f*scale)/WIN_Y));
 					}
 				}
 			}
