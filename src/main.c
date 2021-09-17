@@ -38,8 +38,7 @@ int main(){
 	startWindow("tiles");
 	initMap();
 	initLight();
-	addLight(camX, camY, 2*WIN_Y/TILE_Y,false); //demo light
-	char player=addSprite(ID_PLAYER, round(camX), round(camY), 2.2f);
+	char player=createPlayer();
 	addSprite(ID_BOT, round(camX)-3, round(camY)+1, 1.9f); //test bot 1
 	addSprite(ID_BOT, round(camX)-3, round(camY)+2, 1.5f); //test bot 2
 	//render

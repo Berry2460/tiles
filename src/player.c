@@ -2,7 +2,7 @@
 
 static void shootPlayerProjectile(int index){
 	if (!sprites[index].walk){
-		addProjectile(sprites[index].x, sprites[index].y, mouseTileX, mouseTileY, 5.0f);
+		addProjectile(sprites[index].x, sprites[index].y, mouseTileX, mouseTileY, 5.0f, false);
 	}else{
 		newDest(index, sprites[index].toStepX, sprites[index].toStepY);
 	}
@@ -28,10 +28,16 @@ void playerControl(int index){
 
 void movePlayer(int index){
 	Sprite *s=&sprites[index];
-	addLight(s->x, s->y, 2*WIN_Y/TILE_Y,true);
+	addLight(s->x, s->y, 2*WIN_Y/TILE_Y, 1.2f, true);
 	step(index);
 	//follow cam
 	camX=s->x+s->offx;
 	camY=s->y-s->offy;
-	addLight(s->x, s->y, 2*WIN_Y/TILE_Y,false);
+	addLight(s->x, s->y, 2*WIN_Y/TILE_Y, 1.2f, false);
+}
+
+char createPlayer(){
+	addLight(camX, camY, 2*WIN_Y/TILE_Y, 1.1f, false); //demo light
+	char player=addSprite(ID_PLAYER, round(camX), round(camY), 2.2f);
+	return player;
 }

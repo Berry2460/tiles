@@ -58,12 +58,12 @@ void computeLightMap(Light *lights, int total, bool neg){
 	}
 }
 
-void addLight(int x, int y, int size, bool neg){ //add light
+void addLight(int x, int y, int size, float brightness, bool neg){ //add light
 	Light light[1];
 	light[0].x=x;
 	light[0].y=y;
 	light[0].size=size;
-	light[0].brightness=1.1f;
+	light[0].brightness=brightness;
 	computeLightMap(light, 1, neg);
 }
 
@@ -73,7 +73,7 @@ void initLight(){
 		lights[i].x=MAP_X/2;
 		lights[i].y=MAP_Y/2;
 		lights[i].size=31;
-		lights[i].brightness=1.3f;
+		lights[i].brightness=1.5f;
 	}
 	computeLightMap(lights,1,false);
 }

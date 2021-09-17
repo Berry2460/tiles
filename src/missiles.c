@@ -2,6 +2,7 @@
 
 static void removeProjectile(int index){
 	projectileCount--;
+	addLight((int)round(projectiles[index].x), (int)round(projectiles[index].y), 7, 0.5f, true);
 	for(int i=index; i<projectileCount; i++){
 		projectiles[i]=projectiles[i+1];
 	}
@@ -18,22 +19,29 @@ void moveProjectiles(){
 					if (sprites[map[testY][testX].spriteIndex].id == ID_BOT){
 						sprites[map[testY][testX].spriteIndex].show=false;
 						removeProjectile(i);
+						return;
 					}
 					else{
 						removeProjectile(i);
+						return;
 					}
 				}
 			}
 			projectiles[i].x+=projectiles[i].stepX/fps;
 			projectiles[i].y+=projectiles[i].stepY/fps;
+			if (projectiles[i].glow){
+				addLight(testX, testY, 7, 0.5f, true);
+				addLight((int)round(projectiles[i].x), (int)round(projectiles[i].y), 7, 0.5f, false);
+			}
 		}else{
 			removeProjectile(i);
 		}
 	}
 }
 
-void addProjectile(int x, int y, int destX, int destY, float speed){
+void addProjectile(int x, int y, int destX, int destY, float speed, bool glow){
 	if (projectileCount < MAX_PROJECTILES){
+		projectiles[projectileCount].glow=glow;
 		projectiles[projectileCount].x=x;
 		projectiles[projectileCount].y=y;
 		projectiles[projectileCount].startX=x;
@@ -46,5 +54,8 @@ void addProjectile(int x, int y, int destX, int destY, float speed){
 		projectiles[projectileCount].destX=xlen/hyp*PROJECTILE_RANGE+x;
 		projectiles[projectileCount].destY=ylen/hyp*PROJECTILE_RANGE+y;
 		projectileCount++;
+		if (glow){
+			addLight(x, y, 7, 0.5f, false);
+		}
 	}
 }

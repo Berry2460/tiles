@@ -7,4 +7,5 @@ static void shootPlayerProjectile(int index);
 
 void playerControl(int index);
 void movePlayer(int index);
+char createPlayer();
 #endif

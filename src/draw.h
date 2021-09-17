@@ -78,7 +78,7 @@ static float tileY;
 void initMap();
 char addSprite(unsigned char id, int x, int y, float speed);
 void computeLightMap(Light *lights, int total, bool neg);
-void addLight(int x, int y, int size, bool neg);
+void addLight(int x, int y, int size, float brightness, bool neg);
 void initLight();
 void drawMap();
 
