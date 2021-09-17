@@ -1,24 +1,28 @@
 #include "player.h"
 
+static void shootPlayerProjectile(int index){
+	if (!sprites[index].walk){
+		addProjectile(sprites[index].x, sprites[index].y, mouseTileX, mouseTileY, 5.0f);
+	}else{
+		newDest(index, sprites[index].toStepX, sprites[index].toStepY);
+	}
+	keys[LMB]=false;
+}
+
 void playerControl(int index){
 	//hold position fire
-	if (keys[SHIFT] && keys[LMB] && !sprites[index].walk){
-		addProjectile(sprites[index].x, sprites[index].y, mouseTileX, mouseTileY, 5.0f);
-		keys[LMB]=false;
+	if (keys[SHIFT] && keys[LMB]){
+		shootPlayerProjectile(index);
 	}
 	//player movement with mouse and target fire
 	else if (keys[LMB]){
 		if (sprites[map[mouseTileY][mouseTileX].spriteIndex].id == ID_BOT){
-			if (!sprites[index].walk){
-				addProjectile(sprites[index].x, sprites[index].y, mouseTileX, mouseTileY, 5.0f);
-			}else{
-				//stop walking when trying to fire
-				newDest(index, sprites[index].toStepX, sprites[index].toStepY);
-			}
+			shootPlayerProjectile(index);
 		}else{
 			newDest(index, mouseTileX, mouseTileY);
+			keys[LMB]=false;
 		}
-		keys[LMB]=false;
+		
 	}
 }
 

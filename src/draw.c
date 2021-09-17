@@ -169,7 +169,7 @@ void drawMap(){
 			//draw projectile
 			else{
 				for(int i=0; i<projectileCount; i++){
-					if ((int)projectiles[i].x == x-1 && (int)projectiles[i].y == y-1){
+					if (round(projectiles[i].x) == x-1 && round(projectiles[i].y) == y-1){
 						float px=projectiles[i].x;
 						float py=projectiles[i].y;
 						#ifdef NO_SMOOTHING
