@@ -37,7 +37,7 @@ void movePlayer(int index){
 }
 
 char createPlayer(){
-	addLight(camX, camY, 2*WIN_Y/TILE_Y, 1.1f, false); //demo light
+	addLight(camX, camY, 2*WIN_Y/TILE_Y, 1.2f, false); //demo light
 	char player=addSprite(ID_PLAYER, round(camX), round(camY), 2.2f);
 	return player;
 }

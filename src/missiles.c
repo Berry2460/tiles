@@ -2,7 +2,9 @@
 
 static void removeProjectile(int index){
 	projectileCount--;
-	addLight((int)round(projectiles[index].x), (int)round(projectiles[index].y), 7, 0.5f, true);
+	if (projectiles[index].glow){
+		addLight((int)round(projectiles[index].x), (int)round(projectiles[index].y), 7, 0.5f, true);
+	}
 	for(int i=index; i<projectileCount; i++){
 		projectiles[i]=projectiles[i+1];
 	}
