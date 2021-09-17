@@ -13,7 +13,8 @@ void moveBots(){
 			else if (glfwGetTime()-sprites[bots[i]].time > BOT_WAIT_TIME){
 				newBotRoute(bots[i]);
 			}
-		}else{
+		}
+		else if (map[sprites[bots[i]].y][sprites[bots[i]].x].spriteIndex == bots[i]){
 			map[sprites[bots[i]].y][sprites[bots[i]].x].occupied=false;
 			map[sprites[bots[i]].y][sprites[bots[i]].x].spriteIndex=-1;
 			if (sprites[bots[i]].walk){

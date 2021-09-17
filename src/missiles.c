@@ -11,7 +11,7 @@ void moveProjectiles(){
 	for (int i=0; i<projectileCount; i++){
 		int testX=round(projectiles[i].x);
 		int testY=round(projectiles[i].y);
-		if (testX != (int)projectiles[i].destX && testY != (int)projectiles[i].destY){
+		if (testX != round(projectiles[i].destX) || testY != round(projectiles[i].destY)){
 			//collision
 			if (testX != projectiles[i].startX && testY != projectiles[i].startY){
 				if (map[testY][testX].spriteIndex != -1){
