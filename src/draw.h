@@ -45,6 +45,7 @@ typedef struct Sprite{
 	bool walk; //is moving
 	float time; //timer
 	float speed; //movement
+	bool show;
 }Sprite;
 
 typedef struct Tile{

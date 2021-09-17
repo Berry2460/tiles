@@ -47,6 +47,14 @@ static void buttons(GLFWwindow* window, int key, int scancode, int action, int m
 			if (action == GLFW_PRESS){keys[D]=true;}
 			else if (action == GLFW_RELEASE){keys[D]=false;};
 			break;
+		case GLFW_KEY_LEFT_SHIFT:
+			if (action == GLFW_PRESS){keys[SHIFT]=true;}
+			else if (action == GLFW_RELEASE){keys[SHIFT]=false;};
+			break;
+		case GLFW_KEY_RIGHT_SHIFT:
+			if (action == GLFW_PRESS){keys[SHIFT]=true;}
+			else if (action == GLFW_RELEASE){keys[SHIFT]=false;};
+			break;
 	}
 }
 

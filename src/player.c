@@ -2,7 +2,7 @@
 
 void playerControl(int index){
 	//hold position fire
-	if (keys[A] && keys[LMB] && !sprites[index].walk){
+	if (keys[SHIFT] && keys[LMB] && !sprites[index].walk){
 		addProjectile(sprites[index].x, sprites[index].y, mouseTileX, mouseTileY, 5.0f);
 		keys[LMB]=false;
 	}

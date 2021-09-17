@@ -2,10 +2,13 @@
 #define MISSILES_H
 
 #define MAX_PROJECTILES 255
+#define PROJECTILE_RANGE 15
 
 #include "draw.h"
 
 typedef struct Projectile{
+	int startX;
+	int startY;
 	float x;
 	float y;
 	float destX;

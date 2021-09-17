@@ -5,6 +5,11 @@ void nextStep(int index){
 	//reset
 	map[s->y][s->x].spriteIndex=-1;
 	map[s->y][s->x].occupied=false;
+	//check show
+	if (!s->show){
+		map[s->toStepY][s->toStepX].occupied=false;
+		return;
+	}
 	s->x=s->toStepX;
 	s->offx=0.0f;
 	s->y=s->toStepY;

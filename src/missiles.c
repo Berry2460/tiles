@@ -9,13 +9,24 @@ static void removeProjectile(int index){
 
 void moveProjectiles(){
 	for (int i=0; i<projectileCount; i++){
-		if ((int)projectiles[i].x != (int)projectiles[i].destX){
+		int testX=round(projectiles[i].x);
+		int testY=round(projectiles[i].y);
+		if (testX != (int)projectiles[i].destX && testY != (int)projectiles[i].destY){
+			//collision
+			if (testX != projectiles[i].startX && testY != projectiles[i].startY){
+				if (map[testY][testX].spriteIndex != -1){
+					if (sprites[map[testY][testX].spriteIndex].id == ID_BOT){
+						sprites[map[testY][testX].spriteIndex].show=false;
+						removeProjectile(i);
+					}
+					else{
+						removeProjectile(i);
+					}
+				}
+			}
 			projectiles[i].x+=projectiles[i].stepX/fps;
-		}
-		if ((int)projectiles[i].y != (int)projectiles[i].destY){
 			projectiles[i].y+=projectiles[i].stepY/fps;
-		}
-		if (((int)projectiles[i].x == (int)projectiles[i].destX && (int)projectiles[i].y == (int)projectiles[i].destY)){
+		}else{
 			removeProjectile(i);
 		}
 	}
@@ -25,20 +36,15 @@ void addProjectile(int x, int y, int destX, int destY, float speed){
 	if (projectileCount < MAX_PROJECTILES){
 		projectiles[projectileCount].x=x;
 		projectiles[projectileCount].y=y;
-		projectiles[projectileCount].destX=destX;
-		projectiles[projectileCount].destY=destY;
-		float xlen=projectiles[projectileCount].destX-projectiles[projectileCount].x;
-		float ylen=projectiles[projectileCount].destY-projectiles[projectileCount].y;
+		projectiles[projectileCount].startX=x;
+		projectiles[projectileCount].startY=y;
+		float xlen=destX-x;
+		float ylen=destY-y;
 		float hyp=sqrt((xlen*xlen)+(ylen*ylen));
 		projectiles[projectileCount].stepX=xlen/hyp*speed;
 		projectiles[projectileCount].stepY=ylen/hyp*speed;
-		//integer rounding correction
-		if (projectiles[projectileCount].stepX < 0.0f){
-			projectiles[projectileCount].destX-=1;
-		}
-		if (projectiles[projectileCount].stepY < 0.0f){
-			projectiles[projectileCount].destY-=1;
-		}
+		projectiles[projectileCount].destX=xlen/hyp*PROJECTILE_RANGE+x;
+		projectiles[projectileCount].destY=ylen/hyp*PROJECTILE_RANGE+y;
 		projectileCount++;
 	}
 }

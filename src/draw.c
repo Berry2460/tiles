@@ -26,6 +26,7 @@ char addSprite(unsigned char id, int x, int y, float speed){
 		sprites[spriteCount].walk=false;
 		sprites[spriteCount].time=0.0f;
 		sprites[spriteCount].speed=speed;
+		sprites[spriteCount].show=true;
 		map[y][x].spriteIndex=spriteCount;
 		map[y][x].occupied=true;
 		spriteCount++;
