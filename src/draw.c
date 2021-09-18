@@ -112,9 +112,10 @@ void drawMap(){
 	float dx=(mouseX*2.0f)/WIN_X-1.0f;
 	float dy=((mouseY*2.0f)/WIN_Y-1.0f)*-1.0f;
 	glBegin(GL_QUADS);
+	glEnable(GL_TEXTURE_2D);
 	for (int x=startX; x < xMax; x++){
 		for (int y=startY; y < yMax; y++){
-			//tile X and Y
+			//tile X and Y transform
 			Coordinates coord=transform(x, y);
 			float tx=coord.x;
 			float ty=coord.y;
@@ -130,9 +131,15 @@ void drawMap(){
 				mouseTileX=x;
 				mouseTileY=y;
 			}
+			// TEXTURE STUFFS
+			glBindTexture(GL_TEXTURE_2D, map[y][x].textureIndex);
+			glTexCoord2f(0.0,0.0);
 			glVertex2f(tx-tileX,ty);
+			glTexCoord2f(0.0,1.0);
 			glVertex2f(tx,ty+tileY);
+			glTexCoord2f(1.0,1.0);
 			glVertex2f(tx+tileX,ty);
+			glTexCoord2f(1.0,0.0);
 			glVertex2f(tx,ty-tileY);
 
 			//draw sprite
@@ -154,37 +161,47 @@ void drawMap(){
 					sx=sprites[i].x;
 					sy=sprites[i].y;
 					#endif
-					//retransform X and Y to tiles
+					//transform X and Y to tiles
 					coord=transform(sx, sy);
 					tx=coord.x;
 					ty=coord.y;
+					// TEXTURE STUFFS
+					glBindTexture(GL_TEXTURE_2D, sprites[i].textureIndex);
 					//verts
+					glTexCoord2f(0.0,0.0);
 					glVertex2f(tx+((TILE_X*0.3f*scale)/WIN_X), ty);
+					glTexCoord2f(0.0,1.0);
 					glVertex2f(tx-((TILE_X*0.3f*scale)/WIN_X), ty);
+					glTexCoord2f(1.0,1.0);
 					glVertex2f(tx-((TILE_X*0.3f*scale)/WIN_X), ty+((TILE_Y*3.0f*scale)/WIN_Y));
+					glTexCoord2f(1.0,0.0);
 					glVertex2f(tx+((TILE_X*0.3f*scale)/WIN_X), ty+((TILE_Y*3.0f*scale)/WIN_Y));
 				}
 			}
-			//draw projectile
-			else{
-				for(int i=0; i<projectileCount; i++){
-					if (round(projectiles[i].x) == x-1 && round(projectiles[i].y) == y-1){
-						float px=projectiles[i].x;
-						float py=projectiles[i].y;
-						#ifdef NO_SMOOTHING
-						px=(int)px;
-						py=(int)py;
-						#endif
-						//transform
-						coord=transform(px, py);
-						tx=coord.x;
-						ty=coord.y;
-						glColor3f(map[y][x].brightness, map[y][x].brightness, 0);
-						glVertex2f(tx+((TILE_Y*0.5f*scale)/WIN_X), ty+((TILE_Y*scale)/WIN_Y));
-						glVertex2f(tx-((TILE_Y*0.5f*scale)/WIN_X), ty+((TILE_Y*scale)/WIN_Y));
-						glVertex2f(tx-((TILE_Y*0.5f*scale)/WIN_X), ty+((TILE_Y*2.0f*scale)/WIN_Y));
-						glVertex2f(tx+((TILE_Y*0.5f*scale)/WIN_X), ty+((TILE_Y*2.0f*scale)/WIN_Y));
-					}
+			//draw projectiles
+			for(int i=0; i<projectileCount; i++){
+				if (round(projectiles[i].x) == x && round(projectiles[i].y) == y){
+					float px=projectiles[i].x;
+					float py=projectiles[i].y;
+					#ifdef NO_SMOOTHING
+					px=(int)px;
+					py=(int)py;
+					#endif
+					//transform
+					coord=transform(px, py);
+					tx=coord.x;
+					ty=coord.y;
+					glColor3f(map[y][x].brightness, map[y][x].brightness, 0);
+					// TEXTURE STUFFS
+					glBindTexture(GL_TEXTURE_2D, projectiles[i].textureIndex);
+					glTexCoord2f(0.0,0.0);
+					glVertex2f(tx+((TILE_Y*0.5f*scale)/WIN_X), ty+((TILE_Y*scale)/WIN_Y));
+					glTexCoord2f(0.0,1.0);
+					glVertex2f(tx-((TILE_Y*0.5f*scale)/WIN_X), ty+((TILE_Y*scale)/WIN_Y));
+					glTexCoord2f(1.0,1.0);
+					glVertex2f(tx-((TILE_Y*0.5f*scale)/WIN_X), ty+((TILE_Y*2.0f*scale)/WIN_Y));
+					glTexCoord2f(1.0,0.0);
+					glVertex2f(tx+((TILE_Y*0.5f*scale)/WIN_X), ty+((TILE_Y*2.0f*scale)/WIN_Y));
 				}
 			}
 			#ifdef DEBUG
@@ -203,5 +220,28 @@ static Coordinates transform(float x, float y){
 	Coordinates out;
 	out.x=(x-y)*tileX - ((camX-camY)*tileX);
 	out.y=((y+x)*tileY)*-1 + ((camY+camX)*tileY);
+	return out;
+}
+
+//texture loading WIP
+static int initTexture(char* name){
+	FILE* f=NULL;
+	f=fopen(name, "r");
+	if (f == NULL){
+		exit(1);
+	}
+	glBindTexture(GL_TEXTURE_2D, texCount);
+	glPixelStorei(GL_UNPACK_ALIGNMENT, 1);
+	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_CLAMP);
+	glTexParameteri (GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_CLAMP);
+	glTexParameteri (GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
+	glTexParameteri (GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
+	glTexEnvf(GL_TEXTURE_ENV, GL_TEXTURE_ENV_MODE, GL_MODULATE);
+	int imgX=1;
+	int imgY=1;
+	unsigned char pixelData[] = {255,0,0,255};
+	glTexImage2D(GL_TEXTURE_2D, 0, GL_RGBA, imgX, imgY, 0, GL_RGBA, GL_UNSIGNED_BYTE, pixelData);
+	int out=texCount;
+	texCount++;
 	return out;
 }

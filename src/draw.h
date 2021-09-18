@@ -32,6 +32,7 @@ typedef struct Coordinates{
 typedef struct Sprite{
 	unsigned char id; //sprite identifier
 	unsigned char index; //other stat assignment
+	unsigned char textureIndex;
 	int x; //current coords
 	int y;
 	char nextX; //plus or minus 1 to step
@@ -50,6 +51,7 @@ typedef struct Sprite{
 
 typedef struct Tile{
 	unsigned char spriteIndex;
+	unsigned char textureIndex;
 	float brightness;
 	bool occupied;
 }Tile;
@@ -61,6 +63,10 @@ typedef struct Light{
 	float brightness;
 }Light;
 
+static float tileX;
+static float tileY;
+static int texCount=0;
+
 extern float scale;
 extern float camX;
 extern float camY;
@@ -70,8 +76,8 @@ extern Tile map[MAP_Y][MAP_X];
 extern Sprite sprites[MAX_SPRITES];
 extern unsigned char spriteCount;
 
-static float tileX;
-static float tileY;
+static Coordinates transform(float x, float y);
+static int initTexture(char* name);
 
 void initMap();
 unsigned char addSprite(unsigned char id, int x, int y, float speed);
@@ -79,6 +85,4 @@ void computeLightMap(Light *lights, int total, bool neg);
 void addLight(int x, int y, int size, float brightness, bool neg);
 void initLight();
 void drawMap();
-
-static Coordinates transform(float x, float y);
 #endif

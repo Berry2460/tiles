@@ -7,6 +7,7 @@
 #include "draw.h"
 
 typedef struct Projectile{
+	unsigned char textureIndex;
 	int startX;
 	int startY;
 	float x;
