@@ -15,8 +15,9 @@ void moveBots(){
 			}
 		}
 		else if (map[sprites[bots[i]].y][sprites[bots[i]].x].spriteIndex == bots[i]){
+			//remove bot (does not clean up sprite array space)
 			map[sprites[bots[i]].y][sprites[bots[i]].x].occupied=false;
-			map[sprites[bots[i]].y][sprites[bots[i]].x].spriteIndex=-1;
+			map[sprites[bots[i]].y][sprites[bots[i]].x].spriteIndex=MAX_SPRITES;
 			if (sprites[bots[i]].walk){
 				map[sprites[bots[i]].toStepY][sprites[bots[i]].toStepX].occupied=false;
 			}

@@ -7,8 +7,8 @@
 #include "step.h"
 
 extern int seed;
-extern char bots[MAX_SPRITES];
-extern char botCount;
+extern unsigned char bots[MAX_SPRITES];
+extern unsigned char botCount;
 
 static void newBotRoute();
 

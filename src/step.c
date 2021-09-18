@@ -3,7 +3,7 @@
 void nextStep(int index){
 	Sprite *s=&sprites[index];	
 	//reset
-	map[s->y][s->x].spriteIndex=-1;
+	map[s->y][s->x].spriteIndex=MAX_SPRITES;
 	map[s->y][s->x].occupied=false;
 	//check show
 	s->x=s->toStepX;
@@ -27,8 +27,6 @@ void nextStep(int index){
 				//check if it bot
 				break;
 			case ID_PROJECTILE:
-				//map[s->y][s->x].spriteIndex=-1;
-				//map[s->y][s->x].occupied=false;
 				//check if hit bot or player
 				break;
 		}

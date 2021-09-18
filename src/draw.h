@@ -7,7 +7,7 @@
 
 #define MAP_X 512
 #define MAP_Y 512
-#define MAX_SPRITES 127 //signed char limit
+#define MAX_SPRITES 255
 #define TILE_X 64.0f
 #define TILE_Y 32.0f
 
@@ -49,7 +49,7 @@ typedef struct Sprite{
 }Sprite;
 
 typedef struct Tile{
-	char spriteIndex;
+	unsigned char spriteIndex;
 	float brightness;
 	bool occupied;
 }Tile;
@@ -68,13 +68,13 @@ extern int mouseTileX;
 extern int mouseTileY;
 extern Tile map[MAP_Y][MAP_X];
 extern Sprite sprites[MAX_SPRITES];
-extern char spriteCount;
+extern unsigned char spriteCount;
 
 static float tileX;
 static float tileY;
 
 void initMap();
-char addSprite(unsigned char id, int x, int y, float speed);
+unsigned char addSprite(unsigned char id, int x, int y, float speed);
 void computeLightMap(Light *lights, int total, bool neg);
 void addLight(int x, int y, int size, float brightness, bool neg);
 void initLight();

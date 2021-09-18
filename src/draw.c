@@ -6,13 +6,13 @@ void initMap(){
 	for (int i=0; i < MAP_Y; i++){
 		for (int j=0; j < MAP_X; j++){
 			map[i][j].brightness=0.0f;
-			map[i][j].spriteIndex=-1;
+			map[i][j].spriteIndex=MAX_SPRITES;
 			map[i][j].occupied=false;
 		}
 	}
 }
 
-char addSprite(unsigned char id, int x, int y, float speed){
+unsigned char addSprite(unsigned char id, int x, int y, float speed){
 	if (spriteCount < MAX_SPRITES){
 		char out=spriteCount;
 		sprites[spriteCount].id=id;
@@ -30,7 +30,7 @@ char addSprite(unsigned char id, int x, int y, float speed){
 		return out;
 	}
 	else{
-		return -1;
+		return MAX_SPRITES;
 	}
 }
 
@@ -136,7 +136,7 @@ void drawMap(){
 			glVertex2f(tx,ty-tileY);
 
 			//draw sprite
-			if (map[y-1][x-1].spriteIndex != -1 || map[y-1][x-1].occupied){
+			if (map[y-1][x-1].spriteIndex != MAX_SPRITES){
 				//-1 offset for overdraw
 				int i=map[y-1][x-1].spriteIndex;
 				//add bot to visible

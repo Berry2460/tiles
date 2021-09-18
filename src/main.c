@@ -10,7 +10,7 @@ int mouseTileX;
 int mouseTileY;
 Tile map[MAP_Y][MAP_X];
 Sprite sprites[MAX_SPRITES];
-char spriteCount;
+unsigned char spriteCount;
 
 //window globals
 int fps;
@@ -20,8 +20,8 @@ bool keys[KEYS];
 bool keysPress[KEYS];
 
 //ai globals
-char bots[MAX_SPRITES];
-char botCount;
+unsigned char bots[MAX_SPRITES];
+unsigned char botCount;
 
 //missile globals
 Projectile projectiles[MAX_PROJECTILES];
@@ -38,7 +38,7 @@ int main(){
 	startWindow("tiles");
 	initMap();
 	initLight();
-	char player=createPlayer(camX, camY);
+	unsigned char player=createPlayer(camX, camY);
 	addSprite(ID_BOT, round(camX)-3, round(camY)+1, 1.9f); //test bot 1
 	addSprite(ID_BOT, round(camX)-3, round(camY)+2, 1.5f); //test bot 2
 	//render
