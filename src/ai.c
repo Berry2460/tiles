@@ -6,21 +6,11 @@ void newSeed(){
 
 void moveBots(){
 	for (int i=0; i<botCount; i++){
-		if (sprites[bots[i]].show){
-			if(sprites[bots[i]].walk){
-				step(bots[i]);
-			}
-			else if (glfwGetTime()-sprites[bots[i]].time > BOT_WAIT_TIME){
-				newBotRoute(bots[i]);
-			}
+		if(sprites[bots[i]].walk){
+			step(bots[i]);
 		}
-		else if (map[sprites[bots[i]].y][sprites[bots[i]].x].spriteIndex == bots[i]){
-			//remove bot (does not clean up sprite array space)
-			map[sprites[bots[i]].y][sprites[bots[i]].x].occupied=false;
-			map[sprites[bots[i]].y][sprites[bots[i]].x].spriteIndex=MAX_SPRITES;
-			if (sprites[bots[i]].walk){
-				map[sprites[bots[i]].toStepY][sprites[bots[i]].toStepX].occupied=false;
-			}
+		else if (glfwGetTime()-sprites[bots[i]].time > BOT_WAIT_TIME){
+			newBotRoute(bots[i]);
 		}
 	}
 }

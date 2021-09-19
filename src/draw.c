@@ -23,7 +23,6 @@ unsigned char addSprite(unsigned char id, int x, int y, float speed){
 		sprites[spriteCount].walk=false;
 		sprites[spriteCount].time=0.0f;
 		sprites[spriteCount].speed=speed;
-		sprites[spriteCount].show=true;
 		map[y][x].spriteIndex=spriteCount;
 		map[y][x].occupied=true;
 		spriteCount++;
@@ -31,6 +30,20 @@ unsigned char addSprite(unsigned char id, int x, int y, float speed){
 	}
 	else{
 		return MAX_SPRITES;
+	}
+}
+
+void removeSprite(int index){
+	spriteCount--;
+	map[sprites[index].y][sprites[index].x].spriteIndex=MAX_SPRITES;
+	map[sprites[index].y][sprites[index].x].occupied=false;
+	if (sprites[index].walk){
+		map[sprites[index].toStepY][sprites[index].toStepX].occupied=false;
+	}
+	sprites[index]=sprites[index+1];
+	for (int i=index+1; i<spriteCount; i++){
+		map[sprites[i].y][sprites[i].x].spriteIndex--;
+		sprites[i]=sprites[i+1];
 	}
 }
 

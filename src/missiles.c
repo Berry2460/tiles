@@ -19,7 +19,7 @@ void moveProjectiles(){
 			if (testX != projectiles[i].startX || testY != projectiles[i].startY){
 				if (map[testY][testX].spriteIndex != MAX_SPRITES){
 					if (sprites[map[testY][testX].spriteIndex].id == ID_BOT){
-						sprites[map[testY][testX].spriteIndex].show=false;
+						removeSprite(map[testY][testX].spriteIndex);
 						removeProjectile(i);
 						return;
 					}

@@ -44,10 +44,10 @@ int main(){
 	//render
 	while (windowLoop()){
 		//glClear(GL_COLOR_BUFFER_BIT);
+		drawMap();
 		movePlayer(player);
 		moveBots();
 		moveProjectiles();
-		drawMap();
 		playerControl(player);
 	}
 	return 0;

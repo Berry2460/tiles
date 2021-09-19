@@ -1,7 +1,7 @@
 #ifndef DRAW_H
 #define DRAW_H
 
-//#define DEBUG
+#define DEBUG
 //#define NO_CULLING
 //#define NO_SMOOTHING
 
@@ -46,7 +46,6 @@ typedef struct Sprite{
 	bool walk; //is moving
 	float time; //timer
 	float speed; //movement
-	bool show;
 }Sprite;
 
 typedef struct Tile{
@@ -81,6 +80,7 @@ static int initTexture(char* name);
 
 void initMap();
 unsigned char addSprite(unsigned char id, int x, int y, float speed);
+void removeSprite(int index);
 void computeLightMap(Light *lights, int total, bool neg);
 void addLight(int x, int y, int size, float brightness, bool neg);
 void initLight();
