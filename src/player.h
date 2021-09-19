@@ -2,7 +2,7 @@
 #define PLAYER_H
 
 #define PLAYER_LIGHT_BRIGHTNESS 1.3f
-#define PLAYER_LIGHT_SIZE 21
+#define PLAYER_LIGHT_SIZE 25
 
 #include "draw.h"
 

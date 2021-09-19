@@ -236,13 +236,61 @@ static Coordinates transform(float x, float y){
 	return out;
 }
 
+static unsigned char *loadBitmap(char *filename, BITMAPINFOHEADER *bitmapInfoHeader){
+	FILE *filePtr;  //our file pointer
+    BITMAPFILEHEADER bitmapFileHeader;  //our bitmap file header
+    unsigned char *bitmapImage;  //store image data
+    int imageIdx=0;  //image index counter
+    unsigned char tempRGB;  //our swap variable
+    //open file in read binary mode
+    filePtr = fopen(filename,"rb");
+    if (filePtr == NULL){
+        return NULL;
+    }
+    //read the bitmap file header
+    fread(&bitmapFileHeader, sizeof(BITMAPFILEHEADER),1,filePtr);
+    //verify that this is a .BMP file by checking bitmap id
+    if (bitmapFileHeader.bfType !=0x4D42){
+        fclose(filePtr);
+        return NULL;
+    }
+    //read the bitmap info header
+    fread(bitmapInfoHeader, sizeof(BITMAPINFOHEADER),1,filePtr); 
+    //move file pointer to the beginning of bitmap data
+    fseek(filePtr, bitmapFileHeader.bfOffBits, SEEK_SET);
+    //allocate enough memory for the bitmap image data
+    bitmapImage = (unsigned char*)malloc(bitmapInfoHeader->biSizeImage);
+    //verify memory allocation
+    if (!bitmapImage){
+        free(bitmapImage);
+        fclose(filePtr);
+        return NULL;
+    }
+    //read in the bitmap image data
+    fread(bitmapImage,bitmapInfoHeader->biSizeImage,1,filePtr);
+    //make sure bitmap image data was read
+    if (bitmapImage == NULL){
+        fclose(filePtr);
+        return NULL;
+    }
+    //swap the R and B values to get RGB (bitmap is BGR)
+    for (imageIdx = 0;imageIdx < bitmapInfoHeader->biSizeImage;imageIdx+=3){
+        tempRGB = bitmapImage[imageIdx];
+        bitmapImage[imageIdx] = bitmapImage[imageIdx + 2];
+        bitmapImage[imageIdx + 2] = tempRGB;
+    }
+    //close file and return bitmap image data
+    fclose(filePtr);
+    return bitmapImage;
+}
+
 //texture loading WIP
-static int initTexture(char* name){
-	FILE* f=NULL;
-	f=fopen(name, "r");
-	if (f == NULL){
-		exit(1);
-	}
+int initTexture(char *name){
+	BITMAPINFOHEADER infoHeader;
+	unsigned char *pixelData;
+	pixelData=loadBitmap(name, &infoHeader);
+	int imgX=infoHeader.biWidth;
+	int imgY=infoHeader.biHeight;
 	glBindTexture(GL_TEXTURE_2D, texCount);
 	glPixelStorei(GL_UNPACK_ALIGNMENT, 1);
 	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_CLAMP);
@@ -250,11 +298,9 @@ static int initTexture(char* name){
 	glTexParameteri (GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
 	glTexParameteri (GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
 	glTexEnvf(GL_TEXTURE_ENV, GL_TEXTURE_ENV_MODE, GL_MODULATE);
-	int imgX=1;
-	int imgY=1;
-	unsigned char pixelData[] = {255,0,0,255};
 	glTexImage2D(GL_TEXTURE_2D, 0, GL_RGBA, imgX, imgY, 0, GL_RGBA, GL_UNSIGNED_BYTE, pixelData);
 	int out=texCount;
 	texCount++;
+	free(pixelData);
 	return out;
 }

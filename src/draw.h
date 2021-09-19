@@ -1,7 +1,7 @@
 #ifndef DRAW_H
 #define DRAW_H
 
-#define DEBUG
+//#define DEBUG
 //#define NO_CULLING
 //#define NO_SMOOTHING
 
@@ -23,6 +23,32 @@
 #include "window.h"
 #include "ai.h"
 #include "missiles.h"
+
+/*
+typedef struct tagBITMAPFILEHEADER
+{
+    WORD bfType;  //specifies the file type
+    DWORD bfSize;  //specifies the size in bytes of the bitmap file
+    WORD bfReserved1;  //reserved; must be 0
+    WORD bfReserved2;  //reserved; must be 0
+    DWORD bfOffBits;  //specifies the offset in bytes from the bitmapfileheader to the bitmap bits
+}BITMAPFILEHEADER;
+
+typedef struct tagBITMAPINFOHEADER
+{
+    DWORD biSize;  //specifies the number of bytes required by the struct
+    LONG biWidth;  //specifies width in pixels
+    LONG biHeight;  //specifies height in pixels
+    WORD biPlanes;  //specifies the number of color planes, must be 1
+    WORD biBitCount;  //specifies the number of bits per pixel
+    DWORD biCompression;  //specifies the type of compression
+    DWORD biSizeImage;  //size of image in bytes
+    LONG biXPelsPerMeter;  //number of pixels per meter in x axis
+    LONG biYPelsPerMeter;  //number of pixels per meter in y axis
+    DWORD biClrUsed;  //number of colors used by the bitmap
+    DWORD biClrImportant;  //number of colors that are important
+}BITMAPINFOHEADER;
+*/
 
 typedef struct Coordinates{
 	float x;
@@ -76,7 +102,7 @@ extern Sprite sprites[MAX_SPRITES];
 extern unsigned char spriteCount;
 
 static Coordinates transform(float x, float y);
-static int initTexture(char* name);
+static unsigned char *loadBitmap(char *filename, BITMAPINFOHEADER *bitmapInfoHeader);
 
 void initMap();
 unsigned char addSprite(unsigned char id, int x, int y, float speed);
@@ -85,4 +111,5 @@ void computeLightMap(Light *lights, int total, bool neg);
 void addLight(int x, int y, int size, float brightness, bool neg);
 void initLight();
 void drawMap();
+int initTexture(char* name);
 #endif
