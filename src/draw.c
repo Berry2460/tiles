@@ -269,7 +269,7 @@ static unsigned char *loadBitmap(char *filename, BITMAPINFOHEADER *bitmapInfoHea
     //move file pointer to the beginning of bitmap data
     fseek(filePtr, bitmapFileHeader.bfOffBits, SEEK_SET);
     //allocate enough memory for the bitmap image data
-    bitmapImage = (unsigned char*)malloc(bitmapInfoHeader->biSizeImage);
+    bitmapImage=malloc(bitmapInfoHeader->biSizeImage);
     //verify memory allocation
     if (!bitmapImage){
         free(bitmapImage);
@@ -283,17 +283,27 @@ static unsigned char *loadBitmap(char *filename, BITMAPINFOHEADER *bitmapInfoHea
         fclose(filePtr);
         return NULL;
     }
+    int off=0;
+    unsigned char *finalBitmapImage=malloc(bitmapInfoHeader->biWidth*bitmapInfoHeader->biHeight*4);
     //swap the R and B values to get RGB (bitmap is BGR)
     for (imageIdx=0; imageIdx < bitmapInfoHeader->biSizeImage; imageIdx+=3){
         tempRGB=bitmapImage[imageIdx];
-        bitmapImage[imageIdx]=bitmapImage[imageIdx+2];
-        bitmapImage[imageIdx+2]=tempRGB;
-        //bitmapImage[imageIdx+3]=255;
-        //printf("%d %d %d\n",bitmapImage[imageIdx],bitmapImage[imageIdx+1],bitmapImage[imageIdx+2]);
+        finalBitmapImage[imageIdx+off]=bitmapImage[imageIdx+2];
+        finalBitmapImage[imageIdx+1+off]=bitmapImage[imageIdx+1];
+        finalBitmapImage[imageIdx+2+off]=tempRGB;
+        if (bitmapImage[imageIdx] == 1 && bitmapImage[imageIdx+1] == 1 && bitmapImage[imageIdx+2] == 1){
+        	finalBitmapImage[imageIdx+3+off]=0;
+        }
+        else{
+        	finalBitmapImage[imageIdx+3+off]=255;
+    	}
+    	//printf("%d %d %d %d\n",finalBitmapImage[imageIdx+off],finalBitmapImage[imageIdx+1+off],finalBitmapImage[imageIdx+2+off],finalBitmapImage[imageIdx+3+off]);
+    	off++;
     }
     //close file and return bitmap image data
     fclose(filePtr);
-    return bitmapImage;
+    free(bitmapImage);
+    return finalBitmapImage;
 }
 
 //texture loading WIP
@@ -316,7 +326,7 @@ unsigned char initTexture(char *name){
 			glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_NEAREST);
 		}
 		glTexEnvf(GL_TEXTURE_ENV, GL_TEXTURE_ENV_MODE, GL_MODULATE);
-		glTexImage2D(GL_TEXTURE_2D, 0, GL_RGB, imgX, imgY, 0, GL_RGB, GL_UNSIGNED_BYTE, pixelData);
+		glTexImage2D(GL_TEXTURE_2D, 0, GL_RGBA, imgX, imgY, 0, GL_RGBA, GL_UNSIGNED_BYTE, pixelData);
 		unsigned char out=texCount;
 		texCount++;
 		free(pixelData);
