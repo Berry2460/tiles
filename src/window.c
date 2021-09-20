@@ -70,8 +70,13 @@ int startWindow(char* winTitle){
 	glfwSetScrollCallback(window, scroll);
 	glfwSetMouseButtonCallback(window, mouseControl);
 	glfwSwapInterval(V_SYNC);
-	glMatrixMode(GL_PROJECTION);
+	glMatrixMode(GL_MODELVIEW);
 	glLoadIdentity();
+	//allocate memory
+	glEnable(GL_TEXTURE_2D);
+	textures=malloc(MAX_TEXTURES*sizeof(int));
+	glGenTextures(MAX_TEXTURES, textures);
+	glPixelStorei(GL_UNPACK_ALIGNMENT, 1);
 	return 0;
 }
 
@@ -80,8 +85,6 @@ bool windowLoop(){
 		//fps
 		frames++;
 		fps=frames/(glfwGetTime()-start+0.00001f);
-		glColor3f(1,1,1);
-		glRasterPos2f(-0.97, 0.97);
 		char out[128];
 		sprintf(out, "%s FPS: %d", title, fps); //convert to chars
 		if (glfwGetTime()-start > 1){

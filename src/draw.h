@@ -10,6 +10,8 @@
 #define MAX_SPRITES 255
 #define TILE_X 64.0f
 #define TILE_Y 32.0f
+#define BILINEAR 1
+#define MAX_TEXTURES 255
 
 //sprite IDs
 #define ID_PLAYER 0
@@ -56,9 +58,9 @@ typedef struct Coordinates{
 }Coordinates;
 
 typedef struct Sprite{
+	unsigned char textureIndex;
 	unsigned char id; //sprite identifier
 	unsigned char index; //other stat assignment
-	unsigned char textureIndex;
 	int x; //current coords
 	int y;
 	char nextX; //plus or minus 1 to step
@@ -75,8 +77,8 @@ typedef struct Sprite{
 }Sprite;
 
 typedef struct Tile{
-	unsigned char spriteIndex;
 	unsigned char textureIndex;
+	unsigned char spriteIndex;
 	float brightness;
 	bool occupied;
 }Tile;
@@ -90,8 +92,9 @@ typedef struct Light{
 
 static float tileX;
 static float tileY;
-static int texCount=0;
+static unsigned char texCount;
 
+extern GLuint *textures; //texture data
 extern float scale;
 extern float camX;
 extern float camY;
@@ -104,12 +107,12 @@ extern unsigned char spriteCount;
 static Coordinates transform(float x, float y);
 static unsigned char *loadBitmap(char *filename, BITMAPINFOHEADER *bitmapInfoHeader);
 
-void initMap();
-unsigned char addSprite(unsigned char id, int x, int y, float speed);
+void initMap(int tex);
+unsigned char addSprite(unsigned char id, int tex, int x, int y, float speed);
 void removeSprite(int index);
 void computeLightMap(Light *lights, int total, bool neg);
 void addLight(int x, int y, int size, float brightness, bool neg);
 void initLight();
 void drawMap();
-int initTexture(char* name);
+unsigned char initTexture(char* name);
 #endif

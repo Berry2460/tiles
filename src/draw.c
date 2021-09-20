@@ -1,10 +1,11 @@
 #include "draw.h"
 
-void initMap(){
+void initMap(int tex){
 	//init
 	int spriteCount=0;
 	for (int i=0; i < MAP_Y; i++){
 		for (int j=0; j < MAP_X; j++){
+			map[i][j].textureIndex=tex;
 			map[i][j].brightness=0.0f;
 			map[i][j].spriteIndex=MAX_SPRITES;
 			map[i][j].occupied=false;
@@ -12,9 +13,10 @@ void initMap(){
 	}
 }
 
-unsigned char addSprite(unsigned char id, int x, int y, float speed){
+unsigned char addSprite(unsigned char id, int tex, int x, int y, float speed){
 	if (spriteCount < MAX_SPRITES){
 		char out=spriteCount;
+		sprites[spriteCount].textureIndex=tex;
 		sprites[spriteCount].id=id;
 		sprites[spriteCount].x=x;
 		sprites[spriteCount].y=y;
@@ -125,7 +127,6 @@ void drawMap(){
 	float dx=(mouseX*2.0f)/WIN_X-1.0f;
 	float dy=((mouseY*2.0f)/WIN_Y-1.0f)*-1.0f;
 	glBegin(GL_QUADS);
-	glEnable(GL_TEXTURE_2D);
 	for (int x=startX; x < xMax; x++){
 		for (int y=startY; y < yMax; y++){
 			//tile X and Y transform
@@ -145,16 +146,16 @@ void drawMap(){
 				mouseTileY=y;
 			}
 			// TEXTURE STUFFS
-			glBindTexture(GL_TEXTURE_2D, map[y][x].textureIndex);
-			glTexCoord2f(0.0,0.0);
+			glBindTexture(GL_TEXTURE_2D, textures[map[y][x].textureIndex]);
+			//verts
+			glTexCoord2f(0.0f,0.0f);
 			glVertex2f(tx-tileX,ty);
-			glTexCoord2f(0.0,1.0);
+			glTexCoord2f(0.0f,1.0f);
 			glVertex2f(tx,ty+tileY);
-			glTexCoord2f(1.0,1.0);
+			glTexCoord2f(1.0f,1.0f);
 			glVertex2f(tx+tileX,ty);
-			glTexCoord2f(1.0,0.0);
+			glTexCoord2f(1.0f,0.0f);
 			glVertex2f(tx,ty-tileY);
-
 			//draw sprite
 			if (map[y-1][x-1].spriteIndex != MAX_SPRITES){
 				//-1 offset for overdraw
@@ -166,7 +167,7 @@ void drawMap(){
 				}
 				//draw sprite per tile
 				if (x-1 == sprites[i].x && y-1 == sprites[i].y){
-					glColor3f(sprites[i].id*map[sprites[i].y][sprites[i].x].brightness, map[sprites[i].y][sprites[i].x].brightness-sprites[i].id, 0);
+					glColor3f(map[sprites[i].y][sprites[i].x].brightness, map[sprites[i].y][sprites[i].x].brightness, map[sprites[i].y][sprites[i].x].brightness);
 					//recalculate X and Y for sprites with offsets
 					float sx=sprites[i].x+sprites[i].offx;
 					float sy=sprites[i].y-sprites[i].offy;
@@ -179,15 +180,15 @@ void drawMap(){
 					tx=coord.x;
 					ty=coord.y;
 					// TEXTURE STUFFS
-					glBindTexture(GL_TEXTURE_2D, sprites[i].textureIndex);
+					glBindTexture(GL_TEXTURE_2D, textures[sprites[i].textureIndex]);
 					//verts
-					glTexCoord2f(0.0,0.0);
+					glTexCoord2f(0.0f,0.0f);
 					glVertex2f(tx+((TILE_X*0.3f*scale)/WIN_X), ty);
-					glTexCoord2f(0.0,1.0);
+					glTexCoord2f(0.0f,1.0f);
 					glVertex2f(tx-((TILE_X*0.3f*scale)/WIN_X), ty);
-					glTexCoord2f(1.0,1.0);
+					glTexCoord2f(1.0f,1.0f);
 					glVertex2f(tx-((TILE_X*0.3f*scale)/WIN_X), ty+((TILE_Y*3.0f*scale)/WIN_Y));
-					glTexCoord2f(1.0,0.0);
+					glTexCoord2f(1.0f,0.0f);
 					glVertex2f(tx+((TILE_X*0.3f*scale)/WIN_X), ty+((TILE_Y*3.0f*scale)/WIN_Y));
 				}
 			}
@@ -204,16 +205,17 @@ void drawMap(){
 					coord=transform(px, py);
 					tx=coord.x;
 					ty=coord.y;
-					glColor3f(map[y][x].brightness, map[y][x].brightness, 0);
+					glColor3f(map[y][x].brightness, map[y][x].brightness, map[y][x].brightness);
 					// TEXTURE STUFFS
-					glBindTexture(GL_TEXTURE_2D, projectiles[i].textureIndex);
-					glTexCoord2f(0.0,0.0);
+					glBindTexture(GL_TEXTURE_2D, textures[projectiles[i].textureIndex]);
+					//verts
+					glTexCoord2f(0.0f,0.0f);
 					glVertex2f(tx+((TILE_Y*0.5f*scale)/WIN_X), ty+((TILE_Y*scale)/WIN_Y));
-					glTexCoord2f(0.0,1.0);
+					glTexCoord2f(0.0f,1.0f);
 					glVertex2f(tx-((TILE_Y*0.5f*scale)/WIN_X), ty+((TILE_Y*scale)/WIN_Y));
-					glTexCoord2f(1.0,1.0);
+					glTexCoord2f(1.0f,1.0f);
 					glVertex2f(tx-((TILE_Y*0.5f*scale)/WIN_X), ty+((TILE_Y*2.0f*scale)/WIN_Y));
-					glTexCoord2f(1.0,0.0);
+					glTexCoord2f(1.0f,0.0f);
 					glVertex2f(tx+((TILE_Y*0.5f*scale)/WIN_X), ty+((TILE_Y*2.0f*scale)/WIN_Y));
 				}
 			}
@@ -274,10 +276,11 @@ static unsigned char *loadBitmap(char *filename, BITMAPINFOHEADER *bitmapInfoHea
         return NULL;
     }
     //swap the R and B values to get RGB (bitmap is BGR)
-    for (imageIdx = 0;imageIdx < bitmapInfoHeader->biSizeImage;imageIdx+=3){
-        tempRGB = bitmapImage[imageIdx];
-        bitmapImage[imageIdx] = bitmapImage[imageIdx + 2];
-        bitmapImage[imageIdx + 2] = tempRGB;
+    for (imageIdx=0; imageIdx < bitmapInfoHeader->biSizeImage; imageIdx+=3){
+        tempRGB=bitmapImage[imageIdx];
+        bitmapImage[imageIdx]=bitmapImage[imageIdx+2];
+        bitmapImage[imageIdx+2]=tempRGB;
+        //printf("%d %d %d\n",bitmapImage[imageIdx],bitmapImage[imageIdx+1],bitmapImage[imageIdx+2]);
     }
     //close file and return bitmap image data
     fclose(filePtr);
@@ -285,22 +288,34 @@ static unsigned char *loadBitmap(char *filename, BITMAPINFOHEADER *bitmapInfoHea
 }
 
 //texture loading WIP
-int initTexture(char *name){
+unsigned char initTexture(char *name){
 	BITMAPINFOHEADER infoHeader;
 	unsigned char *pixelData;
 	pixelData=loadBitmap(name, &infoHeader);
-	int imgX=infoHeader.biWidth;
-	int imgY=infoHeader.biHeight;
-	glBindTexture(GL_TEXTURE_2D, texCount);
-	glPixelStorei(GL_UNPACK_ALIGNMENT, 1);
-	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_CLAMP);
-	glTexParameteri (GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_CLAMP);
-	glTexParameteri (GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
-	glTexParameteri (GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
-	glTexEnvf(GL_TEXTURE_ENV, GL_TEXTURE_ENV_MODE, GL_MODULATE);
-	glTexImage2D(GL_TEXTURE_2D, 0, GL_RGBA, imgX, imgY, 0, GL_RGBA, GL_UNSIGNED_BYTE, pixelData);
-	int out=texCount;
-	texCount++;
-	free(pixelData);
-	return out;
+	if (pixelData != NULL || texCount >= MAX_TEXTURES){
+		int imgX=infoHeader.biWidth;
+		int imgY=infoHeader.biHeight;
+		printf("IMG XY: %d %d\n",imgX,imgY);
+		glBindTexture(GL_TEXTURE_2D, textures[texCount]);
+		glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_REPEAT);
+		glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_REPEAT);
+		if(BILINEAR == 1){
+			glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
+			glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
+		}
+		else{
+			glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_NEAREST);
+			glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_NEAREST);
+		}
+		glTexEnvf(GL_TEXTURE_ENV, GL_TEXTURE_ENV_MODE, GL_MODULATE);
+		glTexImage2D(GL_TEXTURE_2D, 0, GL_RGB, imgX, imgY, 0, GL_RGB, GL_UNSIGNED_BYTE, pixelData);
+		unsigned char out=texCount;
+		texCount++;
+		free(pixelData);
+		return out;
+	}else{
+		printf("FAILED LOADING %s\n",name);
+		free(pixelData);
+		return MAX_TEXTURES;
+	}
 }

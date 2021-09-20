@@ -2,7 +2,7 @@
 
 static void shootPlayerProjectile(int index){
 	if (!sprites[index].walk){
-		addProjectile(sprites[index].x, sprites[index].y, mouseTileX, mouseTileY, 5.0f, true);
+		addProjectile(2, sprites[index].x, sprites[index].y, mouseTileX, mouseTileY, 5.0f, true);
 	}else{
 		newDest(index, sprites[index].toStepX, sprites[index].toStepY);
 	}
@@ -16,7 +16,7 @@ void playerControl(int index){
 	}
 	//player movement with mouse and target fire
 	else if (keys[LMB]){
-		if (sprites[map[mouseTileY][mouseTileX].spriteIndex].id == ID_BOT){
+		if (map[mouseTileY][mouseTileX].spriteIndex != MAX_SPRITES && sprites[map[mouseTileY][mouseTileX].spriteIndex].id == ID_BOT){
 			shootPlayerProjectile(index);
 		}else{
 			newDest(index, mouseTileX, mouseTileY);
@@ -36,11 +36,11 @@ void movePlayer(int index){
 	addLight(s->x, s->y, PLAYER_LIGHT_SIZE, PLAYER_LIGHT_BRIGHTNESS, false);
 }
 
-unsigned char createPlayer(int x, int y){
-		unsigned char player=addSprite(ID_PLAYER, x, y, 2.2f);
-		//only create light if valid sprite
-		if (player < MAX_SPRITES){
-			addLight(x, y, PLAYER_LIGHT_SIZE, PLAYER_LIGHT_BRIGHTNESS, false);
-		}
-		return player;
+unsigned char createPlayer(int tex, int x, int y){
+	unsigned char player=addSprite(ID_PLAYER, tex, x, y, PLAYER_SPEED);
+	//only create light if valid sprite
+	if (player < MAX_SPRITES){
+		addLight(x, y, PLAYER_LIGHT_SIZE, PLAYER_LIGHT_BRIGHTNESS, false);
+	}
+	return player;
 }

@@ -24,5 +24,5 @@ extern unsigned char projectileCount;
 
 static void removeProjectile(int index);
 void moveProjectiles();
-void addProjectile(int x, int y, int destX, int destY, float speed, bool glow);
+void addProjectile(int tex, int x, int y, int destX, int destY, float speed, bool glow);
 #endif

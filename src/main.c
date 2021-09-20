@@ -1,8 +1,8 @@
 #include "draw.h"
-#include "missiles.h"
 #include "player.h"
 
 //draw globals
+GLuint *textures;
 float scale;
 float camX;
 float camY;
@@ -28,7 +28,7 @@ Projectile projectiles[MAX_PROJECTILES];
 unsigned char projectileCount;
 
 //RNG
-int seed=0;
+int seed;
 
 //game loop
 int main(){
@@ -36,11 +36,14 @@ int main(){
 	camX=MAP_X/2.0f;
 	camY=MAP_Y/2.0f;
 	startWindow("tiles");
-	initMap();
+	int a=initTexture("t0.bmp");
+	int b=initTexture("t1.bmp");
+	int c=initTexture("t2.bmp");
+	initMap(0);
 	initLight();
-	unsigned char player=createPlayer(camX, camY);
-	addSprite(ID_BOT, round(camX)-3, round(camY)+1, 1.9f); //test bot 1
-	addSprite(ID_BOT, round(camX)-3, round(camY)+2, 1.5f); //test bot 2
+	unsigned char player=createPlayer(1, camX, camY);
+	addSprite(ID_BOT, 1, round(camX)-3, round(camY)+1, 1.9f); //test bot 1
+	addSprite(ID_BOT, 1, round(camX)-3, round(camY)+2, 1.5f); //test bot 2
 	//render
 	while (windowLoop()){
 		//glClear(GL_COLOR_BUFFER_BIT);
@@ -50,5 +53,6 @@ int main(){
 		moveProjectiles();
 		playerControl(player);
 	}
+	free(textures);
 	return 0;
 }
