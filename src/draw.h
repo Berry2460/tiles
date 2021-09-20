@@ -8,8 +8,8 @@
 #define MAP_X 512
 #define MAP_Y 512
 #define MAX_SPRITES 255
-#define TILE_X 64.0f
-#define TILE_Y 32.0f
+#define TILE_X 96.0f
+#define TILE_Y 48.0f
 #define BILINEAR 1
 #define MAX_TEXTURES 255
 
