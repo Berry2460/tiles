@@ -45,6 +45,8 @@ int main(){
 	unsigned char player=createPlayer(1, camX, camY);
 	addSprite(ID_BOT, 2, round(camX)-3, round(camY)+1, 1.9f); //test bot 1
 	addSprite(ID_BOT, 2, round(camX)-3, round(camY)+2, 1.5f); //test bot 2
+	addSprite(ID_BOT, 2, round(camX)+3, round(camY)+3, 1.9f); //test bot 3
+	addSprite(ID_BOT, 2, round(camX)+5, round(camY)-2, 1.5f); //test bot 4
 	//render
 	while (windowLoop()){
 		//glClear(GL_COLOR_BUFFER_BIT);

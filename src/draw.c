@@ -197,32 +197,34 @@ void drawMap(){
 				}
 			}
 			//draw projectiles
-			for(int i=0; i<projectileCount; i++){
-				if (round(projectiles[i].x) == x && round(projectiles[i].y) == y){
-					float px=projectiles[i].x;
-					float py=projectiles[i].y;
-					#ifdef NO_SMOOTHING
-					px=(int)px;
-					py=(int)py;
-					#endif
-					//transform
-					coord=transform(px, py);
-					tx=coord.x;
-					ty=coord.y;
-					glColor3f(map[y][x].brightness, map[y][x].brightness, map[y][x].brightness);
-					// TEXTURE STUFFS
-					glBindTexture(GL_TEXTURE_2D, textures[projectiles[i].textureIndex]);
-					//verts
-					glBegin(GL_QUADS);
-					glTexCoord2f(0.0f,0.0f);
-					glVertex2f(tx-((TILE_Y*0.5f*scale)/WIN_X), ty+((TILE_Y*scale)/WIN_Y));
-					glTexCoord2f(0.0f,1.0f);
-					glVertex2f(tx-((TILE_Y*0.5f*scale)/WIN_X), ty+((TILE_Y*2.0f*scale)/WIN_Y));
-					glTexCoord2f(1.0f,1.0f);
-					glVertex2f(tx+((TILE_Y*0.5f*scale)/WIN_X), ty+((TILE_Y*2.0f*scale)/WIN_Y));
-					glTexCoord2f(1.0f,0.0f);
-					glVertex2f(tx+((TILE_Y*0.5f*scale)/WIN_X), ty+((TILE_Y*scale)/WIN_Y));
-					glEnd();
+			if (map[y][x].spriteIndex == MAX_SPRITES){
+				for(int i=0; i<projectileCount; i++){
+					if (round(projectiles[i].x) == x && round(projectiles[i].y) == y){
+						float px=projectiles[i].x;
+						float py=projectiles[i].y;
+						#ifdef NO_SMOOTHING
+						px=(int)px;
+						py=(int)py;
+						#endif
+						//transform
+						coord=transform(px, py);
+						tx=coord.x;
+						ty=coord.y;
+						glColor3f(map[y][x].brightness, map[y][x].brightness, map[y][x].brightness);
+						// TEXTURE STUFFS
+						glBindTexture(GL_TEXTURE_2D, textures[projectiles[i].textureIndex]);
+						//verts
+						glBegin(GL_QUADS);
+						glTexCoord2f(0.0f,0.0f);
+						glVertex2f(tx-((TILE_Y*0.5f*scale)/WIN_X), ty+((TILE_Y*scale)/WIN_Y));
+						glTexCoord2f(0.0f,1.0f);
+						glVertex2f(tx-((TILE_Y*0.5f*scale)/WIN_X), ty+((TILE_Y*2.0f*scale)/WIN_Y));
+						glTexCoord2f(1.0f,1.0f);
+						glVertex2f(tx+((TILE_Y*0.5f*scale)/WIN_X), ty+((TILE_Y*2.0f*scale)/WIN_Y));
+						glTexCoord2f(1.0f,0.0f);
+						glVertex2f(tx+((TILE_Y*0.5f*scale)/WIN_X), ty+((TILE_Y*scale)/WIN_Y));
+						glEnd();
+					}
 				}
 			}
 			#ifdef DEBUG
