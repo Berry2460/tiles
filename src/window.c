@@ -72,8 +72,11 @@ int startWindow(char* winTitle){
 	glfwSwapInterval(V_SYNC);
 	glMatrixMode(GL_MODELVIEW);
 	glLoadIdentity();
-	//allocate memory
+	//textures and transparency
 	glEnable(GL_TEXTURE_2D);
+	glEnable(GL_BLEND);
+	glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
+	//allocate memory
 	textures=malloc(MAX_TEXTURES*sizeof(int));
 	glGenTextures(MAX_TEXTURES, textures);
 	glPixelStorei(GL_UNPACK_ALIGNMENT, 1);

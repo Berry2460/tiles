@@ -291,6 +291,7 @@ static unsigned char *loadBitmap(char *filename, BITMAPINFOHEADER *bitmapInfoHea
         finalBitmapImage[imageIdx+off]=bitmapImage[imageIdx+2];
         finalBitmapImage[imageIdx+1+off]=bitmapImage[imageIdx+1];
         finalBitmapImage[imageIdx+2+off]=tempRGB;
+        //transparency
         if (bitmapImage[imageIdx] == 1 && bitmapImage[imageIdx+1] == 1 && bitmapImage[imageIdx+2] == 1){
         	finalBitmapImage[imageIdx+3+off]=0;
         }
