@@ -6,3 +6,4 @@
 - camera follow and zoom
 - projectiles and collision
 - simple AI
+- texture mapping
