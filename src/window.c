@@ -12,7 +12,7 @@ static void scroll(GLFWwindow* window, double xoffset, double yoffset){ //zoom
 	}
 	else if (yoffset < 0){
 		scale-=0.06f*scale;
-		if (scale < 0.5f){scale=0.5f;}
+		if (scale < 0.75f){scale=0.75f;}
 	}
 }
 

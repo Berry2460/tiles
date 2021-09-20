@@ -9,6 +9,7 @@ void initMap(int tex){
 			map[i][j].brightness=0.0f;
 			map[i][j].spriteIndex=MAX_SPRITES;
 			map[i][j].occupied=false;
+			map[i][j].wall=false;
 		}
 	}
 }
@@ -140,7 +141,6 @@ void drawMap(){
 				pathing=0;
 			}
 			#endif
-			glColor3f(map[y][x].brightness, map[y][x].brightness * pathing, map[y][x].brightness);
 			if (fabs(dx-tx)+fabs(dy-ty) < tileX && keys[LMB]){
 				mouseTileX=x;
 				mouseTileY=y;
@@ -148,16 +148,31 @@ void drawMap(){
 			// TEXTURE STUFFS
 			glBindTexture(GL_TEXTURE_2D, textures[map[y][x].textureIndex]);
 			//verts
-			glBegin(GL_QUADS);
-			glTexCoord2f(0.0f,0.0f);
-			glVertex2f(tx-tileX,ty);
-			glTexCoord2f(0.0f,1.0f);
-			glVertex2f(tx,ty+tileY);
-			glTexCoord2f(1.0f,1.0f);
-			glVertex2f(tx+tileX,ty);
-			glTexCoord2f(1.0f,0.0f);
-			glVertex2f(tx,ty-tileY);
-			glEnd();
+			if (!map[y][x].wall){
+				glColor3f(map[y][x].brightness, map[y][x].brightness * pathing, map[y][x].brightness);
+				glBegin(GL_QUADS);
+				glTexCoord2f(0.0f,0.0f);
+				glVertex2f(tx-tileX,ty);
+				glTexCoord2f(0.0f,1.0f);
+				glVertex2f(tx,ty+tileY);
+				glTexCoord2f(1.0f,1.0f);
+				glVertex2f(tx+tileX,ty);
+				glTexCoord2f(1.0f,0.0f);
+				glVertex2f(tx,ty-tileY);
+				glEnd();
+			}else{
+				glColor3f(map[y][x].brightness, map[y][x].brightness, map[y][x].brightness);
+				glBegin(GL_QUADS);
+				glTexCoord2f(0.0f,0.0f);
+				glVertex2f(tx-tileX,ty);
+				glTexCoord2f(0.0f,1.0f);
+				glVertex2f(tx,ty+tileY);
+				glTexCoord2f(1.0f,1.0f);
+				glVertex2f(tx+tileX,ty);
+				glTexCoord2f(1.0f,0.0f);
+				glVertex2f(tx,ty-tileY);
+				glEnd();
+			}
 			//draw sprite
 			if (map[y-1][x-1].spriteIndex != MAX_SPRITES){
 				//-1 offset for overdraw
@@ -289,15 +304,18 @@ static unsigned char *loadBitmap(char *filename, BITMAPINFOHEADER *bitmapInfoHea
     unsigned char *finalBitmapImage=malloc(bitmapInfoHeader->biWidth*bitmapInfoHeader->biHeight*4);
     //swap the R and B values to get RGB (bitmap is BGR)
     for (imageIdx=0; imageIdx < bitmapInfoHeader->biSizeImage; imageIdx+=3){
-        tempRGB=bitmapImage[imageIdx];
-        finalBitmapImage[imageIdx+off]=bitmapImage[imageIdx+2];
-        finalBitmapImage[imageIdx+1+off]=bitmapImage[imageIdx+1];
-        finalBitmapImage[imageIdx+2+off]=tempRGB;
-        //transparency
-        if (bitmapImage[imageIdx] == 1 && bitmapImage[imageIdx+1] == 1 && bitmapImage[imageIdx+2] == 1){
+        //transparency 0xFF00FF
+        if (bitmapImage[imageIdx] == 255 && bitmapImage[imageIdx+1] == 0 && bitmapImage[imageIdx+2] == 255){
+        	finalBitmapImage[imageIdx+off]=0;
+	        finalBitmapImage[imageIdx+1+off]=0;
+	        finalBitmapImage[imageIdx+2+off]=0;
         	finalBitmapImage[imageIdx+3+off]=0;
         }
         else{
+        	tempRGB=bitmapImage[imageIdx];
+        	finalBitmapImage[imageIdx+off]=bitmapImage[imageIdx+2];
+	        finalBitmapImage[imageIdx+1+off]=bitmapImage[imageIdx+1];
+	        finalBitmapImage[imageIdx+2+off]=tempRGB;
         	finalBitmapImage[imageIdx+3+off]=255;
     	}
     	//printf("%d %d %d %d\n",finalBitmapImage[imageIdx+off],finalBitmapImage[imageIdx+1+off],finalBitmapImage[imageIdx+2+off],finalBitmapImage[imageIdx+3+off]);

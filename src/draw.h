@@ -8,8 +8,8 @@
 #define MAP_X 512
 #define MAP_Y 512
 #define MAX_SPRITES 255
-#define TILE_X 96.0f
-#define TILE_Y 48.0f
+#define TILE_X 128.0f
+#define TILE_Y 64.0f
 #define BILINEAR 1
 #define MAX_TEXTURES 255
 
@@ -80,7 +80,8 @@ typedef struct Tile{
 	unsigned char textureIndex;
 	unsigned char spriteIndex;
 	float brightness;
-	bool occupied;
+	bool occupied; //walls must be occupied
+	bool wall; //draw in wall mode
 }Tile;
 
 typedef struct Light{
