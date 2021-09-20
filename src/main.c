@@ -36,14 +36,15 @@ int main(){
 	camX=MAP_X/2.0f;
 	camY=MAP_Y/2.0f;
 	startWindow("tiles");
-	int a=initTexture("t0.bmp");
-	int b=initTexture("t1.bmp");
-	int c=initTexture("t2.bmp");
+	initTexture("t0.bmp");
+	initTexture("t1.bmp");
+	initTexture("t2.bmp");
+	initTexture("t3.bmp");
 	initMap(0);
 	initLight();
 	unsigned char player=createPlayer(1, camX, camY);
-	addSprite(ID_BOT, 1, round(camX)-3, round(camY)+1, 1.9f); //test bot 1
-	addSprite(ID_BOT, 1, round(camX)-3, round(camY)+2, 1.5f); //test bot 2
+	addSprite(ID_BOT, 2, round(camX)-3, round(camY)+1, 1.9f); //test bot 1
+	addSprite(ID_BOT, 2, round(camX)-3, round(camY)+2, 1.5f); //test bot 2
 	//render
 	while (windowLoop()){
 		//glClear(GL_COLOR_BUFFER_BIT);

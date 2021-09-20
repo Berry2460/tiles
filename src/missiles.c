@@ -42,7 +42,7 @@ void moveProjectiles(){
 }
 
 void addProjectile(int tex, int x, int y, int destX, int destY, float speed, bool glow){
-	if (projectileCount < MAX_PROJECTILES){
+	if (projectileCount < MAX_PROJECTILES && (x != destX || y != destY)){
 		projectiles[projectileCount].textureIndex=tex;
 		projectiles[projectileCount].glow=glow;
 		projectiles[projectileCount].x=x;

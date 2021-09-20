@@ -2,7 +2,7 @@
 
 static void shootPlayerProjectile(int index){
 	if (!sprites[index].walk){
-		addProjectile(2, sprites[index].x, sprites[index].y, mouseTileX, mouseTileY, 5.0f, true);
+		addProjectile(3, sprites[index].x, sprites[index].y, mouseTileX, mouseTileY, 5.0f, true);
 	}else{
 		newDest(index, sprites[index].toStepX, sprites[index].toStepY);
 	}

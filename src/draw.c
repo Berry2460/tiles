@@ -126,7 +126,7 @@ void drawMap(){
 	//drawing
 	float dx=(mouseX*2.0f)/WIN_X-1.0f;
 	float dy=((mouseY*2.0f)/WIN_Y-1.0f)*-1.0f;
-	glBegin(GL_QUADS);
+	//glBegin(GL_QUADS);
 	for (int x=startX; x < xMax; x++){
 		for (int y=startY; y < yMax; y++){
 			//tile X and Y transform
@@ -148,6 +148,7 @@ void drawMap(){
 			// TEXTURE STUFFS
 			glBindTexture(GL_TEXTURE_2D, textures[map[y][x].textureIndex]);
 			//verts
+			glBegin(GL_QUADS);
 			glTexCoord2f(0.0f,0.0f);
 			glVertex2f(tx-tileX,ty);
 			glTexCoord2f(0.0f,1.0f);
@@ -156,6 +157,7 @@ void drawMap(){
 			glVertex2f(tx+tileX,ty);
 			glTexCoord2f(1.0f,0.0f);
 			glVertex2f(tx,ty-tileY);
+			glEnd();
 			//draw sprite
 			if (map[y-1][x-1].spriteIndex != MAX_SPRITES){
 				//-1 offset for overdraw
@@ -182,14 +184,16 @@ void drawMap(){
 					// TEXTURE STUFFS
 					glBindTexture(GL_TEXTURE_2D, textures[sprites[i].textureIndex]);
 					//verts
+					glBegin(GL_QUADS);
 					glTexCoord2f(0.0f,0.0f);
-					glVertex2f(tx+((TILE_X*0.3f*scale)/WIN_X), ty);
+					glVertex2f(tx-((TILE_X*0.5f*scale)/WIN_X), ty);
 					glTexCoord2f(0.0f,1.0f);
-					glVertex2f(tx-((TILE_X*0.3f*scale)/WIN_X), ty);
+					glVertex2f(tx-((TILE_X*0.5f*scale)/WIN_X), ty+((TILE_Y*3.0f*scale)/WIN_Y));
 					glTexCoord2f(1.0f,1.0f);
-					glVertex2f(tx-((TILE_X*0.3f*scale)/WIN_X), ty+((TILE_Y*3.0f*scale)/WIN_Y));
+					glVertex2f(tx+((TILE_X*0.5f*scale)/WIN_X), ty+((TILE_Y*3.0f*scale)/WIN_Y));
 					glTexCoord2f(1.0f,0.0f);
-					glVertex2f(tx+((TILE_X*0.3f*scale)/WIN_X), ty+((TILE_Y*3.0f*scale)/WIN_Y));
+					glVertex2f(tx+((TILE_X*0.5f*scale)/WIN_X), ty);
+					glEnd();
 				}
 			}
 			//draw projectiles
@@ -209,26 +213,30 @@ void drawMap(){
 					// TEXTURE STUFFS
 					glBindTexture(GL_TEXTURE_2D, textures[projectiles[i].textureIndex]);
 					//verts
+					glBegin(GL_QUADS);
 					glTexCoord2f(0.0f,0.0f);
-					glVertex2f(tx+((TILE_Y*0.5f*scale)/WIN_X), ty+((TILE_Y*scale)/WIN_Y));
-					glTexCoord2f(0.0f,1.0f);
 					glVertex2f(tx-((TILE_Y*0.5f*scale)/WIN_X), ty+((TILE_Y*scale)/WIN_Y));
-					glTexCoord2f(1.0f,1.0f);
+					glTexCoord2f(0.0f,1.0f);
 					glVertex2f(tx-((TILE_Y*0.5f*scale)/WIN_X), ty+((TILE_Y*2.0f*scale)/WIN_Y));
-					glTexCoord2f(1.0f,0.0f);
+					glTexCoord2f(1.0f,1.0f);
 					glVertex2f(tx+((TILE_Y*0.5f*scale)/WIN_X), ty+((TILE_Y*2.0f*scale)/WIN_Y));
+					glTexCoord2f(1.0f,0.0f);
+					glVertex2f(tx+((TILE_Y*0.5f*scale)/WIN_X), ty+((TILE_Y*scale)/WIN_Y));
+					glEnd();
 				}
 			}
 			#ifdef DEBUG
+			glBegin(GL_QUADS);
 			glColor3f(0,1,0);
 			glVertex2f(tx,ty);
 			glVertex2f(tx-(6.0/WIN_X),ty);
 			glVertex2f(tx-(6.0/WIN_X),ty+(6.0/WIN_Y));
 			glVertex2f(tx,ty+(6.0/WIN_Y));
+			glEnd();
 			#endif
 		}
 	}
-	glEnd();
+	//glEnd();
 }
 
 static Coordinates transform(float x, float y){
@@ -280,6 +288,7 @@ static unsigned char *loadBitmap(char *filename, BITMAPINFOHEADER *bitmapInfoHea
         tempRGB=bitmapImage[imageIdx];
         bitmapImage[imageIdx]=bitmapImage[imageIdx+2];
         bitmapImage[imageIdx+2]=tempRGB;
+        //bitmapImage[imageIdx+3]=255;
         //printf("%d %d %d\n",bitmapImage[imageIdx],bitmapImage[imageIdx+1],bitmapImage[imageIdx+2]);
     }
     //close file and return bitmap image data
@@ -295,7 +304,6 @@ unsigned char initTexture(char *name){
 	if (pixelData != NULL || texCount >= MAX_TEXTURES){
 		int imgX=infoHeader.biWidth;
 		int imgY=infoHeader.biHeight;
-		printf("IMG XY: %d %d\n",imgX,imgY);
 		glBindTexture(GL_TEXTURE_2D, textures[texCount]);
 		glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_REPEAT);
 		glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_REPEAT);
