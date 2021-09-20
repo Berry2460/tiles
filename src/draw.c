@@ -127,13 +127,13 @@ void drawMap(){
 	//drawing
 	float dx=(mouseX*2.0f)/WIN_X-1.0f;
 	float dy=((mouseY*2.0f)/WIN_Y-1.0f)*-1.0f;
-	//glBegin(GL_QUADS);
+	//tile X and Y transform coords
+	float tx;
+	float ty;
+	Coordinates coord;
+	//start drawing
 	for (int x=startX; x < xMax; x++){
 		for (int y=startY; y < yMax; y++){
-			//tile X and Y transform
-			Coordinates coord=transform(x, y);
-			float tx=coord.x;
-			float ty=coord.y;
 			//pathing debugging
 			int pathing=1;
 			#ifdef DEBUG
@@ -141,11 +141,14 @@ void drawMap(){
 				pathing=0;
 			}
 			#endif
+			//draw floor
+			coord=transform(x, y);
+			tx=coord.x;
+			ty=coord.y;
 			if (fabs(dx-tx)+fabs(dy-ty) < tileX){
 				mouseTileX=x;
 				mouseTileY=y;
 			}
-			// TEXTURE STUFFS
 			glBindTexture(GL_TEXTURE_2D, textures[map[y][x].textureIndex]);
 			//verts
 			glColor3f(map[y][x].brightness, map[y][x].brightness * pathing, map[y][x].brightness);
@@ -159,14 +162,13 @@ void drawMap(){
 			glVertex2f(tx+tileX,ty);
 			glTexCoord2f(1.0f,0.0f);
 			glVertex2f(tx,ty-tileY);
+			//draw wall
 			if (map[y][x].wall){
-				//wall
 				float transparent=1.0f;
 				if (((y-(int)camY) <= 1 && (x-(int)camX) <= 1) && ((y-(int)camY) >= 0 && (x-(int)camX) >= 0)){
 					transparent=0.6f;
 				}
 				glColor4f(map[y][x].brightness, map[y][x].brightness, map[y][x].brightness, transparent);
-				glBegin(GL_QUADS);
 				//top
 				glTexCoord2f(0.0f,0.0f);
 				glVertex2f(tx-tileX,ty+(tileY*3));
@@ -198,7 +200,6 @@ void drawMap(){
 			glEnd();
 			//draw sprite
 			if (map[y][x].spriteIndex != MAX_SPRITES){
-				//-1 offset for overdraw
 				int i=map[y][x].spriteIndex;
 				//add bot to visible
 				if (sprites[i].id == ID_BOT){
@@ -277,7 +278,6 @@ void drawMap(){
 			#endif
 		}
 	}
-	//glEnd();
 }
 
 static Coordinates transform(float x, float y){
