@@ -28,6 +28,10 @@ void moveProjectiles(){
 						return;
 					}
 				}
+				else if (map[testY][testX].occupied){
+					removeProjectile(i);
+					return;
+				}
 			}
 			projectiles[i].x+=projectiles[i].stepX/fps;
 			projectiles[i].y+=projectiles[i].stepY/fps;

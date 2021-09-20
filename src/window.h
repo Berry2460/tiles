@@ -5,7 +5,7 @@
 #define WIN_Y 720
 #define V_SYNC 1
 
-#define KEYS 7
+#define KEYS 8
 
 #define W 0
 #define S 1
@@ -14,6 +14,7 @@
 #define SPACE 4
 #define SHIFT 5
 #define LMB 6
+#define RMB 7
 
 #include <stdio.h>
 #include "GLFW/glfw3.h"

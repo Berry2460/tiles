@@ -141,49 +141,72 @@ void drawMap(){
 				pathing=0;
 			}
 			#endif
-			if (fabs(dx-tx)+fabs(dy-ty) < tileX && keys[LMB]){
+			if (fabs(dx-tx)+fabs(dy-ty) < tileX){
 				mouseTileX=x;
 				mouseTileY=y;
 			}
 			// TEXTURE STUFFS
 			glBindTexture(GL_TEXTURE_2D, textures[map[y][x].textureIndex]);
 			//verts
-			if (!map[y][x].wall){
-				glColor3f(map[y][x].brightness, map[y][x].brightness * pathing, map[y][x].brightness);
+			glColor3f(map[y][x].brightness, map[y][x].brightness * pathing, map[y][x].brightness);
+			glBegin(GL_QUADS);
+			//floor
+			glTexCoord2f(0.0f,0.0f);
+			glVertex2f(tx-tileX,ty);
+			glTexCoord2f(0.0f,1.0f);
+			glVertex2f(tx,ty+tileY);
+			glTexCoord2f(1.0f,1.0f);
+			glVertex2f(tx+tileX,ty);
+			glTexCoord2f(1.0f,0.0f);
+			glVertex2f(tx,ty-tileY);
+			if (map[y][x].wall){
+				//wall
+				float transparent=1.0f;
+				if (((y-(int)camY) <= 1 && (x-(int)camX) <= 1) && ((y-(int)camY) >= 0 && (x-(int)camX) >= 0)){
+					transparent=0.6f;
+				}
+				glColor4f(map[y][x].brightness, map[y][x].brightness, map[y][x].brightness, transparent);
 				glBegin(GL_QUADS);
+				//top
+				glTexCoord2f(0.0f,0.0f);
+				glVertex2f(tx-tileX,ty+(tileY*3));
+				glTexCoord2f(0.0f,1.0f);
+				glVertex2f(tx,ty+tileY+(tileY*3));
+				glTexCoord2f(1.0f,1.0f);
+				glVertex2f(tx+tileX,ty+(tileY*3));
+				glTexCoord2f(1.0f,0.0f);
+				//left face
+				glVertex2f(tx,ty-tileY+(tileY*3));
 				glTexCoord2f(0.0f,0.0f);
 				glVertex2f(tx-tileX,ty);
 				glTexCoord2f(0.0f,1.0f);
-				glVertex2f(tx,ty+tileY);
+				glVertex2f(tx-tileX,ty+(tileY*3));
 				glTexCoord2f(1.0f,1.0f);
-				glVertex2f(tx+tileX,ty);
+				glVertex2f(tx,ty-tileY+(tileY*3));
 				glTexCoord2f(1.0f,0.0f);
 				glVertex2f(tx,ty-tileY);
-				glEnd();
-			}else{
-				glColor3f(map[y][x].brightness, map[y][x].brightness, map[y][x].brightness);
-				glBegin(GL_QUADS);
+				//right face
 				glTexCoord2f(0.0f,0.0f);
-				glVertex2f(tx-tileX,ty);
-				glTexCoord2f(0.0f,1.0f);
-				glVertex2f(tx,ty+tileY);
-				glTexCoord2f(1.0f,1.0f);
 				glVertex2f(tx+tileX,ty);
 				glTexCoord2f(1.0f,0.0f);
+				glVertex2f(tx+tileX,ty+(tileY*3));
+				glTexCoord2f(1.0f,1.0f);
+				glVertex2f(tx,ty-tileY+(tileY*3));
+				glTexCoord2f(0.0f,1.0f);
 				glVertex2f(tx,ty-tileY);
-				glEnd();
 			}
+			glEnd();
 			//draw sprite
-			if (map[y-1][x-1].spriteIndex != MAX_SPRITES){
+			if (map[y][x].spriteIndex != MAX_SPRITES){
 				//-1 offset for overdraw
-				int i=map[y-1][x-1].spriteIndex;
+				int i=map[y][x].spriteIndex;
 				//add bot to visible
 				if (sprites[i].id == ID_BOT){
-					bots[botCount]=map[y-1][x-1].spriteIndex;
+					bots[botCount]=map[y][x].spriteIndex;
 					botCount++;
 				}
 				//draw sprite per tile
-				if (x-1 == sprites[i].x && y-1 == sprites[i].y){
+				if (x == sprites[i].x && y == sprites[i].y){
 					glColor3f(map[sprites[i].y][sprites[i].x].brightness, map[sprites[i].y][sprites[i].x].brightness, map[sprites[i].y][sprites[i].x].brightness);
 					//recalculate X and Y for sprites with offsets
 					float sx=sprites[i].x+sprites[i].offx;
@@ -243,6 +266,7 @@ void drawMap(){
 				}
 			}
 			#ifdef DEBUG
+			glBindTexture(GL_TEXTURE_2D, 0);
 			glBegin(GL_QUADS);
 			glColor3f(0,1,0);
 			glVertex2f(tx,ty);
@@ -307,15 +331,15 @@ static unsigned char *loadBitmap(char *filename, BITMAPINFOHEADER *bitmapInfoHea
         //transparency 0xFF00FF
         if (bitmapImage[imageIdx] == 255 && bitmapImage[imageIdx+1] == 0 && bitmapImage[imageIdx+2] == 255){
         	finalBitmapImage[imageIdx+off]=0;
-	        finalBitmapImage[imageIdx+1+off]=0;
+        	finalBitmapImage[imageIdx+1+off]=0;
 	        finalBitmapImage[imageIdx+2+off]=0;
-        	finalBitmapImage[imageIdx+3+off]=0;
+	        finalBitmapImage[imageIdx+3+off]=0;
         }
         else{
         	tempRGB=bitmapImage[imageIdx];
         	finalBitmapImage[imageIdx+off]=bitmapImage[imageIdx+2];
-	        finalBitmapImage[imageIdx+1+off]=bitmapImage[imageIdx+1];
-	        finalBitmapImage[imageIdx+2+off]=tempRGB;
+        	finalBitmapImage[imageIdx+1+off]=bitmapImage[imageIdx+1];
+        	finalBitmapImage[imageIdx+2+off]=tempRGB;
         	finalBitmapImage[imageIdx+3+off]=255;
     	}
     	//printf("%d %d %d %d\n",finalBitmapImage[imageIdx+off],finalBitmapImage[imageIdx+1+off],finalBitmapImage[imageIdx+2+off],finalBitmapImage[imageIdx+3+off]);

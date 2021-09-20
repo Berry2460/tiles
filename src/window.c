@@ -22,6 +22,10 @@ static void mouseControl(GLFWwindow* window, int key, int action, int mods){
 			if (action == GLFW_PRESS){keys[LMB]=true;}
 			else if (action == GLFW_RELEASE){keys[LMB]=false;}
 			break;
+		case GLFW_MOUSE_BUTTON_RIGHT:
+			if (action == GLFW_PRESS){keys[RMB]=true;}
+			else if (action == GLFW_RELEASE){keys[RMB]=false;}
+			break;
 	}
 }
 

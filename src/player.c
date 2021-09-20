@@ -2,7 +2,7 @@
 
 static void shootPlayerProjectile(int index){
 	if (!sprites[index].walk){
-		addProjectile(3, sprites[index].x, sprites[index].y, mouseTileX, mouseTileY, 5.0f, true);
+		addProjectile(4, sprites[index].x, sprites[index].y, mouseTileX, mouseTileY, 5.0f, true);
 	}else{
 		newDest(index, sprites[index].toStepX, sprites[index].toStepY);
 	}
@@ -22,7 +22,11 @@ void playerControl(int index){
 			newDest(index, mouseTileX, mouseTileY);
 			keys[LMB]=false;
 		}
-		
+	}
+	else if (keys[RMB]){
+		map[mouseTileY][mouseTileX].textureIndex=1;
+		map[mouseTileY][mouseTileX].wall=true;
+		map[mouseTileY][mouseTileX].occupied=true;
 	}
 }
 
