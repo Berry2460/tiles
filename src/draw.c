@@ -14,10 +14,12 @@ void initMap(int tex){
 	}
 }
 
-unsigned char addSprite(unsigned char id, int tex, int x, int y, float speed){
+unsigned char addSprite(unsigned char id, unsigned char* animation, int frames, int x, int y, float speed){
 	if (spriteCount < MAX_SPRITES){
 		char out=spriteCount;
-		sprites[spriteCount].textureIndex=tex;
+		sprites[spriteCount].textureIndex=0;
+		sprites[spriteCount].animation=animation;
+		sprites[spriteCount].frames=frames;
 		sprites[spriteCount].id=id;
 		sprites[spriteCount].x=x;
 		sprites[spriteCount].y=y;
@@ -222,7 +224,7 @@ void drawMap(){
 				tx=coord.x;
 				ty=coord.y;
 				// TEXTURE STUFFS
-				glBindTexture(GL_TEXTURE_2D, textures[sprites[i].textureIndex]);
+				glBindTexture(GL_TEXTURE_2D, textures[sprites[i].animation[sprites[i].textureIndex]]);
 				//verts
 				glBegin(GL_QUADS);
 				glTexCoord2f(0.0f,0.0f);

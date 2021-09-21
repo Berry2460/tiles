@@ -59,6 +59,8 @@ typedef struct Coordinates{
 
 typedef struct Sprite{
 	unsigned char textureIndex;
+	unsigned char *animation;
+	unsigned char frames;
 	unsigned char id; //sprite identifier
 	unsigned char index; //other stat assignment
 	int x; //current coords
@@ -109,7 +111,7 @@ static Coordinates transform(float x, float y);
 static unsigned char *loadBitmap(char *filename, BITMAPINFOHEADER *bitmapInfoHeader);
 
 void initMap(int tex);
-unsigned char addSprite(unsigned char id, int tex, int x, int y, float speed);
+unsigned char addSprite(unsigned char id, unsigned char* animation, int frames, int x, int y, float speed);
 void removeSprite(int index);
 void computeLightMap(Light *lights, int total, bool neg);
 void addLight(int x, int y, int size, float brightness, bool neg);

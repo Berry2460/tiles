@@ -11,5 +11,5 @@ static void shootPlayerProjectile(int index);
 
 void playerControl(int index);
 void movePlayer(int index);
-unsigned char createPlayer(int tex, int x, int y);
+unsigned char createPlayer(unsigned char *animation, int frames, int x, int y);
 #endif

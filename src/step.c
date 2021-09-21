@@ -71,6 +71,10 @@ void step(int index){
 			float offy=(s->speed/(float)fps)*(s->y-s->toStepY);
 			s->offx=s->offx-offx;
 			s->offy=s->offy+offy;
+			//printf("%f %f %f\n",s->offx,s->offy,frame);
+			if (fabs(s->offx) > 1.0f/s->frames*(s->textureIndex+1) || fabs(s->offy) > 1.0f/s->frames*(s->textureIndex+1)){
+				s->textureIndex=(s->textureIndex+1)%s->frames;
+			}
 		}
 	}
 }
