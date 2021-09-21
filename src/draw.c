@@ -2,7 +2,7 @@
 
 void initMap(int tex){
 	//init
-	int spriteCount=0;
+	spriteCount=0;
 	for (int i=0; i < MAP_Y; i++){
 		for (int j=0; j < MAP_X; j++){
 			map[i][j].textureIndex=tex;
@@ -48,7 +48,11 @@ void removeSprite(int index){
 	}
 	sprites[index]=sprites[index+1];
 	for (int i=index+1; i<spriteCount; i++){
-		map[sprites[i].y][sprites[i].x].spriteIndex--;
+		if (sprites[i].walk && (sprites[i].nextX+sprites[i].nextY > 0 || (sprites[i].nextX == 1 && sprites[i].nextY == -1))){
+			map[sprites[i].toStepY][sprites[i].toStepX].spriteIndex--;
+		}else{
+			map[sprites[i].y][sprites[i].x].spriteIndex--;
+		}
 		sprites[i]=sprites[i+1];
 	}
 }
@@ -215,10 +219,6 @@ void drawMap(){
 				//recalculate X and Y for sprites with offsets
 				float sx=sprites[i].x+sprites[i].offx;
 				float sy=sprites[i].y-sprites[i].offy;
-				#ifdef NO_SMOOTHING
-				sx=sprites[i].x;
-				sy=sprites[i].y;
-				#endif
 				//transform X and Y to tiles
 				coord=transform(sx, sy);
 				tx=coord.x;
@@ -243,10 +243,6 @@ void drawMap(){
 					if (round(projectiles[i].x) == x && round(projectiles[i].y) == y){
 						float px=projectiles[i].x;
 						float py=projectiles[i].y;
-						#ifdef NO_SMOOTHING
-						px=(int)px;
-						py=(int)py;
-						#endif
 						//transform
 						coord=transform(px, py);
 						tx=coord.x;

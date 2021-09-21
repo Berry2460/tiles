@@ -55,7 +55,7 @@ int main(){
 	addSprite(ID_BOT, banim, 1, round(camX)-4, round(camY)-3, 1.1f); //test bot 5
 	//render
 	while (windowLoop()){
-		glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
+		//glClear(GL_COLOR_BUFFER_BIT);
 		drawMap();
 		movePlayer(player);
 		moveBots();

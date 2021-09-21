@@ -3,7 +3,6 @@
 
 //#define DEBUG
 //#define NO_CULLING
-//#define NO_SMOOTHING
 
 #define MAP_X 512
 #define MAP_Y 512
