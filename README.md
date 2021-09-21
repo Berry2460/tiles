@@ -7,3 +7,4 @@
 - projectiles and collision
 - simple AI
 - texture mapping and transparency
+- animations
