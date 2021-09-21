@@ -36,6 +36,11 @@ void nextStep(int index){
 		//set next step
 		s->toStepX=s->x+s->nextX;
 		s->toStepY=s->y+s->nextY;
+		//correct stepping direction for clipping tile order
+		if (s->nextX+s->nextY > 0 || (s->nextX == 1 && s->nextY == -1)){
+			map[s->y][s->x].spriteIndex=MAX_SPRITES;
+			map[s->toStepY][s->toStepX].spriteIndex=index;
+		}
 		map[s->toStepY][s->toStepX].occupied=true;
 	}
 }

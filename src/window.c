@@ -81,7 +81,7 @@ int startWindow(char* winTitle){
 	glEnable(GL_BLEND);
 	glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
 	//allocate memory
-	textures=malloc(MAX_TEXTURES*sizeof(int));
+	textures=malloc(MAX_TEXTURES*sizeof(GLuint));
 	glGenTextures(MAX_TEXTURES, textures);
 	glPixelStorei(GL_UNPACK_ALIGNMENT, 1);
 	return 0;

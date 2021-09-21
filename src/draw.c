@@ -145,6 +145,7 @@ void drawMap(){
 			coord=transform(x, y);
 			tx=coord.x;
 			ty=coord.y;
+			//mouse
 			if (fabs(dx-tx)+fabs(dy-ty) < tileX){
 				mouseTileX=x;
 				mouseTileY=y;
@@ -207,33 +208,31 @@ void drawMap(){
 					botCount++;
 				}
 				//draw sprite per tile
-				if (x == sprites[i].x && y == sprites[i].y){
-					glColor3f(map[sprites[i].y][sprites[i].x].brightness, map[sprites[i].y][sprites[i].x].brightness, map[sprites[i].y][sprites[i].x].brightness);
-					//recalculate X and Y for sprites with offsets
-					float sx=sprites[i].x+sprites[i].offx;
-					float sy=sprites[i].y-sprites[i].offy;
-					#ifdef NO_SMOOTHING
-					sx=sprites[i].x;
-					sy=sprites[i].y;
-					#endif
-					//transform X and Y to tiles
-					coord=transform(sx, sy);
-					tx=coord.x;
-					ty=coord.y;
-					// TEXTURE STUFFS
-					glBindTexture(GL_TEXTURE_2D, textures[sprites[i].textureIndex]);
-					//verts
-					glBegin(GL_QUADS);
-					glTexCoord2f(0.0f,0.0f);
-					glVertex2f(tx-((TILE_X*0.5f*scale)/WIN_X), ty);
-					glTexCoord2f(0.0f,1.0f);
-					glVertex2f(tx-((TILE_X*0.5f*scale)/WIN_X), ty+((TILE_Y*3.0f*scale)/WIN_Y));
-					glTexCoord2f(1.0f,1.0f);
-					glVertex2f(tx+((TILE_X*0.5f*scale)/WIN_X), ty+((TILE_Y*3.0f*scale)/WIN_Y));
-					glTexCoord2f(1.0f,0.0f);
-					glVertex2f(tx+((TILE_X*0.5f*scale)/WIN_X), ty);
-					glEnd();
-				}
+				glColor3f(map[sprites[i].y][sprites[i].x].brightness, map[sprites[i].y][sprites[i].x].brightness, map[sprites[i].y][sprites[i].x].brightness);
+				//recalculate X and Y for sprites with offsets
+				float sx=sprites[i].x+sprites[i].offx;
+				float sy=sprites[i].y-sprites[i].offy;
+				#ifdef NO_SMOOTHING
+				sx=sprites[i].x;
+				sy=sprites[i].y;
+				#endif
+				//transform X and Y to tiles
+				coord=transform(sx, sy);
+				tx=coord.x;
+				ty=coord.y;
+				// TEXTURE STUFFS
+				glBindTexture(GL_TEXTURE_2D, textures[sprites[i].textureIndex]);
+				//verts
+				glBegin(GL_QUADS);
+				glTexCoord2f(0.0f,0.0f);
+				glVertex2f(tx-((TILE_X*0.5f*scale)/WIN_X), ty);
+				glTexCoord2f(0.0f,1.0f);
+				glVertex2f(tx-((TILE_X*0.5f*scale)/WIN_X), ty+((TILE_Y*3.0f*scale)/WIN_Y));
+				glTexCoord2f(1.0f,1.0f);
+				glVertex2f(tx+((TILE_X*0.5f*scale)/WIN_X), ty+((TILE_Y*3.0f*scale)/WIN_Y));
+				glTexCoord2f(1.0f,0.0f);
+				glVertex2f(tx+((TILE_X*0.5f*scale)/WIN_X), ty);
+				glEnd();
 			}
 			//draw projectiles
 			if (map[y][x].spriteIndex == MAX_SPRITES){
