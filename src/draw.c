@@ -42,6 +42,7 @@ void removeSprite(int index){
 	map[sprites[index].y][sprites[index].x].occupied=false;
 	if (sprites[index].walk){
 		map[sprites[index].toStepY][sprites[index].toStepX].occupied=false;
+		map[sprites[index].toStepY][sprites[index].toStepX].spriteIndex=MAX_SPRITES;
 	}
 	sprites[index]=sprites[index+1];
 	for (int i=index+1; i<spriteCount; i++){

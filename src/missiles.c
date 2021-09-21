@@ -28,7 +28,7 @@ void moveProjectiles(){
 						return;
 					}
 				}
-				else if (map[testY][testX].occupied){
+				else if (map[testY][testX].wall){
 					removeProjectile(i);
 					return;
 				}
