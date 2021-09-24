@@ -176,8 +176,8 @@ void drawMap(){
 				if (((y-(int)camY) <= 1 && (x-(int)camX) <= 1) && ((y-(int)camY) >= 0 && (x-(int)camX) >= 0)){
 					transparent=0.6f;
 				}
-				glColor4f(map[y][x].brightness, map[y][x].brightness, map[y][x].brightness, transparent);
 				//top
+				glColor4f(map[y][x].brightness*0.6f, map[y][x].brightness*0.6f, map[y][x].brightness*0.6f, transparent);
 				glTexCoord2f(0.0f,0.0f);
 				glVertex2f(tx-tileX,ty+(tileY*3));
 				glTexCoord2f(0.0f,1.0f);
@@ -186,6 +186,7 @@ void drawMap(){
 				glVertex2f(tx+tileX,ty+(tileY*3));
 				glTexCoord2f(1.0f,0.0f);
 				//left face
+				glColor4f(map[y][x].brightness, map[y][x].brightness, map[y][x].brightness, transparent);
 				glVertex2f(tx,ty-tileY+(tileY*3));
 				glTexCoord2f(0.0f,0.0f);
 				glVertex2f(tx-tileX,ty);
@@ -196,14 +197,15 @@ void drawMap(){
 				glTexCoord2f(1.0f,0.0f);
 				glVertex2f(tx,ty-tileY);
 				//right face
+				glColor4f(map[y][x].brightness*0.8f, map[y][x].brightness*0.8f, map[y][x].brightness*0.8f, transparent);
 				glTexCoord2f(0.0f,0.0f);
-				glVertex2f(tx+tileX,ty);
-				glTexCoord2f(1.0f,0.0f);
-				glVertex2f(tx+tileX,ty+(tileY*3));
-				glTexCoord2f(1.0f,1.0f);
-				glVertex2f(tx,ty-tileY+(tileY*3));
-				glTexCoord2f(0.0f,1.0f);
 				glVertex2f(tx,ty-tileY);
+				glTexCoord2f(0.0f,1.0f);
+				glVertex2f(tx,ty-tileY+(tileY*3));
+				glTexCoord2f(1.0f,1.0f);
+				glVertex2f(tx+tileX,ty+(tileY*3));
+				glTexCoord2f(1.0f,0.0f);
+				glVertex2f(tx+tileX,ty);
 			}
 			glEnd();
 			//draw sprite
