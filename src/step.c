@@ -47,6 +47,7 @@ void nextStep(int index){
 
 void newDest(int index, int x, int y){
 	Sprite *s=&sprites[index];
+	s->textureIndex=0;
 	if (s->walk){ //add to cycle
 		s->stepDestX=x;
 		s->stepDestY=y;
@@ -72,7 +73,33 @@ void step(int index){
 			s->offx=s->offx-offx;
 			s->offy=s->offy+offy;
 			if (fabs(s->offx) > 1.0f/s->frames*(s->textureIndex+1) || fabs(s->offy) > 1.0f/s->frames*(s->textureIndex+1)){
-				s->textureIndex=(s->textureIndex+1)%s->frames;
+				//direction
+				int add;
+				if (s->nextX == 1 && s->nextY == 1){
+					add=0;
+				}
+				else if (s->nextX == 1 && s->nextY == 0){
+					add=1;
+				}
+				else if (s->nextX == 1 && s->nextY == -1){
+					add=2;
+				}
+				else if (s->nextX == 0 && s->nextY == 1){
+					add=3;
+				}
+				else if (s->nextX == 0 && s->nextY == -1){
+					add=4;
+				}
+				else if (s->nextX == -1 && s->nextY == 1){
+					add=5;
+				}
+				else if (s->nextX == -1 && s->nextY == 0){
+					add=6;
+				}
+				else if (s->nextX == -1 && s->nextY == -1){
+					add=7;
+				}
+				s->textureIndex=(s->textureIndex+1)%s->frames+(add*frames*0); //needs testing, *0 for now...
 			}
 		}
 	}

@@ -3,6 +3,9 @@
 static void shootPlayerProjectile(int index){
 	if (!sprites[index].walk){
 		addProjectile(4, sprites[index].x, sprites[index].y, mouseTileX, mouseTileY, 5.0f, true);
+		//animation
+		sprites[index].time=glfwGetTime();
+		sprites[index].textureIndex=3;
 	}else{
 		newDest(index, sprites[index].toStepX, sprites[index].toStepY);
 	}
@@ -32,6 +35,10 @@ void playerControl(int index){
 
 void movePlayer(int index){
 	Sprite *s=&sprites[index];
+	//attack animation
+	if (glfwGetTime()-s->time > 0.3f && !s->walk){
+		s->textureIndex=0; //temp
+	}
 	addLight(s->x, s->y, PLAYER_LIGHT_SIZE, PLAYER_LIGHT_BRIGHTNESS, true);
 	step(index);
 	//follow cam

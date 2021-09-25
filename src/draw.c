@@ -173,7 +173,7 @@ void drawMap(){
 			//draw wall
 			if (map[y][x].wall){
 				float transparent=1.0f;
-				if (((y-(int)camY) <= 1 && (x-(int)camX) <= 1) && ((y-(int)camY) >= 0 && (x-(int)camX) >= 0)){
+				if (((y-round(camY)) <= 1 && (x-round(camX)) <= 1) && ((y-round(camY)) >= 0 && (x-round(camX)) >= 0)){
 					transparent=0.6f;
 				}
 				//top

@@ -35,7 +35,7 @@ int main(){
 	scale=1.0f;
 	camX=MAP_X/2.0f;
 	camY=MAP_Y/2.0f;
-	unsigned char panim[3]={2,5,6};
+	unsigned char panim[4]={2,5,6,9};
 	unsigned char banim[3]={3,8,7};
 	startWindow("tiles");
 	initTexture("t0.bmp");
@@ -47,6 +47,7 @@ int main(){
 	initTexture("t6.bmp");
 	initTexture("t7.bmp");
 	initTexture("t8.bmp");
+	initTexture("t9.bmp");
 	initMap(0);
 	initLight();
 	unsigned char player=createPlayer(panim, 3, camX, camY);
