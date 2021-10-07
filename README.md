@@ -8,3 +8,4 @@
 - simple AI
 - texture mapping and transparency
 - animations
+- gouraud shading light
