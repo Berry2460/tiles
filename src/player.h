@@ -1,8 +1,8 @@
 #ifndef PLAYER_H
 #define PLAYER_H
 
-#define PLAYER_LIGHT_BRIGHTNESS 1.5f
-#define PLAYER_LIGHT_SIZE 21
+#define PLAYER_LIGHT_BRIGHTNESS 1.3f
+#define PLAYER_LIGHT_SIZE 19
 #define PLAYER_SPEED 2.2f
 
 #include "draw.h"
