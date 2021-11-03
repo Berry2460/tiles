@@ -10,8 +10,6 @@ extern int seed;
 extern unsigned char bots[MAX_SPRITES];
 extern unsigned char botCount;
 
-static void newBotRoute();
-
 void newSeed();
 void moveBots();
 #endif

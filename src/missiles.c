@@ -1,5 +1,7 @@
 #include "missiles.h"
 
+static void removeProjectile(int index);
+
 static void removeProjectile(int index){
 	projectileCount--;
 	if (projectiles[index].glow){

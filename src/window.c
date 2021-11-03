@@ -1,5 +1,14 @@
 #include "window.h"
 
+static char* title;
+static float start;
+static GLFWwindow* window;
+
+static void mouse(GLFWwindow* window, double x, double y);
+static void scroll(GLFWwindow* window, double xoffset, double yoffset);
+static void mouseControl(GLFWwindow* window, int key, int action, int mods);
+static void buttons(GLFWwindow* window, int key, int scancode, int action, int mods);
+
 static void mouse(GLFWwindow* window, double x, double y){ //update mouse
 	mouseX=x;
 	mouseY=y;

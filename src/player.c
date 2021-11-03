@@ -1,5 +1,7 @@
 #include "player.h"
 
+static void shootPlayerProjectile(int index);
+
 static void shootPlayerProjectile(int index){
 	if (!sprites[index].walk){
 		addProjectile(4, sprites[index].x, sprites[index].y, mouseTileX, mouseTileY, 5.0f, true);

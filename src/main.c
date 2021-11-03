@@ -13,6 +13,7 @@ unsigned char spriteCount;
 
 //window globals
 int fps;
+int frames;
 int mouseX;
 int mouseY;
 bool keys[KEYS];

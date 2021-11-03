@@ -92,9 +92,7 @@ typedef struct Light{
 	float brightness;
 }Light;
 
-static float tileX;
-static float tileY;
-static unsigned char texCount;
+
 
 extern GLuint *textures; //texture data
 extern float scale;
@@ -105,9 +103,6 @@ extern int mouseTileY;
 extern Tile map[MAP_Y][MAP_X];
 extern Sprite sprites[MAX_SPRITES];
 extern unsigned char spriteCount;
-
-static Coordinates transform(float x, float y);
-static unsigned char *loadBitmap(char *filename, BITMAPINFOHEADER *bitmapInfoHeader);
 
 void initMap(int tex);
 unsigned char addSprite(unsigned char id, unsigned char* animation, int frames, int x, int y, float speed);

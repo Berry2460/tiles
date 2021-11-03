@@ -1,5 +1,12 @@
 #include "draw.h"
 
+static float tileX;
+static float tileY;
+static unsigned char texCount;
+
+static Coordinates transform(float x, float y);
+static unsigned char *loadBitmap(char *filename, BITMAPINFOHEADER *bitmapInfoHeader);
+
 void initMap(int tex){
 	//init
 	spriteCount=0;

@@ -1,5 +1,7 @@
 #include "ai.h"
 
+static void newBotRoute();
+
 void newSeed(){
 	seed=(seed+(seed>>1)+1)%1000000000;
 }
