@@ -56,10 +56,20 @@ typedef struct Coordinates{
 	float y;
 }Coordinates;
 
-typedef struct Sprite{
+typedef struct Texture{
 	unsigned char textureIndex;
-	unsigned char *animation;
+	int height;
+	int width;
+	int size;
+}Texture;
+
+typedef struct Sprite{
+	Texture *texture;
+	unsigned char textureX;
+	unsigned char textureY;
+	unsigned char frame;
 	unsigned char frames;
+	unsigned char *animation;
 	unsigned char id; //sprite identifier
 	unsigned char index; //other stat assignment
 	int x; //current coords
@@ -78,8 +88,10 @@ typedef struct Sprite{
 }Sprite;
 
 typedef struct Tile{
-	unsigned char textureIndex;
+	Texture *texture;
 	unsigned char spriteIndex;
+	unsigned char textureX;
+	unsigned char textureY;
 	float brightness;
 	bool occupied; //walls must be occupied
 	bool wall; //draw in wall mode
@@ -104,12 +116,12 @@ extern Tile map[MAP_Y][MAP_X];
 extern Sprite sprites[MAX_SPRITES];
 extern unsigned char spriteCount;
 
-void initMap(int tex);
-unsigned char addSprite(unsigned char id, unsigned char* animation, int frames, int x, int y, float speed);
+void initMap(Texture *texture, unsigned char x, unsigned char y);
+unsigned char addSprite(unsigned char id, Texture* texture, unsigned char *animation, unsigned char frames, int x, int y, float speed);
 void removeSprite(int index);
 void computeLightMap(Light *lights, int total, bool neg);
 void addLight(int x, int y, int size, float brightness, bool neg);
 void initLight();
 void drawMap();
-unsigned char initTexture(char* name);
+Texture *initTexture(char* name, int size);
 #endif

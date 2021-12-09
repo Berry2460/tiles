@@ -3,7 +3,7 @@
 
 #define WIN_X 1280
 #define WIN_Y 720
-#define V_SYNC 1
+#define V_SYNC 0
 
 #define KEYS 8
 

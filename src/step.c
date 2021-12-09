@@ -56,7 +56,7 @@ void newDest(int index, int x, int y){
 		s->stepDestX=x;
 		s->stepDestY=y;
 	}else{ //new cycle
-		s->textureIndex=0;
+		s->frame=0; //WIP
 		s->walk=true;
 		s->stepDestX=x;
 		s->stepDestY=y;
@@ -77,9 +77,9 @@ void step(int index){
 			float offy=(s->speed/(float)fps)*(s->y-s->toStepY);
 			s->offx=s->offx-offx;
 			s->offy=s->offy+offy;
-			if (fabs(s->offx) > 1.0f/s->frames*(s->textureIndex+1) || fabs(s->offy) > 1.0f/s->frames*(s->textureIndex+1)){
+			if (fabs(s->offx) > 1.0f/s->frames*(s->frame+1) || fabs(s->offy) > 1.0f/s->frames*(s->frame+1)){
 				//direction
-				s->textureIndex=(s->textureIndex+1)%s->frames+(walkTable[s->nextY+1][s->nextX+1]*frames*DIRECTIONAL_WALKING);
+				s->frame=(s->frame+1)%s->frames+(walkTable[s->nextY+1][s->nextX+1]*frames*DIRECTIONAL_WALKING);
 			}
 		}
 	}

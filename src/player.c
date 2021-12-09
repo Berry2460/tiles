@@ -7,7 +7,7 @@ static void shootPlayerProjectile(int index){
 		addProjectile(4, sprites[index].x, sprites[index].y, mouseTileX, mouseTileY, 5.0f, true);
 		//animation
 		sprites[index].time=glfwGetTime();
-		sprites[index].textureIndex=3;
+		sprites[index].frame=3;
 	}else{
 		newDest(index, sprites[index].toStepX, sprites[index].toStepY);
 	}
@@ -29,7 +29,7 @@ void playerControl(int index){
 		}
 	}
 	else if (keys[RMB]){
-		map[mouseTileY][mouseTileX].textureIndex=1;
+		map[mouseTileY][mouseTileX].textureX=1;
 		map[mouseTileY][mouseTileX].wall=true;
 		map[mouseTileY][mouseTileX].occupied=true;
 	}
@@ -39,7 +39,7 @@ void movePlayer(int index){
 	Sprite *s=&sprites[index];
 	//attack animation
 	if (glfwGetTime()-s->time > 0.3f && !s->walk){
-		s->textureIndex=0; //temp
+		s->textureX=0; //temp
 	}
 	addLight(s->x, s->y, PLAYER_LIGHT_SIZE, PLAYER_LIGHT_BRIGHTNESS, true);
 	step(index);
@@ -49,8 +49,8 @@ void movePlayer(int index){
 	addLight(s->x, s->y, PLAYER_LIGHT_SIZE, PLAYER_LIGHT_BRIGHTNESS, false);
 }
 
-unsigned char createPlayer(unsigned char *animation, int frames, int x, int y){
-	unsigned char player=addSprite(ID_PLAYER, animation, frames, x, y, PLAYER_SPEED);
+unsigned char createPlayer(Texture *texture, unsigned char *animation, unsigned char frames, int x, int y){
+	unsigned char player=addSprite(ID_PLAYER, texture, animation, frames, x, y, PLAYER_SPEED);
 	//only create light if valid sprite
 	if (player < MAX_SPRITES){
 		addLight(x, y, PLAYER_LIGHT_SIZE, PLAYER_LIGHT_BRIGHTNESS, false);

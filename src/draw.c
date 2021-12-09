@@ -7,12 +7,14 @@ static unsigned char texCount;
 static Coordinates transform(float x, float y);
 static unsigned char *loadBitmap(char *filename, BITMAPINFOHEADER *bitmapInfoHeader);
 
-void initMap(int tex){
+void initMap(Texture *texture, unsigned char x, unsigned char y){
 	//init
 	spriteCount=0;
 	for (int i=0; i < MAP_Y; i++){
 		for (int j=0; j < MAP_X; j++){
-			map[i][j].textureIndex=tex;
+			map[i][j].texture=texture;
+			map[i][j].textureX=x;
+			map[i][j].textureY=y;
 			map[i][j].brightness=0.0f;
 			map[i][j].spriteIndex=MAX_SPRITES;
 			map[i][j].occupied=false;
@@ -21,11 +23,14 @@ void initMap(int tex){
 	}
 }
 
-unsigned char addSprite(unsigned char id, unsigned char* animation, int frames, int x, int y, float speed){
+unsigned char addSprite(unsigned char id, Texture *texture, unsigned char *animation, unsigned char frames, int x, int y, float speed){
 	if (spriteCount < MAX_SPRITES){
 		char out=spriteCount;
-		sprites[spriteCount].textureIndex=0;
+		sprites[spriteCount].textureX=0;
+		sprites[spriteCount].textureY=0;
+		sprites[spriteCount].texture=texture;
 		sprites[spriteCount].animation=animation;
+		sprites[spriteCount].frame=0;
 		sprites[spriteCount].frames=frames;
 		sprites[spriteCount].id=id;
 		sprites[spriteCount].x=x;
@@ -146,6 +151,9 @@ void drawMap(){
 	float ty;
 	Coordinates coord;
 	//start drawing
+	glBindTexture(GL_TEXTURE_2D, textures[0]);
+	//verts
+	glBegin(GL_QUADS);
 	for (int x=startX; x < xMax; x++){
 		for (int y=startY; y < yMax; y++){
 			//pathing debugging
@@ -164,21 +172,23 @@ void drawMap(){
 				mouseTileX=x;
 				mouseTileY=y;
 			}
-			glBindTexture(GL_TEXTURE_2D, textures[map[y][x].textureIndex]);
-			//verts
-			glBegin(GL_QUADS);
+			//texture mapping
+			float minTextureX=(float)(map[y][x].textureX)*map[y][x].texture->size / map[y][x].texture->width;
+			float maxTextureX=(float)(map[y][x].textureX+1)*map[y][x].texture->size / map[y][x].texture->width;
+			float minTextureY=1-(float)(map[y][x].textureY)*map[y][x].texture->size / map[y][x].texture->height;
+			float maxTextureY=1-(float)(map[y][x].textureY+1)*map[y][x].texture->size / map[y][x].texture->height;
 			//floor
 			glColor3f(map[y+1][x].brightness, map[y+1][x].brightness * pathing, map[y+1][x].brightness); //left
-			glTexCoord2f(0.0f,0.0f);
+			glTexCoord2f(minTextureX,minTextureY);
 			glVertex2f(tx-tileX,ty);
 			glColor3f(map[y][x].brightness, map[y][x].brightness * pathing, map[y][x].brightness); //top
-			glTexCoord2f(0.0f,1.0f);
+			glTexCoord2f(minTextureX,maxTextureY);
 			glVertex2f(tx,ty+tileY);
 			glColor3f(map[y][x+1].brightness, map[y][x+1].brightness * pathing, map[y][x+1].brightness); //right
-			glTexCoord2f(1.0f,1.0f);
+			glTexCoord2f(maxTextureX,maxTextureY);
 			glVertex2f(tx+tileX,ty);
 			glColor3f(map[y+1][x+1].brightness, map[y+1][x+1].brightness * pathing, map[y+1][x+1].brightness); //bot
-			glTexCoord2f(1.0f,0.0f);
+			glTexCoord2f(maxTextureX,minTextureY);
 			glVertex2f(tx,ty-tileY);
 			//draw wall
 			if (map[y][x].wall){
@@ -188,49 +198,49 @@ void drawMap(){
 				}
 				//top
 				glColor4f(map[y+1][x].brightness*0.6f, map[y+1][x].brightness*0.6f, map[y+1][x].brightness*0.6f, transparent);
-				glTexCoord2f(0.0f,0.0f);
+				glTexCoord2f(minTextureY,minTextureX);
 				glVertex2f(tx-tileX,ty+(tileY*3));
 				glColor4f(map[y][x].brightness*0.6f, map[y][x].brightness*0.6f, map[y][x].brightness*0.6f, transparent);
-				glTexCoord2f(0.0f,1.0f);
+				glTexCoord2f(minTextureY,maxTextureX);
 				glVertex2f(tx,ty+tileY+(tileY*3));
 				glColor4f(map[y][x+1].brightness*0.6f, map[y][x+1].brightness*0.6f, map[y][x+1].brightness*0.6f, transparent);
-				glTexCoord2f(1.0f,1.0f);
+				glTexCoord2f(maxTextureY,maxTextureX);
 				glVertex2f(tx+tileX,ty+(tileY*3));
 				glColor4f(map[y+1][x+1].brightness*0.6f, map[y+1][x+1].brightness*0.6f, map[y+1][x+1].brightness*0.6f, transparent);
-				glTexCoord2f(1.0f,0.0f);
+				glTexCoord2f(maxTextureY,minTextureX);
 				glVertex2f(tx,ty-tileY+(tileY*3));
 				//left face
 				if (!map[y+1][x].wall || transparent > 0.99f){
 					glColor4f(map[y+1][x].brightness, map[y+1][x].brightness, map[y+1][x].brightness, transparent);
-					glTexCoord2f(0.0f,0.0f);
+					glTexCoord2f(minTextureY,minTextureX);
 					glVertex2f(tx-tileX,ty);
 					glColor4f(map[y][x-1].brightness, map[y][x-1].brightness, map[y][x-1].brightness, transparent);
-					glTexCoord2f(0.0f,1.0f);
+					glTexCoord2f(minTextureY,maxTextureX);
 					glVertex2f(tx-tileX,ty+(tileY*3));
 					glColor4f(map[y][x+1].brightness, map[y][x+1].brightness, map[y][x+1].brightness, transparent);
-					glTexCoord2f(1.0f,1.0f);
+					glTexCoord2f(maxTextureY,maxTextureX);
 					glVertex2f(tx,ty-tileY+(tileY*3));
 					glColor4f(map[y+1][x+1].brightness, map[y+1][x+1].brightness, map[y+1][x+1].brightness, transparent);
-					glTexCoord2f(1.0f,0.0f);
+					glTexCoord2f(maxTextureY,minTextureX);
 					glVertex2f(tx,ty-tileY);
 				}
 				//right face
 				if (!map[y][x+1].wall || transparent > 0.99f){
 					glColor4f(map[y+1][x+1].brightness*0.8f, map[y+1][x+1].brightness*0.8f, map[y+1][x+1].brightness*0.8f, transparent);
-					glTexCoord2f(0.0f,0.0f);
+					glTexCoord2f(minTextureY,minTextureX);
 					glVertex2f(tx,ty-tileY);
 					glColor4f(map[y+1][x].brightness*0.8f, map[y+1][x].brightness*0.8f, map[y+1][x].brightness*0.8f, transparent);
-					glTexCoord2f(0.0f,1.0f);
+					glTexCoord2f(minTextureY,maxTextureX);
 					glVertex2f(tx,ty-tileY+(tileY*3));
 					glColor4f(map[y-1][x].brightness*0.8f, map[y-1][x].brightness*0.8f, map[y-1][x].brightness*0.8f, transparent);
-					glTexCoord2f(1.0f,1.0f);
+					glTexCoord2f(maxTextureY,maxTextureX);
 					glVertex2f(tx+tileX,ty+(tileY*3));
 					glColor4f(map[y][x+1].brightness*0.8f, map[y][x+1].brightness*0.8f, map[y][x+1].brightness*0.8f, transparent);
-					glTexCoord2f(1.0f,0.0f);
+					glTexCoord2f(maxTextureY,minTextureX);
 					glVertex2f(tx+tileX,ty);
 				}
 			}
-			glEnd();
+			
 			//draw sprite
 			if (map[y][x].spriteIndex != MAX_SPRITES){
 				int i=map[y][x].spriteIndex;
@@ -248,10 +258,12 @@ void drawMap(){
 				coord=transform(sx, sy);
 				tx=coord.x;
 				ty=coord.y;
-				// TEXTURE STUFFS
-				glBindTexture(GL_TEXTURE_2D, textures[sprites[i].animation[sprites[i].textureIndex]]);
+				//texture mapping
+				minTextureX=(float)sprites[map[y][x].spriteIndex].textureX*map[y][x].texture->size / map[y][x].texture->width;
+				maxTextureX=(float)(sprites[map[y][x].spriteIndex].textureX+1)*map[y][x].texture->size / map[y][x].texture->width;
+				minTextureY=(float)sprites[map[y][x].spriteIndex].textureY*map[y][x].texture->size / map[y][x].texture->height;
+				maxTextureY=(float)(sprites[map[y][x].spriteIndex].textureY+1)*map[y][x].texture->size / map[y][x].texture->height;
 				//verts
-				glBegin(GL_QUADS);
 				glTexCoord2f(0.0f,0.0f);
 				glVertex2f(tx-((TILE_X*0.5f*scale)/WIN_X), ty);
 				glTexCoord2f(0.0f,1.0f);
@@ -260,7 +272,6 @@ void drawMap(){
 				glVertex2f(tx+((TILE_X*0.5f*scale)/WIN_X), ty+((TILE_Y*3.0f*scale)/WIN_Y));
 				glTexCoord2f(1.0f,0.0f);
 				glVertex2f(tx+((TILE_X*0.5f*scale)/WIN_X), ty);
-				glEnd();
 			}
 			//draw projectiles
 			if (map[y][x].spriteIndex == MAX_SPRITES){
@@ -276,7 +287,7 @@ void drawMap(){
 						// TEXTURE STUFFS
 						glBindTexture(GL_TEXTURE_2D, textures[projectiles[i].textureIndex]);
 						//verts
-						glBegin(GL_QUADS);
+						//glBegin(GL_QUADS);
 						glTexCoord2f(0.0f,0.0f);
 						glVertex2f(tx-((TILE_Y*0.5f*scale)/WIN_X), ty+((TILE_Y*scale)/WIN_Y));
 						glTexCoord2f(0.0f,1.0f);
@@ -285,11 +296,12 @@ void drawMap(){
 						glVertex2f(tx+((TILE_Y*0.5f*scale)/WIN_X), ty+((TILE_Y*2.0f*scale)/WIN_Y));
 						glTexCoord2f(1.0f,0.0f);
 						glVertex2f(tx+((TILE_Y*0.5f*scale)/WIN_X), ty+((TILE_Y*scale)/WIN_Y));
-						glEnd();
+						//glEnd();
 					}
 				}
 			}
 			#ifdef DEBUG
+			glEnd();
 			glBindTexture(GL_TEXTURE_2D, 0);
 			glBegin(GL_QUADS);
 			glColor3f(0,1,0);
@@ -298,9 +310,11 @@ void drawMap(){
 			glVertex2f(tx-(6.0/WIN_X),ty+(6.0/WIN_Y));
 			glVertex2f(tx,ty+(6.0/WIN_Y));
 			glEnd();
+			glBegin(GL_QUADS);
 			#endif
 		}
 	}
+	glEnd();
 }
 
 static Coordinates transform(float x, float y){
@@ -374,8 +388,8 @@ static unsigned char *loadBitmap(char *filename, BITMAPINFOHEADER *bitmapInfoHea
     return finalBitmapImage;
 }
 
-//texture loading WIP
-unsigned char initTexture(char *name){
+Texture *initTexture(char *name, int size){
+	Texture *out=malloc(sizeof(Texture));
 	BITMAPINFOHEADER infoHeader;
 	unsigned char *pixelData;
 	pixelData=loadBitmap(name, &infoHeader);
@@ -395,13 +409,17 @@ unsigned char initTexture(char *name){
 		}
 		glTexEnvf(GL_TEXTURE_ENV, GL_TEXTURE_ENV_MODE, GL_MODULATE);
 		glTexImage2D(GL_TEXTURE_2D, 0, GL_RGBA, imgX, imgY, 0, GL_RGBA, GL_UNSIGNED_BYTE, pixelData);
-		unsigned char out=texCount;
+		out->textureIndex=texCount;
+		out->height=imgY;
+		out->width=imgX;
+		out->size=size;
 		texCount++;
 		free(pixelData);
 		return out;
 	}else{
 		printf("FAILED LOADING %s\n",name);
 		free(pixelData);
-		return MAX_TEXTURES;
+		free(out);
+		return NULL;
 	}
 }
