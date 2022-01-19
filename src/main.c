@@ -35,8 +35,8 @@ int main(){
 	scale=1.0f;
 	camX=MAP_X/2.0f;
 	camY=MAP_Y/2.0f;
-	unsigned char panim[4]={1,4,5,8};
-	unsigned char banim[3]={2,7,6};
+	unsigned char panim[1][2]={ {0, 1} };
+	unsigned char banim[1][2]={ {1, 1} };
 	startWindow("tiles");
 	Texture *t=initTexture("t0.bmp", 96);
 	/*initTexture("t1.bmp");
@@ -50,12 +50,12 @@ int main(){
 	initTexture("t9.bmp");*/
 	initMap(t, 0, 0);
 	initLight();
-	unsigned char player=createPlayer(t, panim, 3, camX, camY);
-	addSprite(ID_BOT, t, banim, 3, round(camX)-3, round(camY)+1, 1.9f); //test bot 1
-	addSprite(ID_BOT, t, banim, 3, round(camX)-3, round(camY)+2, 1.5f); //test bot 2
-	addSprite(ID_BOT, t, banim, 3, round(camX)+3, round(camY)+3, 1.8f); //test bot 3
-	addSprite(ID_BOT, t, banim, 3, round(camX)+5, round(camY)-2, 2.0f); //test bot 4
-	addSprite(ID_BOT, t, banim, 3, round(camX)-4, round(camY)-3, 1.6f); //test bot 5
+	unsigned char player=createPlayer(t, 3, panim, camX, camY);
+	addSprite(ID_BOT, t, 1, banim, round(camX)-3, round(camY)+1, 1.9f); //test bot 1
+	addSprite(ID_BOT, t, 1, banim, round(camX)-3, round(camY)+2, 1.5f); //test bot 2
+	addSprite(ID_BOT, t, 1, banim, round(camX)+3, round(camY)+3, 1.8f); //test bot 3
+	addSprite(ID_BOT, t, 1, banim, round(camX)+5, round(camY)-2, 2.0f); //test bot 4
+	addSprite(ID_BOT, t, 1, banim, round(camX)-4, round(camY)-3, 1.6f); //test bot 5
 	//render
 	while (windowLoop()){
 		glClear(GL_COLOR_BUFFER_BIT);

@@ -117,7 +117,7 @@ extern Sprite sprites[MAX_SPRITES];
 extern unsigned char spriteCount;
 
 void initMap(Texture *texture, unsigned char x, unsigned char y);
-unsigned char addSprite(unsigned char id, Texture* texture, unsigned char *animation, unsigned char frames, int x, int y, float speed);
+unsigned char addSprite(unsigned char id, Texture* texture, unsigned char frames, unsigned char animation[frames][2], int x, int y, float speed);
 void removeSprite(int index);
 void computeLightMap(Light *lights, int total, bool neg);
 void addLight(int x, int y, int size, float brightness, bool neg);

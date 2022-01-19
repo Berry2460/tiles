@@ -49,8 +49,8 @@ void movePlayer(int index){
 	addLight(s->x, s->y, PLAYER_LIGHT_SIZE, PLAYER_LIGHT_BRIGHTNESS, false);
 }
 
-unsigned char createPlayer(Texture *texture, unsigned char *animation, unsigned char frames, int x, int y){
-	unsigned char player=addSprite(ID_PLAYER, texture, animation, frames, x, y, PLAYER_SPEED);
+unsigned char createPlayer(Texture *texture, unsigned char frames, unsigned char animation[frames][2], int x, int y){
+	unsigned char player=addSprite(ID_PLAYER, texture, frames, animation, x, y, PLAYER_SPEED);
 	//only create light if valid sprite
 	if (player < MAX_SPRITES){
 		addLight(x, y, PLAYER_LIGHT_SIZE, PLAYER_LIGHT_BRIGHTNESS, false);
