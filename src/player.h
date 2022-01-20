@@ -9,5 +9,5 @@
 
 void playerControl(int index);
 void movePlayer(int index);
-unsigned char createPlayer(Texture *Texture, unsigned char frames, unsigned char animation[frames][2], int x, int y);
+unsigned char createPlayer(unsigned char frames, unsigned char animation[frames][2], int x, int y);
 #endif

@@ -7,7 +7,8 @@
 #include "draw.h"
 
 typedef struct Projectile{
-	unsigned char textureIndex;
+	unsigned char textureX;
+	unsigned char textureY;
 	int startX;
 	int startY;
 	float x;
@@ -23,5 +24,5 @@ extern Projectile projectiles[MAX_PROJECTILES];
 extern unsigned char projectileCount;
 
 void moveProjectiles();
-void addProjectile(int tex, int x, int y, int destX, int destY, float speed, bool glow);
+void addProjectile(int tx, int ty, int x, int y, int destX, int destY, float speed, bool glow);
 #endif

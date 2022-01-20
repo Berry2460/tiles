@@ -4,7 +4,7 @@ static void shootPlayerProjectile(int index);
 
 static void shootPlayerProjectile(int index){
 	if (!sprites[index].walk){
-		addProjectile(4, sprites[index].x, sprites[index].y, mouseTileX, mouseTileY, 5.0f, true);
+		addProjectile(2, 0, sprites[index].x, sprites[index].y, mouseTileX, mouseTileY, 5.0f, true);
 		//animation
 		sprites[index].time=glfwGetTime();
 		sprites[index].frame=3;
@@ -49,8 +49,8 @@ void movePlayer(int index){
 	addLight(s->x, s->y, PLAYER_LIGHT_SIZE, PLAYER_LIGHT_BRIGHTNESS, false);
 }
 
-unsigned char createPlayer(Texture *texture, unsigned char frames, unsigned char animation[frames][2], int x, int y){
-	unsigned char player=addSprite(ID_PLAYER, texture, frames, animation, x, y, PLAYER_SPEED);
+unsigned char createPlayer(unsigned char frames, unsigned char animation[frames][2], int x, int y){
+	unsigned char player=addSprite(ID_PLAYER, frames, animation, x, y, PLAYER_SPEED);
 	//only create light if valid sprite
 	if (player < MAX_SPRITES){
 		addLight(x, y, PLAYER_LIGHT_SIZE, PLAYER_LIGHT_BRIGHTNESS, false);
