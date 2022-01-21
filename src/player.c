@@ -1,4 +1,8 @@
 #include "player.h"
+#include "draw.h"
+#include "step.h"
+#include "missiles.h"
+#include "window.h"
 
 static void shootPlayerProjectile(int index);
 
@@ -7,7 +11,7 @@ static void shootPlayerProjectile(int index){
 		addProjectile(2, 0, sprites[index].x, sprites[index].y, mouseTileX, mouseTileY, 5.0f, true);
 		//animation
 		sprites[index].time=glfwGetTime();
-		sprites[index].frame=3;
+		//sprites[index].frame=3;
 	}else{
 		newDest(index, sprites[index].toStepX, sprites[index].toStepY);
 	}
@@ -22,6 +26,11 @@ void playerControl(int index){
 	//player movement with mouse and target fire
 	else if (keys[LMB]){
 		if (map[mouseTileY][mouseTileX].spriteIndex != MAX_SPRITES && sprites[map[mouseTileY][mouseTileX].spriteIndex].id == ID_BOT){
+			shootPlayerProjectile(index);
+		}
+		else if (map[mouseTileY+1][mouseTileX+1].spriteIndex != MAX_SPRITES && sprites[map[mouseTileY+1][mouseTileX+1].spriteIndex].id == ID_BOT){
+			mouseTileY+=1;
+			mouseTileX+=1;
 			shootPlayerProjectile(index);
 		}else{
 			newDest(index, mouseTileX, mouseTileY);
@@ -39,7 +48,7 @@ void movePlayer(int index){
 	Sprite *s=&sprites[index];
 	//attack animation
 	if (glfwGetTime()-s->time > 0.3f && !s->walk){
-		s->textureX=0; //temp
+		s->frame=0; //temp
 	}
 	addLight(s->x, s->y, PLAYER_LIGHT_SIZE, PLAYER_LIGHT_BRIGHTNESS, true);
 	step(index);

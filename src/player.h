@@ -5,7 +5,7 @@
 #define PLAYER_LIGHT_SIZE 19
 #define PLAYER_SPEED 2.2f
 
-#include "draw.h"
+#include <stdbool.h>
 
 void playerControl(int index);
 void movePlayer(int index);

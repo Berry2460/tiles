@@ -3,7 +3,7 @@
 
 #define WIN_X 1280
 #define WIN_Y 720
-#define V_SYNC 0
+#define V_SYNC 1
 
 #define KEYS 8
 
@@ -16,9 +16,7 @@
 #define LMB 6
 #define RMB 7
 
-#include <stdio.h>
-#include "GLFW/glfw3.h"
-#include "draw.h"
+#include <stdbool.h>
 
 extern int frames;
 extern int fps;

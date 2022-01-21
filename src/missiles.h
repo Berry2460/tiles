@@ -4,7 +4,7 @@
 #define MAX_PROJECTILES 255
 #define PROJECTILE_RANGE 15
 
-#include "draw.h"
+#include <stdbool.h>
 
 typedef struct Projectile{
 	unsigned char textureX;

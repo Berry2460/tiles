@@ -1,4 +1,7 @@
 #include "draw.h"
+#include "window.h"
+#include "ai.h"
+#include "missiles.h"
 
 static float tileX;
 static float tileY;
@@ -6,7 +9,7 @@ static unsigned char texCount;
 
 static Coordinates transform(float x, float y);
 static unsigned char *loadBitmap(char *filename, BITMAPINFOHEADER *bitmapInfoHeader);
-static void texMap(float *xmin, float *xmax, float *ymin, float *ymax, int tx, int ty, int ts, int tw, int th);
+static void texMap(float *xmin, float *xmax, float *ymin, float *ymax, unsigned char tx, unsigned char ty, int ts, int tw, int th);
 
 void initMap(Texture *texture, unsigned char x, unsigned char y){
 	//init
@@ -27,9 +30,9 @@ void initMap(Texture *texture, unsigned char x, unsigned char y){
 unsigned char addSprite(unsigned char id, unsigned char frames, unsigned char animation[frames][2], int x, int y, float speed){
 	if (spriteCount < MAX_SPRITES){
 		char out=spriteCount;
-		sprites[spriteCount].textureX=animation[0][0];
-		sprites[spriteCount].textureY=animation[0][1];
-		sprites[spriteCount].animation=animation;
+		//sprites[spriteCount].textureX=animation[0][0];
+		//sprites[spriteCount].textureY=animation[0][1];
+		sprites[spriteCount].animation=(unsigned char *)animation;
 		sprites[spriteCount].frame=0;
 		sprites[spriteCount].frames=frames;
 		sprites[spriteCount].id=id;
@@ -157,6 +160,9 @@ void drawMap(){
 	Coordinates coord;
 	//start drawing
 	glBindTexture(GL_TEXTURE_2D, textures[0]);
+	#ifdef NO_TEXTURES
+	glBindTexture(GL_TEXTURE_2D, 0);
+	#endif
 	//verts
 	glBegin(GL_QUADS);
 	for (int x=startX; x < xMax; x++){
@@ -261,7 +267,7 @@ void drawMap(){
 				tx=coord.x;
 				ty=coord.y;
 				//texture mapping
-				texMap(&minTextureX, &maxTextureX, &minTextureY, &maxTextureY, sprites[map[y][x].spriteIndex].textureX, sprites[map[y][x].spriteIndex].textureY, map[y][x].texture->size, map[y][x].texture->width, map[y][x].texture->height);
+				texMap(&minTextureX, &maxTextureX, &minTextureY, &maxTextureY, sprites[map[y][x].spriteIndex].animation[sprites[map[y][x].spriteIndex].frame*2], sprites[map[y][x].spriteIndex].animation[sprites[map[y][x].spriteIndex].frame*2+1], map[y][x].texture->size, map[y][x].texture->width, map[y][x].texture->height);
 				//verts
 				glTexCoord2f(minTextureX, maxTextureY);
 				glVertex2f(tx-((TILE_X*0.5f*scale)/WIN_X), ty);
@@ -298,23 +304,18 @@ void drawMap(){
 				}
 			}
 			#ifdef DEBUG
-			glEnd();
-			glBindTexture(GL_TEXTURE_2D, 0);
-			glBegin(GL_QUADS);
 			glColor3f(0,1,0);
 			glVertex2f(tx,ty);
 			glVertex2f(tx-(6.0/WIN_X),ty);
 			glVertex2f(tx-(6.0/WIN_X),ty+(6.0/WIN_Y));
 			glVertex2f(tx,ty+(6.0/WIN_Y));
-			glEnd();
-			glBegin(GL_QUADS);
 			#endif
 		}
 	}
 	glEnd();
 }
 
-static void texMap(float *xmin, float *xmax, float *ymin, float *ymax, int tx, int ty, int ts, int tw, int th){
+static void texMap(float *xmin, float *xmax, float *ymin, float *ymax, unsigned char tx, unsigned char ty, int ts, int tw, int th){
 	*xmin=(float)((tx)*ts+1) / tw;
 	*xmax=(float)((tx+1)*ts-1) / tw;
 	*ymin=1-(float)((ty)*ts+1) / th;

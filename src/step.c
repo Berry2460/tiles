@@ -1,4 +1,7 @@
 #include "step.h"
+#include "window.h"
+#include "draw.h"
+#include "ai.h"
 
 //clockwise direction table, 0 = bottom face
 static unsigned char walkTable[3][3]={{4,5,6},
@@ -79,7 +82,7 @@ void step(int index){
 			s->offy=s->offy+offy;
 			if (fabs(s->offx) > 1.0f/s->frames*(s->frame+1) || fabs(s->offy) > 1.0f/s->frames*(s->frame+1)){
 				//direction
-				s->frame=(s->frame+1)%s->frames+(walkTable[s->nextY+1][s->nextX+1]*frames*DIRECTIONAL_WALKING);
+				s->frame=(s->frame+1)%s->frames+(walkTable[s->nextY+1][s->nextX+1]*s->frames*DIRECTIONAL_WALKING);
 			}
 		}
 	}

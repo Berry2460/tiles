@@ -1,4 +1,6 @@
 #include "window.h"
+#include "draw.h"
+#include "GLFW/glfw3.h"
 
 static char* title;
 static float start;

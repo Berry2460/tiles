@@ -2,6 +2,7 @@
 #define DRAW_H
 
 //#define DEBUG
+//#define NO_TEXTURES
 //#define NO_CULLING
 
 #define MAP_X 512
@@ -21,9 +22,8 @@
 #include <windows.h>
 #include <math.h>
 #include <stdbool.h>
-#include "window.h"
-#include "ai.h"
-#include "missiles.h"
+
+#include "GLFW/glfw3.h"
 
 /*
 typedef struct tagBITMAPFILEHEADER
@@ -64,8 +64,8 @@ typedef struct Texture{
 }Texture;
 
 typedef struct Sprite{
-	unsigned char textureX;
-	unsigned char textureY;
+	//unsigned char textureX;
+	//unsigned char textureY;
 	unsigned char frame;
 	unsigned char frames;
 	unsigned char *animation;

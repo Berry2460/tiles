@@ -1,4 +1,6 @@
 #include "missiles.h"
+#include "draw.h"
+#include "window.h"
 
 static void removeProjectile(int index);
 

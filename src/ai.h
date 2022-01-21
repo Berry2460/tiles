@@ -5,6 +5,7 @@
 #define BOT_WAIT_TIME 1.5f
 
 #include "step.h"
+#include "draw.h"
 
 extern int seed;
 extern unsigned char bots[MAX_SPRITES];
