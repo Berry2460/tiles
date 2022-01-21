@@ -64,8 +64,6 @@ typedef struct Texture{
 }Texture;
 
 typedef struct Sprite{
-	//unsigned char textureX;
-	//unsigned char textureY;
 	unsigned char frame;
 	unsigned char frames;
 	unsigned char *animation;
