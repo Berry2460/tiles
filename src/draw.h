@@ -5,6 +5,10 @@
 //#define NO_TEXTURES
 //#define NO_CULLING
 
+#define MIN_SCALE 0.5f
+#define MAX_SCALE 2.0f
+#define SCALE_AMOUNT 0.06f
+
 #define MAP_X 512
 #define MAP_Y 512
 #define MAX_SPRITES 255

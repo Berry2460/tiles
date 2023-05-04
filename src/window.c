@@ -18,12 +18,12 @@ static void mouse(GLFWwindow* window, double x, double y){ //update mouse
 
 static void scroll(GLFWwindow* window, double xoffset, double yoffset){ //zoom
 	if (yoffset > 0){
-		scale+=0.06f*scale;
-		if (scale > 2.0f){scale=2.0f;}
+		scale+=SCALE_AMOUNT*scale;
+		if (scale > MAX_SCALE){scale=MAX_SCALE;}
 	}
 	else if (yoffset < 0){
-		scale-=0.06f*scale;
-		if (scale < 0.75f){scale=0.75f;}
+		scale-=SCALE_AMOUNT*scale;
+		if (scale < MIN_SCALE){scale=MIN_SCALE;}
 	}
 }
 

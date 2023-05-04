@@ -2,7 +2,7 @@
 #define PLAYER_H
 
 #define PLAYER_LIGHT_BRIGHTNESS 1.3f
-#define PLAYER_LIGHT_SIZE 15
+#define PLAYER_LIGHT_SIZE 14
 #define PLAYER_SPEED 2.2f
 
 #include <stdbool.h>

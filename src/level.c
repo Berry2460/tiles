@@ -69,7 +69,7 @@ void generateLevel(Texture *texture, int x, int y){
 				else{
 					dirY=((newSeed()&1)<<1)-1;
 				}
-				carveMap(x, y, offx+(sizex>>1), offy+(sizey>>1), ROOM_SIZE_MAX*dirX+1, ROOM_SIZE_MAX*dirY+1, false);
+				carveMap(x, y, offx+(sizex>>1), offy+(sizey>>1), ROOM_SIZE_MAX*dirX+2, ROOM_SIZE_MAX*dirY+2, false);
 			}
 			offx+=sizex+(newSeed()%ROOM_SIZE_MIN)+2;
 		}
