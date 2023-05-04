@@ -3,8 +3,8 @@
 
 #include "draw.h"
 
-#define ROOM_SIZE_MAX 11
-#define ROOM_SIZE_MIN 4
+#define ROOM_SIZE_MAX 13
+#define ROOM_SIZE_MIN 6
 
 void computeLightMap(Light *lights, int total, bool neg);
 void addLight(int x, int y, int size, float brightness, bool neg);

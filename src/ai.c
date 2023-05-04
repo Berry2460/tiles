@@ -3,7 +3,7 @@
 static void newBotRoute(int index);
 
 int newSeed(){
-	seed=(seed+(seed>>1)+1)%1000000000;
+	seed=(seed+(seed>>1)+1)%1000000007; //prime mod
 	return seed;
 }
 

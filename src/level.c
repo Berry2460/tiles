@@ -18,33 +18,64 @@ static void initMap(Texture *texture, unsigned char x, unsigned char y, bool occ
 }
 
 static void carveMap(unsigned char x, unsigned char y, int startx, int starty, int width, int height, bool occupied){
-	for (int i=startx; i < startx+width; i++){
-		for (int j=starty; j < starty+height; j++){
-			map[i][j].textureX=x;
-			map[i][j].textureY=y;
-			map[i][j].brightness=0.0f;
-			map[i][j].spriteIndex=MAX_SPRITES;
-			map[i][j].occupied=occupied;
-			map[i][j].wall=occupied;
+	int endx=startx+width;
+	int endy=starty+height;
+	if (startx > endx){
+		int temp=startx;
+		startx=endx;
+		endx=temp;
+	}
+	if (starty > endy){
+		int temp=starty;
+		starty=endy;
+		endy=temp;
+	}
+	for (int i=startx; i < endx; i++){
+		for (int j=starty; j < endy; j++){
+			if (i < MAP_X-2 && j < MAP_Y-2 && i > 1 && j > 1){
+				map[i][j].textureX=x;
+				map[i][j].textureY=y;
+				map[i][j].brightness=0.0f;
+				map[i][j].spriteIndex=MAX_SPRITES;
+				map[i][j].occupied=occupied;
+				map[i][j].wall=occupied;
+			}
 		}
 	}
 }
 
 void generateLevel(Texture *texture, int x, int y){
 	initMap(texture, 1, y, true);
-	int offx=ROOM_SIZE_MAX;
-	int offy=ROOM_SIZE_MAX;
+	int offx=ROOM_SIZE_MIN;
+	int offy=ROOM_SIZE_MIN;
+	int largesty=0;
 	bool done=false;
 	while (!done){
 		int sizex=newSeed()%(ROOM_SIZE_MAX-ROOM_SIZE_MIN)+ROOM_SIZE_MIN;
 		int sizey=newSeed()%(ROOM_SIZE_MAX-ROOM_SIZE_MIN)+ROOM_SIZE_MIN;
+		if (sizey > largesty){
+			largesty=sizey;
+		}
 		if (sizex+offx < MAP_X && sizey+offy < MAP_Y){
 			carveMap(x, y, offx, offy, sizex, sizey, false);
-			offx+=ROOM_SIZE_MAX;
+			int hallways=(newSeed()&1)+2;
+			while (hallways){
+				int dirX=0;
+				int dirY=0;
+				hallways--;
+				if (newSeed()&1){
+					dirX=((newSeed()&1)<<1)-1;
+				}
+				else{
+					dirY=((newSeed()&1)<<1)-1;
+				}
+				carveMap(x, y, offx+(sizex>>1), offy+(sizey>>1), ROOM_SIZE_MAX*dirX+1, ROOM_SIZE_MAX*dirY+1, false);
+			}
+			offx+=sizex+(newSeed()%ROOM_SIZE_MIN)+2;
 		}
 		else if (sizex+offx >= MAP_X){
-			offy+=ROOM_SIZE_MAX;
-			offx=ROOM_SIZE_MAX;
+			offy+=largesty+(newSeed()%ROOM_SIZE_MIN)+1;
+			offx=ROOM_SIZE_MAX+(newSeed()%ROOM_SIZE_MIN);
 		}
 		else if (sizey+offy >= MAP_Y){
 			done=true;
