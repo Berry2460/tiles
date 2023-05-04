@@ -101,24 +101,18 @@ typedef struct Light{
 	float brightness;
 }Light;
 
-
-
 extern GLuint *textures; //texture data
 extern float scale;
 extern float camX;
 extern float camY;
 extern int mouseTileX;
 extern int mouseTileY;
-extern Tile map[MAP_Y][MAP_X];
 extern Sprite sprites[MAX_SPRITES];
 extern unsigned char spriteCount;
+extern Tile map[MAP_Y][MAP_X];
 
-void initMap(Texture *texture, unsigned char x, unsigned char y);
 unsigned char addSprite(unsigned char id, unsigned char frames, unsigned char animation[frames][2], int x, int y, float speed);
 void removeSprite(int index);
-void computeLightMap(Light *lights, int total, bool neg);
-void addLight(int x, int y, int size, float brightness, bool neg);
-void initLight();
 void drawMap();
 Texture *initTexture(char* name, int size);
 #endif

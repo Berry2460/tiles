@@ -3,6 +3,7 @@
 #include "step.h"
 #include "missiles.h"
 #include "window.h"
+#include "level.h"
 
 static void shootPlayerProjectile(int index);
 
@@ -38,9 +39,18 @@ void playerControl(int index){
 		}
 	}
 	else if (keys[RMB]){
-		map[mouseTileY][mouseTileX].textureX=1;
-		map[mouseTileY][mouseTileX].wall=true;
-		map[mouseTileY][mouseTileX].occupied=true;
+		map[mouseTileY][mouseTileX].textureX=0;
+		map[mouseTileY][mouseTileX].wall=false;
+		map[mouseTileY][mouseTileX].occupied=false;
+	}
+	else if (keys[KEY_D]){
+		Light light[1];
+		light[0].x=mouseTileX;
+		light[0].y=mouseTileY;
+		light[0].size=13;
+		light[0].brightness=0.6f;
+		computeLightMap(light, 1, false);
+		keys[KEY_D]=false;
 	}
 }
 

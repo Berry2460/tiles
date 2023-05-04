@@ -9,6 +9,7 @@
 #include "player.h"
 #include "missiles.h"
 #include "window.h"
+#include "level.h"
 
 #include "GLFW/glfw3.h"
 
@@ -51,7 +52,7 @@ int main(){
 	unsigned char banim[3][2]={ {0, 2}, {1, 2}, {2, 2} };
 	startWindow("tiles");
 	Texture *t=initTexture("t0.bmp", 96);
-	initMap(t, 0, 0);
+	generateLevel(t, 0, 0);
 	initLight();
 	unsigned char player=createPlayer(3, panim, camX, camY);
 	addSprite(ID_BOT, 3, banim, round(camX)-3, round(camY)+1, 1.9f); //test bot 1

@@ -1,16 +1,16 @@
 #ifndef WINDOW_H
 #define WINDOW_H
 
-#define WIN_X 1280
-#define WIN_Y 720
+#define WIN_X 800
+#define WIN_Y 600
 #define V_SYNC 1
 
 #define KEYS 8
 
-#define W 0
-#define S 1
-#define A 2
-#define D 3
+#define KEY_W 0
+#define KEY_S 1
+#define KEY_A 2
+#define KEY_D 3
 #define SPACE 4
 #define SHIFT 5
 #define LMB 6

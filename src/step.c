@@ -2,6 +2,7 @@
 #include "window.h"
 #include "draw.h"
 #include "ai.h"
+#include "level.h"
 
 //clockwise direction table, 0 = bottom face
 static unsigned char walkTable[3][3]={{4,5,6},

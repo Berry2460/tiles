@@ -47,20 +47,20 @@ static void buttons(GLFWwindow* window, int key, int scancode, int action, int m
 			else if (action == GLFW_RELEASE){keys[SPACE]=false;};
 			break;
 		case GLFW_KEY_W:
-			if (action == GLFW_PRESS){keys[W]=true;}
-			else if (action == GLFW_RELEASE){keys[W]=false;};
+			if (action == GLFW_PRESS){keys[KEY_W]=true;}
+			else if (action == GLFW_RELEASE){keys[KEY_W]=false;};
 			break;
 		case GLFW_KEY_S:
-			if (action == GLFW_PRESS){keys[S]=true;}
-			else if (action == GLFW_RELEASE){keys[S]=false;};
+			if (action == GLFW_PRESS){keys[KEY_S]=true;}
+			else if (action == GLFW_RELEASE){keys[KEY_S]=false;};
 			break;
 		case GLFW_KEY_A:
-			if (action == GLFW_PRESS){keys[A]=true;}
-			else if (action == GLFW_RELEASE){keys[A]=false;};
+			if (action == GLFW_PRESS){keys[KEY_A]=true;}
+			else if (action == GLFW_RELEASE){keys[KEY_A]=false;};
 			break;
 		case GLFW_KEY_D:
-			if (action == GLFW_PRESS){keys[D]=true;}
-			else if (action == GLFW_RELEASE){keys[D]=false;};
+			if (action == GLFW_PRESS){keys[KEY_D]=true;}
+			else if (action == GLFW_RELEASE){keys[KEY_D]=false;};
 			break;
 		case GLFW_KEY_LEFT_SHIFT:
 			if (action == GLFW_PRESS){keys[SHIFT]=true;}

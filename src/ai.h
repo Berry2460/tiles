@@ -11,6 +11,6 @@ extern int seed;
 extern unsigned char bots[MAX_SPRITES];
 extern unsigned char botCount;
 
-void newSeed();
+int newSeed();
 void moveBots();
 #endif

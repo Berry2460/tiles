@@ -1,9 +1,10 @@
 #include "ai.h"
 
-static void newBotRoute();
+static void newBotRoute(int index);
 
-void newSeed(){
+int newSeed(){
 	seed=(seed+(seed>>1)+1)%1000000000;
+	return seed;
 }
 
 void moveBots(){
