@@ -57,9 +57,11 @@ void playerControl(int index){
 void movePlayer(int index){
 	Sprite *s=&sprites[index];
 	//attack animation
+	/*
 	if (glfwGetTime()-s->time > 0.3f && !s->walk){
 		s->frame=0; //temp
 	}
+	*/
 	addLight(s->x, s->y, PLAYER_LIGHT_SIZE, PLAYER_LIGHT_BRIGHTNESS, true);
 	step(index);
 	//follow cam

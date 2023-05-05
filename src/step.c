@@ -33,7 +33,7 @@ void nextStep(int index){
 				//check if hit player
 				break;
 			case ID_PLAYER:
-				//check if it bot
+				//check if hit bot
 				break;
 			case ID_PROJECTILE:
 				//check if hit bot or player
@@ -60,7 +60,6 @@ void newDest(int index, int x, int y){
 		s->stepDestX=x;
 		s->stepDestY=y;
 	}else{ //new cycle
-		s->frame=0;
 		s->walk=true;
 		s->stepDestX=x;
 		s->stepDestY=y;
@@ -75,6 +74,7 @@ void step(int index){
 	//offset
 	if (s->walk){
 		if (fabs(s->offx) >= 1 || fabs(s->offy) >= 1){
+			s->frame=walkTable[s->nextY+1][s->nextX+1]*s->frames;
 			nextStep(index);
 		}else{
 			float offx=(s->speed/(float)fps)*(s->x-s->toStepX);
