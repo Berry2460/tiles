@@ -67,7 +67,7 @@ static void addProp(int x, int y, bool light){
 		addSprite(ID_PROP, false, 1, barrelSprite, x, y, 0.0f);
 	}
 
-	if (newSeed()&1){
+	if (newSeed()%3){
 		addSprite(ID_BOT, true, 3, banim, x+1, y, 1.9f);
 	}
 }
@@ -102,7 +102,7 @@ void generateLevel(Texture *texture, int x, int y){
 					dirY=((newSeed()&1)<<1)-1;
 					hallmodX=2;
 				}
-				carveMap(x, y, offx+(sizex>>1), offy+(sizey>>1), (ROOM_SIZE_MAX+1)*dirX+hallmodX, (ROOM_SIZE_MAX+1)*dirY+hallmodY);
+				carveMap(x, y, offx+(sizex>>1), offy+(sizey>>1), (ROOM_SIZE_MAX+hallmodY)*dirX+hallmodX, (ROOM_SIZE_MAX+hallmodX)*dirY+hallmodY);
 			}
 			offx+=sizex+(newSeed()%ROOM_SIZE_MIN)+2;
 		}
