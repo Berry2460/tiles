@@ -1,7 +1,8 @@
-# 2D Tile Renderer
+# 2D Tile Game
 ### Features:
+- random level generation
 - renders and culls tiles
-- sprites
+- sprites with 8 rotations and animations
 - movement and interpolation between tiles
 - camera follow and zoom
 - projectiles and collision
