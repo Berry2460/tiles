@@ -22,7 +22,7 @@ int mouseTileX;
 int mouseTileY;
 Tile map[MAP_Y][MAP_X];
 Sprite sprites[MAX_SPRITES];
-unsigned char spriteCount;
+int spriteCount;
 
 //window globals
 int fps;
@@ -33,8 +33,8 @@ bool keys[KEYS];
 bool keysPress[KEYS];
 
 //ai globals
-unsigned char bots[MAX_SPRITES];
-unsigned char botCount;
+int bots[MAX_SPRITES];
+int botCount;
 
 //missile globals
 Projectile projectiles[MAX_PROJECTILES];
@@ -55,26 +55,13 @@ int main(){
 								  {0, 5}, {1, 5}, {2, 5},
 								  {0, 6}, {1, 6}, {2, 6},
 								  {0, 7}, {1, 7}, {2, 7},
-								  {0, 8}, {1, 8}, {2, 8}};
+								  {0, 8}, {1, 8}, {2, 8} };
 
-	unsigned char banim[3*8][2]={ {0, 2}, {1, 2}, {2, 2},
-								  {0, 2}, {1, 2}, {2, 2}, 
-								  {0, 2}, {1, 2}, {2, 2},
-								  {0, 2}, {1, 2}, {2, 2},
-								  {0, 2}, {1, 2}, {2, 2},
-								  {0, 2}, {1, 2}, {2, 2},
-								  {0, 2}, {1, 2}, {2, 2},
-								  {0, 2}, {1, 2}, {2, 2}};
 	startWindow("tiles");
 	Texture *t=initTexture("t0.bmp", 96);
 	generateLevel(t, 0, 0);
 	initLight();
-	unsigned char player=createPlayer(3, panim, camX, camY);
-	//addSprite(ID_BOT, 3, banim, round(camX)-3, round(camY)+1, 1.9f); //test bot 1
-	//addSprite(ID_BOT, 3, banim, round(camX)-3, round(camY)+2, 1.5f); //test bot 2
-	//addSprite(ID_BOT, 3, banim, round(camX)+3, round(camY)+3, 1.8f); //test bot 3
-	//addSprite(ID_BOT, 3, banim, round(camX)+5, round(camY)-2, 2.0f); //test bot 4
-	//addSprite(ID_BOT, 3, banim, round(camX)-4, round(camY)-3, 1.6f); //test bot 5
+	int player=createPlayer(3, true, panim, camX, camY);
 	//render
 	while (windowLoop()){
 		glClear(GL_COLOR_BUFFER_BIT);

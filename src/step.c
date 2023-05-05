@@ -74,7 +74,7 @@ void step(int index){
 	//offset
 	if (s->walk){
 		if (fabs(s->offx) >= 1 || fabs(s->offy) >= 1){
-			s->frame=walkTable[s->nextY+1][s->nextX+1]*s->frames;
+			s->frame=walkTable[s->nextY+1][s->nextX+1]*s->frames*s->directional;
 			nextStep(index);
 		}else{
 			float offx=(s->speed/(float)fps)*(s->x-s->toStepX);
@@ -83,7 +83,7 @@ void step(int index){
 			s->offy=s->offy+offy;
 			if (fabs(s->offx) > 1.0f/s->frames*((s->frame%s->frames)+1) || fabs(s->offy) > 1.0f/s->frames*((s->frame%s->frames)+1)){
 				//direction
-				s->frame=(s->frame+1)%s->frames+(walkTable[s->nextY+1][s->nextX+1]*s->frames);
+				s->frame=(s->frame+1)%s->frames+(walkTable[s->nextY+1][s->nextX+1]*s->frames*s->directional);
 			}
 		}
 	}

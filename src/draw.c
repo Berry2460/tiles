@@ -11,11 +11,10 @@ static Coordinates transform(float x, float y);
 static unsigned char *loadBitmap(char *filename, BITMAPINFOHEADER *bitmapInfoHeader);
 static void texMap(float *xmin, float *xmax, float *ymin, float *ymax, unsigned char tx, unsigned char ty, int ts, int tw, int th);
 
-unsigned char addSprite(unsigned char id, unsigned char frames, unsigned char animation[frames][2], int x, int y, float speed){
+int addSprite(unsigned char id, bool directional, unsigned char frames, unsigned char animation[][2], int x, int y, float speed){
 	if (spriteCount < MAX_SPRITES){
-		char out=spriteCount;
-		//sprites[spriteCount].textureX=animation[0][0];
-		//sprites[spriteCount].textureY=animation[0][1];
+		int out=spriteCount;
+		sprites[spriteCount].directional=directional;
 		sprites[spriteCount].animation=(unsigned char *)animation;
 		sprites[spriteCount].frame=0;
 		sprites[spriteCount].frames=frames;

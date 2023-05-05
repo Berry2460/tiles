@@ -9,9 +9,9 @@
 #define MAX_SCALE 2.0f
 #define SCALE_AMOUNT 0.06f
 
-#define MAP_X 512
-#define MAP_Y 512
-#define MAX_SPRITES 255
+#define MAP_X 384
+#define MAP_Y 384
+#define MAX_SPRITES 4096
 #define TILE_X 128.0f
 #define TILE_Y 64.0f
 #define BILINEAR 1
@@ -21,6 +21,7 @@
 #define ID_PLAYER 0
 #define ID_BOT 1
 #define ID_PROJECTILE 2
+#define ID_PROP 3
 
 #include <stdio.h>
 #include <windows.h>
@@ -68,6 +69,7 @@ typedef struct Texture{
 }Texture;
 
 typedef struct Sprite{
+	bool directional; //8 direction animation
 	unsigned char frame;
 	unsigned char frames;
 	unsigned char *animation;
@@ -90,7 +92,7 @@ typedef struct Sprite{
 
 typedef struct Tile{
 	Texture *texture;
-	unsigned char spriteIndex;
+	int spriteIndex;
 	unsigned char textureX;
 	unsigned char textureY;
 	float brightness;
@@ -112,10 +114,10 @@ extern float camY;
 extern int mouseTileX;
 extern int mouseTileY;
 extern Sprite sprites[MAX_SPRITES];
-extern unsigned char spriteCount;
+extern int spriteCount;
 extern Tile map[MAP_Y][MAP_X];
 
-unsigned char addSprite(unsigned char id, unsigned char frames, unsigned char animation[frames][2], int x, int y, float speed);
+int addSprite(unsigned char id, bool directional, unsigned char frames, unsigned char animation[][2], int x, int y, float speed);
 void removeSprite(int index);
 void drawMap();
 Texture *initTexture(char* name, int size);

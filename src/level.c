@@ -1,5 +1,17 @@
 #include "level.h"
 #include "ai.h"
+#include "draw.h"
+
+static unsigned char candleSprite[1][2]={{3, 0}};
+static unsigned char barrelSprite[1][2]={{4, 0}};
+static unsigned char banim[3*8][2]={ {3, 1}, {4, 1}, {5, 1},
+								  	 {3, 2}, {4, 2}, {5, 2},
+								  	 {3, 3}, {4, 3}, {5, 3},
+								 	 {3, 4}, {4, 4}, {5, 4},
+								 	 {3, 5}, {4, 5}, {5, 5},
+									 {3, 6}, {4, 6}, {5, 6},
+								 	 {3, 7}, {4, 7}, {5, 7},
+									 {3, 8}, {4, 8}, {5, 8} };
 
 static void initMap(Texture *texture, unsigned char x, unsigned char y, bool occupied){
 	//init
@@ -30,10 +42,10 @@ static void carveMap(unsigned char x, unsigned char y, int startx, int starty, i
 		starty=endy;
 		endy=temp;
 	}
-	for (int i=startx; i < endx; i++){
-		for (int j=starty; j < endy; j++){
+	for (int i=starty; i < endy; i++){
+		for (int j=startx; j < endx; j++){
 			if (i < MAP_X-2 && j < MAP_Y-2 && i > 1 && j > 1){
-				if (map[i][j].wall == true){
+				if (map[i][j].wall == true && map[i][j].spriteIndex == MAX_SPRITES){
 					map[i][j].textureX=x;
 					map[i][j].textureY=y;
 					map[i][j].brightness=0.0f;
@@ -43,6 +55,20 @@ static void carveMap(unsigned char x, unsigned char y, int startx, int starty, i
 				}
 			}
 		}
+	}
+}
+
+static void addProp(int x, int y, bool light){
+	if (light){
+		addSprite(ID_PROP, false, 1, candleSprite, x, y, 0.0f);
+		addLight(x, y, 7, 0.9f, false);
+	}
+	else{
+		addSprite(ID_PROP, false, 1, barrelSprite, x, y, 0.0f);
+	}
+
+	if (newSeed()&1){
+		addSprite(ID_BOT, true, 3, banim, x+1, y, 1.9f);
 	}
 }
 
@@ -60,6 +86,7 @@ void generateLevel(Texture *texture, int x, int y){
 		}
 		if (sizex+offx < MAP_X && sizey+offy < MAP_Y){
 			carveMap(x, y, offx, offy, sizex, sizey);
+			addProp(offx+(sizex>>1), offy+(sizey>>1), newSeed()&4);
 			int hallways=(newSeed()&1)+2;
 			while (hallways){
 				int dirX=0;
