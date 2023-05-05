@@ -149,45 +149,45 @@ void drawMap(){
 				}
 				//top
 				glColor4f(map[y+1][x].brightness*0.6f, map[y+1][x].brightness*0.6f, map[y+1][x].brightness*0.6f, transparent);
-				glTexCoord2f(minTextureX,minTextureY);
+				glTexCoord2f(minTextureX,maxTextureY);
 				glVertex2f(tx-tileX,ty+(tileY*3));
 				glColor4f(map[y][x].brightness*0.6f, map[y][x].brightness*0.6f, map[y][x].brightness*0.6f, transparent);
-				glTexCoord2f(minTextureX,maxTextureY);
+				glTexCoord2f(minTextureX,minTextureY);
 				glVertex2f(tx,ty+tileY+(tileY*3));
 				glColor4f(map[y][x+1].brightness*0.6f, map[y][x+1].brightness*0.6f, map[y][x+1].brightness*0.6f, transparent);
-				glTexCoord2f(maxTextureX,maxTextureY);
+				glTexCoord2f(maxTextureX,minTextureY);
 				glVertex2f(tx+tileX,ty+(tileY*3));
 				glColor4f(map[y+1][x+1].brightness*0.6f, map[y+1][x+1].brightness*0.6f, map[y+1][x+1].brightness*0.6f, transparent);
-				glTexCoord2f(maxTextureX,minTextureY);
+				glTexCoord2f(maxTextureX,maxTextureY);
 				glVertex2f(tx,ty-tileY+(tileY*3));
 				//left face
 				if (!map[y+1][x].wall || transparent > 0.99f){
 					glColor4f(map[y+1][x].brightness, map[y+1][x].brightness, map[y+1][x].brightness, transparent);
-					glTexCoord2f(minTextureX,minTextureY);
+					glTexCoord2f(minTextureX,maxTextureY);
 					glVertex2f(tx-tileX,ty);
 					glColor4f(map[y][x-1].brightness, map[y][x-1].brightness, map[y][x-1].brightness, transparent);
-					glTexCoord2f(minTextureX,maxTextureY);
+					glTexCoord2f(minTextureX,minTextureY);
 					glVertex2f(tx-tileX,ty+(tileY*3));
 					glColor4f(map[y][x+1].brightness, map[y][x+1].brightness, map[y][x+1].brightness, transparent);
-					glTexCoord2f(maxTextureX,maxTextureY);
+					glTexCoord2f(maxTextureX,minTextureY);
 					glVertex2f(tx,ty-tileY+(tileY*3));
 					glColor4f(map[y+1][x+1].brightness, map[y+1][x+1].brightness, map[y+1][x+1].brightness, transparent);
-					glTexCoord2f(maxTextureX,minTextureY);
+					glTexCoord2f(maxTextureX,maxTextureY);
 					glVertex2f(tx,ty-tileY);
 				}
 				//right face
 				if (!map[y][x+1].wall || transparent > 0.99f){
 					glColor4f(map[y+1][x+1].brightness*0.8f, map[y+1][x+1].brightness*0.8f, map[y+1][x+1].brightness*0.8f, transparent);
-					glTexCoord2f(minTextureX,minTextureY);
+					glTexCoord2f(minTextureX,maxTextureY);
 					glVertex2f(tx,ty-tileY);
 					glColor4f(map[y+1][x].brightness*0.8f, map[y+1][x].brightness*0.8f, map[y+1][x].brightness*0.8f, transparent);
-					glTexCoord2f(minTextureX,maxTextureY);
+					glTexCoord2f(minTextureX,minTextureY);
 					glVertex2f(tx,ty-tileY+(tileY*3));
 					glColor4f(map[y-1][x].brightness*0.8f, map[y-1][x].brightness*0.8f, map[y-1][x].brightness*0.8f, transparent);
-					glTexCoord2f(maxTextureX,maxTextureY);
+					glTexCoord2f(maxTextureX,minTextureY);
 					glVertex2f(tx+tileX,ty+(tileY*3));
 					glColor4f(map[y][x+1].brightness*0.8f, map[y][x+1].brightness*0.8f, map[y][x+1].brightness*0.8f, transparent);
-					glTexCoord2f(maxTextureX,minTextureY);
+					glTexCoord2f(maxTextureX,maxTextureY);
 					glVertex2f(tx+tileX,ty);
 				}
 			}

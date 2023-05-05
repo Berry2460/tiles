@@ -17,7 +17,7 @@ static void initMap(Texture *texture, unsigned char x, unsigned char y, bool occ
 	}
 }
 
-static void carveMap(unsigned char x, unsigned char y, int startx, int starty, int width, int height, bool occupied){
+static void carveMap(unsigned char x, unsigned char y, int startx, int starty, int width, int height){
 	int endx=startx+width;
 	int endy=starty+height;
 	if (startx > endx){
@@ -33,12 +33,14 @@ static void carveMap(unsigned char x, unsigned char y, int startx, int starty, i
 	for (int i=startx; i < endx; i++){
 		for (int j=starty; j < endy; j++){
 			if (i < MAP_X-2 && j < MAP_Y-2 && i > 1 && j > 1){
-				map[i][j].textureX=x;
-				map[i][j].textureY=y;
-				map[i][j].brightness=0.0f;
-				map[i][j].spriteIndex=MAX_SPRITES;
-				map[i][j].occupied=occupied;
-				map[i][j].wall=occupied;
+				if (map[i][j].wall == true){
+					map[i][j].textureX=x;
+					map[i][j].textureY=y;
+					map[i][j].brightness=0.0f;
+					map[i][j].spriteIndex=MAX_SPRITES;
+					map[i][j].occupied=false;
+					map[i][j].wall=false;
+				}
 			}
 		}
 	}
@@ -57,7 +59,7 @@ void generateLevel(Texture *texture, int x, int y){
 			largesty=sizey;
 		}
 		if (sizex+offx < MAP_X && sizey+offy < MAP_Y){
-			carveMap(x, y, offx, offy, sizex, sizey, false);
+			carveMap(x, y, offx, offy, sizex, sizey);
 			int hallways=(newSeed()&1)+2;
 			while (hallways){
 				int dirX=0;
@@ -69,7 +71,7 @@ void generateLevel(Texture *texture, int x, int y){
 				else{
 					dirY=((newSeed()&1)<<1)-1;
 				}
-				carveMap(x, y, offx+(sizex>>1), offy+(sizey>>1), ROOM_SIZE_MAX*dirX+2, ROOM_SIZE_MAX*dirY+2, false);
+				carveMap(x, y, offx+(sizex>>1), offy+(sizey>>1), ROOM_SIZE_MAX*dirX+2, ROOM_SIZE_MAX*dirY+2);
 			}
 			offx+=sizex+(newSeed()%ROOM_SIZE_MIN)+2;
 		}
