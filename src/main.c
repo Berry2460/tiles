@@ -45,6 +45,7 @@ int seed;
 
 //game loop
 int main(){
+	seed=350; //level generation RNG
 	scale=1.0f;
 	camX=MAP_X/2.0f;
 	camY=MAP_Y/2.0f;

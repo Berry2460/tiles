@@ -4,6 +4,12 @@
 
 static unsigned char candleSprite[1][2]={{3, 0}};
 static unsigned char barrelSprite[1][2]={{4, 0}};
+static unsigned char skullSpikeSprite[1][2]={{5, 0}};
+static unsigned char fountainSprite[1][2]={{6, 0}};
+static unsigned char shelfSprite[1][2]={{6, 1}};
+static unsigned char closedChestSprite[1][2]={{6, 2}};
+static unsigned char openChestSprite[1][2]={{6, 3}};
+
 static unsigned char banim[3*8][2]={ {3, 1}, {4, 1}, {5, 1},
 								  	 {3, 2}, {4, 2}, {5, 2},
 								  	 {3, 3}, {4, 3}, {5, 3},
@@ -58,15 +64,32 @@ static void carveMap(unsigned char x, unsigned char y, int startx, int starty, i
 	}
 }
 
-static void addProp(int x, int y, bool light){
-	if (light){
-		addSprite(ID_PROP, false, 1, candleSprite, x, y, 0.0f);
-		addLight(x, y, 7, 0.9f, false);
+static void addProp(int x, int y){
+	int choice=newSeed()%7;
+	switch(choice){
+		case 0:
+			addSprite(ID_PROP, false, 1, barrelSprite, x, y, 0.0f);
+			break;
+		case 1:
+			addSprite(ID_PROP, false, 1, skullSpikeSprite, x, y, 0.0f);
+			break;
+		case 2:
+			addSprite(ID_PROP, false, 1, fountainSprite, x, y, 0.0f);
+			break;
+		case 3:
+			addSprite(ID_PROP, false, 1, shelfSprite, x, y, 0.0f);
+			break;
+		case 4:
+			addSprite(ID_PROP, false, 1, closedChestSprite, x, y, 0.0f);
+			break;
+		case 5:
+			addSprite(ID_PROP, false, 1, openChestSprite, x, y, 0.0f);
+			break;
+		case 6:
+			addSprite(ID_PROP, false, 1, candleSprite, x, y, 0.0f);
+			addLight(x, y, 7, 0.9f, false);
+			break;
 	}
-	else{
-		addSprite(ID_PROP, false, 1, barrelSprite, x, y, 0.0f);
-	}
-
 	if (newSeed()%3){
 		addSprite(ID_BOT, true, 3, banim, x+1, y, 1.9f);
 	}
@@ -86,7 +109,7 @@ void generateLevel(Texture *texture, int x, int y){
 		}
 		if (sizex+offx < MAP_X && sizey+offy < MAP_Y){
 			carveMap(x, y, offx, offy, sizex, sizey);
-			addProp(offx+(sizex>>1), offy+(sizey>>1), newSeed()&4);
+			addProp(offx+(sizex>>1), offy+(sizey>>1));
 			int hallways=(newSeed()&1)+2;
 			while (hallways){
 				int dirX=0;
