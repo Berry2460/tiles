@@ -10,8 +10,15 @@
 #include "missiles.h"
 #include "window.h"
 #include "level.h"
+#include "network.h"
 
 #include "GLFW/glfw3.h"
+
+//network globals
+bool isHost;
+int server;
+int clients[3];
+int clientCount;
 
 //draw globals
 GLuint *textures;
@@ -45,6 +52,8 @@ int seed;
 
 //game loop
 int main(){
+	host();
+	
 	seed=350; //level generation RNG
 	scale=1.0f;
 	camX=MAP_X/2.0f;

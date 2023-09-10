@@ -77,7 +77,12 @@ int startWindow(char* winTitle){
 	title=winTitle;
 	start=glfwGetTime();
 	if (!glfwInit()){return -1;}
-	window=glfwCreateWindow(WIN_X, WIN_Y, title, NULL, NULL);
+	if (FULLSCREEN){
+		window=glfwCreateWindow(WIN_X, WIN_Y, title, glfwGetPrimaryMonitor(), NULL);
+	}
+	else{
+		window=glfwCreateWindow(WIN_X, WIN_Y, title, NULL, NULL);
+	}
 	if (!window){glfwTerminate();return -1;}
 	glfwMakeContextCurrent(window);
 	glfwSetKeyCallback(window, buttons);
@@ -102,13 +107,13 @@ bool windowLoop(){
 	if (!glfwWindowShouldClose(window)){
 		//fps
 		frames++;
-		fps=frames/(glfwGetTime()-start+0.00001f);
-		char out[128];
-		sprintf(out, "%s FPS: %d", title, fps); //convert to chars
-		if (glfwGetTime()-start > 1){
-			start=glfwGetTime();
-			frames=0;
+		fps=1/(glfwGetTime()-start);
+		start=glfwGetTime();
+		if (frames > 300){
+			char out[128];
+			sprintf(out, "%s FPS: %d", title, fps); //convert to chars
 			glfwSetWindowTitle(window, out);
+			frames=0;
 		}
 		glfwSwapBuffers(window);
 		glfwPollEvents();
