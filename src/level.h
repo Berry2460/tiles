@@ -8,7 +8,6 @@
 
 void computeLightMap(Light *lights, int total, bool neg);
 void addLight(int x, int y, int size, float brightness, bool neg);
-void initLight();
 void generateLevel(Texture *texture, int x, int y);
 
 #endif

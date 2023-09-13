@@ -65,30 +65,34 @@ static void carveMap(unsigned char x, unsigned char y, int startx, int starty, i
 }
 
 static void addProp(int x, int y){
-	int choice=newSeed()%7;
-	switch(choice){
-		case 0:
-			addSprite(ID_PROP, false, 1, barrelSprite, x, y, 0.0f);
+	int choice1=newSeed()%3;
+	if (choice1 > 0){
+		int choice2=newSeed()%6;
+		switch(choice2){
+			case 0:
+				addSprite(ID_PROP, false, 1, barrelSprite, x, y, 0.0f);
+				break;
+			case 1:
+				addSprite(ID_PROP, false, 1, skullSpikeSprite, x, y, 0.0f);
+				break;
+			case 2:
+				addSprite(ID_PROP, false, 1, fountainSprite, x, y, 0.0f);
+				break;
+			case 3:
+				addSprite(ID_PROP, false, 1, shelfSprite, x, y, 0.0f);
+				break;
+			case 4:
+				addSprite(ID_PROP, false, 1, closedChestSprite, x, y, 0.0f);
+				break;
+			case 5:
+				addSprite(ID_PROP, false, 1, openChestSprite, x, y, 0.0f);
+				break;
 			break;
-		case 1:
-			addSprite(ID_PROP, false, 1, skullSpikeSprite, x, y, 0.0f);
-			break;
-		case 2:
-			addSprite(ID_PROP, false, 1, fountainSprite, x, y, 0.0f);
-			break;
-		case 3:
-			addSprite(ID_PROP, false, 1, shelfSprite, x, y, 0.0f);
-			break;
-		case 4:
-			addSprite(ID_PROP, false, 1, closedChestSprite, x, y, 0.0f);
-			break;
-		case 5:
-			addSprite(ID_PROP, false, 1, openChestSprite, x, y, 0.0f);
-			break;
-		case 6:
-			addSprite(ID_PROP, false, 1, candleSprite, x, y, 0.0f);
-			addLight(x, y, 7, 0.9f, false);
-			break;
+		}
+	}
+	else{
+		addSprite(ID_PROP, false, 1, candleSprite, x, y, 0.0f);
+		addLight(x, y, 13, 0.9f, false);
 	}
 	if (newSeed()%3){
 		addSprite(ID_BOT, true, 3, banim, x+1, y, 1.9f);
@@ -167,15 +171,4 @@ void addLight(int x, int y, int size, float brightness, bool neg){ //add light
 	light[0].size=size;
 	light[0].brightness=brightness;
 	computeLightMap(light, 1, neg);
-}
-
-void initLight(){
-	Light lights[1];
-	for (int i=0; i < 1; i++){
-		lights[i].x=MAP_X/2;
-		lights[i].y=MAP_Y/2;
-		lights[i].size=15;
-		lights[i].brightness=0.9f;
-	}
-	computeLightMap(lights,1,false);
 }

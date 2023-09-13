@@ -24,6 +24,15 @@ void nextStep(int index){
 	//get next step
 	s->nextX=round((s->stepDestX-s->x)/(abs(s->x-s->stepDestX)+0.0001f)); //get direction
 	s->nextY=round((s->stepDestY-s->y)/(abs(s->y-s->stepDestY)+0.0001f));
+	//basic pathing correction
+	if (map[s->y+s->nextY][s->x+s->nextX].wall == true){
+		if (map[s->y+s->nextY][s->x].wall == false){
+			s->nextX=0;
+		}
+		else if (!map[s->y][s->x+s->nextX].wall == false){
+			s->nextY=0;
+		}
+	}
 	//collision
 	if ((s->x == s->stepDestX && s->y == s->stepDestY) || map[s->y+s->nextY][s->x+s->nextX].occupied){
 		//collisions halt travel

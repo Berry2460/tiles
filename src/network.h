@@ -10,8 +10,7 @@ extern int server;
 extern int clients[3];
 extern int clientCount;
 
-int host();
-int join();
-int update();
+int initNetwork();
+int updateNetwork();
 
 #endif

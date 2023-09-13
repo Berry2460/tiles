@@ -52,12 +52,18 @@ int seed;
 
 //game loop
 int main(){
-	host();
+	isHost=true;
+	if (initNetwork() == 0){
+		printf("Network initialized\n");
+	}
+	else{
+		printf("Failed to initialize network!\n");
+	}
 	
-	seed=350; //level generation RNG
+	seed=250; //level generation RNG
 	scale=1.0f;
-	camX=MAP_X/2.0f;
-	camY=MAP_Y/2.0f;
+	camX=MAP_X/2.0f +5;
+	camY=MAP_Y/2.0f +5;
 	unsigned char panim[3*8][2]={ {0, 1}, {1, 1}, {2, 1},
 								  {0, 2}, {1, 2}, {2, 2},
 								  {0, 3}, {1, 3}, {2, 3},
@@ -70,7 +76,6 @@ int main(){
 	startWindow("tiles");
 	Texture *t=initTexture("t0.bmp", 96);
 	generateLevel(t, 0, 0);
-	initLight();
 	int player=createPlayer(3, true, panim, camX, camY);
 	//render
 	while (windowLoop()){
