@@ -7,8 +7,6 @@ static WSADATA ws;
 static struct sockaddr_in addr;
 
 int initNetwork(){
-	
-
 	if (WSAStartup(MAKEWORD(2, 2), &ws) < 0){
 		return -1;
 	}
@@ -21,7 +19,14 @@ int initNetwork(){
 		addr.sin_port=htons(PORT);
 		addr.sin_addr.s_addr = inet_addr("0.0.0.0");
 		memset(&(addr.sin_zero), 0, 8);
+		char opt=0;
+		if (setsockopt(server, SOL_SOCKET, SO_REUSEADDR, &opt, sizeof(char)) < 0){
+			return -1;
+		}
 		if (bind(server, (struct sockaddr*)&addr, sizeof(struct sockaddr)) < 0){
+			return -1;
+		}
+		if (listen(server, 5) < 0){
 			return -1;
 		}
 	}

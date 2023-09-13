@@ -28,7 +28,7 @@ void moveProjectiles(){
 						removeProjectile(i);
 						return;
 					}
-					else{
+					if (sprites[map[testY][testX].spriteIndex].id != ID_PROP){
 						removeProjectile(i);
 						return;
 					}

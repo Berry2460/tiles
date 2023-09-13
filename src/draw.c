@@ -212,16 +212,16 @@ void drawMap(){
 				texMap(&minTextureX, &maxTextureX, &minTextureY, &maxTextureY, sprites[map[y][x].spriteIndex].animation[sprites[map[y][x].spriteIndex].frame*2], sprites[map[y][x].spriteIndex].animation[sprites[map[y][x].spriteIndex].frame*2+1], map[y][x].texture->size, map[y][x].texture->width, map[y][x].texture->height);
 				//verts
 				glTexCoord2f(minTextureX, maxTextureY);
-				glVertex2f(tx-((TILE_X*0.5f*scale)/WIN_X), ty);
+				glVertex2f(tx-((TILE_X*0.5f*scale)/WIN_X), ty-(0.3f*scale)/WIN_Y);
 				glTexCoord2f(minTextureX, minTextureY);
-				glVertex2f(tx-((TILE_X*0.5f*scale)/WIN_X), ty+((TILE_Y*3.0f*scale)/WIN_Y));
+				glVertex2f(tx-((TILE_X*0.5f*scale)/WIN_X), ty+((TILE_Y*2.6f*scale)/WIN_Y));
 				glTexCoord2f(maxTextureX, minTextureY);
-				glVertex2f(tx+((TILE_X*0.5f*scale)/WIN_X), ty+((TILE_Y*3.0f*scale)/WIN_Y));
+				glVertex2f(tx+((TILE_X*0.5f*scale)/WIN_X), ty+((TILE_Y*2.6f*scale)/WIN_Y));
 				glTexCoord2f(maxTextureX, maxTextureY);
-				glVertex2f(tx+((TILE_X*0.5f*scale)/WIN_X), ty);
+				glVertex2f(tx+((TILE_X*0.5f*scale)/WIN_X), ty-(0.3f*scale)/WIN_Y);
 			}
 			//draw projectiles
-			if (map[y][x].spriteIndex == MAX_SPRITES){
+			if (!map[y][x].wall){
 				for(int i=0; i<projectileCount; i++){
 					if (round(projectiles[i].x) == x && round(projectiles[i].y) == y){
 						float px=projectiles[i].x;
