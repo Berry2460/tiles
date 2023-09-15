@@ -10,3 +10,4 @@
 - texture mapping and transparency
 - animations
 - gouraud shading light
+- TCP/IP multiplayer
