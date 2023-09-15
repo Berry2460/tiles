@@ -1,11 +1,6 @@
 #ifndef WINDOW_H
 #define WINDOW_H
 
-#define WIN_X 1280
-#define WIN_Y 720
-#define V_SYNC 1
-#define FULLSCREEN 0
-
 #define KEYS 8
 
 #define KEY_W 0
@@ -23,6 +18,10 @@ extern int frames;
 extern int fps;
 extern int mouseX;
 extern int mouseY;
+extern int screenHeight;
+extern int screenWidth;
+extern int fullscreen;
+extern int vsync;
 extern bool keys[KEYS];
 
 int startWindow(char* winTitle);

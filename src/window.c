@@ -77,11 +77,11 @@ int startWindow(char* winTitle){
 	title=winTitle;
 	start=glfwGetTime();
 	if (!glfwInit()){return -1;}
-	if (FULLSCREEN){
-		window=glfwCreateWindow(WIN_X, WIN_Y, title, glfwGetPrimaryMonitor(), NULL);
+	if (fullscreen){
+		window=glfwCreateWindow(screenWidth, screenHeight, title, glfwGetPrimaryMonitor(), NULL);
 	}
 	else{
-		window=glfwCreateWindow(WIN_X, WIN_Y, title, NULL, NULL);
+		window=glfwCreateWindow(screenWidth, screenHeight, title, NULL, NULL);
 	}
 	if (!window){glfwTerminate();return -1;}
 	glfwMakeContextCurrent(window);
@@ -89,7 +89,7 @@ int startWindow(char* winTitle){
 	glfwSetCursorPosCallback(window, mouse);
 	glfwSetScrollCallback(window, scroll);
 	glfwSetMouseButtonCallback(window, mouseControl);
-	glfwSwapInterval(V_SYNC);
+	glfwSwapInterval(vsync);
 	glMatrixMode(GL_MODELVIEW);
 	glLoadIdentity();
 	//textures and transparency

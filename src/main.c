@@ -1,4 +1,5 @@
 #include <stdio.h>
+#include <stdlib.h>
 #include <windows.h>
 #include <math.h>
 #include <stdbool.h>
@@ -15,10 +16,11 @@
 #include "GLFW/glfw3.h"
 
 //network globals
-bool isHost;
+int isHost;
 int server;
 int clients[3];
 int clientCount;
+char *joinAddr;
 
 //draw globals
 GLuint *textures;
@@ -36,6 +38,10 @@ int fps;
 int frames;
 int mouseX;
 int mouseY;
+int screenHeight;
+int screenWidth;
+int fullscreen;
+int vsync;
 bool keys[KEYS];
 bool keysPress[KEYS];
 
@@ -50,9 +56,45 @@ unsigned char projectileCount;
 //RNG
 int seed;
 
+void checkConfig(){
+	FILE *f=fopen("config.txt", "r");
+	if (f == NULL){
+		screenHeight=720;
+		screenWidth=1280;
+		vsync=1;
+		fullscreen=false;
+		isHost=false;
+		joinAddr="127.0.0.1";
+		f=fopen("config.txt", "w");
+		fprintf(f, "ScreenHeight: %d\nScreenWidth: %d\nVsync: %d\nFullscreen: %d\nHostStatus: %d\nJoinAddress: %s", screenHeight, screenWidth, vsync, fullscreen, isHost, joinAddr);
+		fclose(f);
+	}
+	else{
+		char out[128];
+		fscanf(f, "%s", out);
+		fscanf(f, "%d", &screenHeight);
+		fscanf(f, "%s", out);
+		fscanf(f, "%d", &screenWidth);
+		fscanf(f, "%s", out);
+		fscanf(f, "%d", &vsync);
+		fscanf(f, "%s", out);
+		fscanf(f, "%d", &fullscreen);
+		fscanf(f, "%s", out);
+		fscanf(f, "%d", &isHost);
+		fscanf(f, "%s", out);
+		fscanf(f, "%s", joinAddr);
+		fclose(f);
+
+		printf("ScreenHeight: %d\nScreenWidth: %d\nVsync: %d\nFullscreen: %d\nHostStatus: %d\nJoinAddress: %s\n", screenHeight, screenWidth, vsync, fullscreen, isHost, joinAddr);
+	}
+}
+
+
 //game loop
 int main(){
-	isHost=true;
+	joinAddr=malloc(16*sizeof(char));
+	checkConfig();
+
 	if (initNetwork() == 0){
 		printf("Network initialized\n");
 	}
@@ -64,6 +106,7 @@ int main(){
 	scale=1.0f;
 	camX=MAP_X/2.0f +5;
 	camY=MAP_Y/2.0f +5;
+
 	unsigned char panim[3*8][2]={ {0, 1}, {1, 1}, {2, 1},
 								  {0, 2}, {1, 2}, {2, 2},
 								  {0, 3}, {1, 3}, {2, 3},
@@ -76,6 +119,16 @@ int main(){
 	startWindow("tiles");
 	Texture *t=initTexture("t0.bmp", 96);
 	generateLevel(t, 0, 0);
+
+	//netcode temporary workaround
+	if (!isHost){
+		createDummyPlayer(3, true, panim, camX, camY);
+		camX++;
+	}
+	else{
+		createDummyPlayer(3, true, panim, camX+1, camY);
+	}
+
 	int player=createPlayer(3, true, panim, camX, camY);
 	//render
 	while (windowLoop()){

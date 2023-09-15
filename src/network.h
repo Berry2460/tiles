@@ -5,12 +5,21 @@
 
 #define PORT 2000
 
-extern bool isHost;
+extern int isHost;
 extern int server;
 extern int clients[3];
 extern int clientCount;
+extern char *joinAddr;
 
 int initNetwork();
-int updateNetwork();
+void updateNetwork();
+
+typedef struct Packet{
+	//int index; //player index
+	int destX; //player destination
+	int destY;
+	int shootX; //shoot projectile (-1 for none)
+	int shootY;
+}Packet;
 
 #endif

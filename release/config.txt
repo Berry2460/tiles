@@ -1,0 +1,6 @@
+ScreenHeight: 720
+ScreenWidth: 1280
+Vsync: 1
+Fullscreen: 0
+HostStatus: 0
+JoinAddress: 127.0.0.1
