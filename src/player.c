@@ -4,8 +4,11 @@
 #include "missiles.h"
 #include "window.h"
 #include "level.h"
+#include "ai.h"
 
 void shootPlayerProjectile(int index, int x, int y){
+	//advance rng
+	newSeed();
 	if (!sprites[index].walk){
 		addProjectile(2, 0, sprites[index].x, sprites[index].y, x, y, 5.0f, true);
 		//animation

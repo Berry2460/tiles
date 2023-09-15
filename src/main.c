@@ -52,10 +52,6 @@ int vsync;
 bool keys[KEYS];
 bool keysPress[KEYS];
 
-//ai globals
-int bots[MAX_SPRITES];
-int botCount;
-
 //missile globals
 Projectile projectiles[MAX_PROJECTILES];
 unsigned char projectileCount;
@@ -70,7 +66,7 @@ void checkConfig(){
 		screenWidth=1280;
 		vsync=1;
 		fullscreen=0;
-		isHost=1;
+		isHost=0;
 		joinAddr="127.0.0.1";
 		f=fopen("config.txt", "w");
 		fprintf(f, "ScreenHeight: %d\nScreenWidth: %d\nVsync: %d\nFullscreen: %d\nHostStatus: %d\nJoinAddress: %s", screenHeight, screenWidth, vsync, fullscreen, isHost, joinAddr);

@@ -1,4 +1,5 @@
 #include "ai.h"
+#include "draw.h"
 
 static void newBotRoute(int index);
 
@@ -8,12 +9,14 @@ int newSeed(){
 }
 
 void moveBots(){
-	for (int i=0; i<botCount; i++){
-		if(sprites[bots[i]].walk){
-			step(bots[i]);
-		}
-		else if (glfwGetTime()-sprites[bots[i]].time > BOT_WAIT_TIME){
-			newBotRoute(bots[i]);
+	for (int i=0; i<spriteCount; i++){
+		if (sprites[i].id == ID_BOT){
+			if(sprites[i].walk){
+				step(i);
+			}
+			else if (glfwGetTime()-sprites[i].time > BOT_WAIT_TIME){
+				newBotRoute(i);
+			}
 		}
 	}
 }

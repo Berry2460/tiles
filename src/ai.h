@@ -8,8 +8,6 @@
 #include "draw.h"
 
 extern int seed;
-extern int bots[MAX_SPRITES];
-extern int botCount;
 
 int newSeed();
 void moveBots();

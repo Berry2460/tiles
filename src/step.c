@@ -50,7 +50,7 @@ void nextStep(int index){
 		}
 	}else{
 		//advance RNG
-		newSeed();
+		//newSeed(); //temporarily removed to prevent desync
 		//set next step
 		s->toStepX=s->x+s->nextX;
 		s->toStepY=s->y+s->nextY;

@@ -67,8 +67,6 @@ void removeSprite(int index){
 }
 
 void drawMap(){
-	//bot culling
-	botCount=0;
 	//transforms
 	float minTextureX;
 	float maxTextureX;
@@ -160,16 +158,16 @@ void drawMap(){
 				//top
 				glColor4f(map[y+1][x].brightness*0.6f, map[y+1][x].brightness*0.6f, map[y+1][x].brightness*0.6f, transparent);
 				glTexCoord2f(minTextureX,maxTextureY);
-				glVertex2f(tx-tileX,ty+(tileY*3));
+				glVertex2f(tx-tileX,ty+(tileY*2.5));
 				glColor4f(map[y][x].brightness*0.6f, map[y][x].brightness*0.6f, map[y][x].brightness*0.6f, transparent);
 				glTexCoord2f(minTextureX,minTextureY);
-				glVertex2f(tx,ty+tileY+(tileY*3));
+				glVertex2f(tx,ty+tileY+(tileY*2.5));
 				glColor4f(map[y][x+1].brightness*0.6f, map[y][x+1].brightness*0.6f, map[y][x+1].brightness*0.6f, transparent);
 				glTexCoord2f(maxTextureX,minTextureY);
-				glVertex2f(tx+tileX,ty+(tileY*3));
+				glVertex2f(tx+tileX,ty+(tileY*2.5));
 				glColor4f(map[y+1][x+1].brightness*0.6f, map[y+1][x+1].brightness*0.6f, map[y+1][x+1].brightness*0.6f, transparent);
 				glTexCoord2f(maxTextureX,maxTextureY);
-				glVertex2f(tx,ty-tileY+(tileY*3));
+				glVertex2f(tx,ty-tileY+(tileY*2.5));
 				//left face
 				if (!map[y+1][x].wall || transparent > 0.99f){
 					glColor4f(map[y+1][x].brightness, map[y+1][x].brightness, map[y+1][x].brightness, transparent);
@@ -177,10 +175,10 @@ void drawMap(){
 					glVertex2f(tx-tileX,ty);
 					glColor4f(map[y][x-1].brightness, map[y][x-1].brightness, map[y][x-1].brightness, transparent);
 					glTexCoord2f(minTextureX,minTextureY);
-					glVertex2f(tx-tileX,ty+(tileY*3));
+					glVertex2f(tx-tileX,ty+(tileY*2.5));
 					glColor4f(map[y][x+1].brightness, map[y][x+1].brightness, map[y][x+1].brightness, transparent);
 					glTexCoord2f(maxTextureX,minTextureY);
-					glVertex2f(tx,ty-tileY+(tileY*3));
+					glVertex2f(tx,ty-tileY+(tileY*2.5));
 					glColor4f(map[y+1][x+1].brightness, map[y+1][x+1].brightness, map[y+1][x+1].brightness, transparent);
 					glTexCoord2f(maxTextureX,maxTextureY);
 					glVertex2f(tx,ty-tileY);
@@ -192,10 +190,10 @@ void drawMap(){
 					glVertex2f(tx,ty-tileY);
 					glColor4f(map[y+1][x].brightness*0.8f, map[y+1][x].brightness*0.8f, map[y+1][x].brightness*0.8f, transparent);
 					glTexCoord2f(minTextureX,minTextureY);
-					glVertex2f(tx,ty-tileY+(tileY*3));
+					glVertex2f(tx,ty-tileY+(tileY*2.5));
 					glColor4f(map[y-1][x].brightness*0.8f, map[y-1][x].brightness*0.8f, map[y-1][x].brightness*0.8f, transparent);
 					glTexCoord2f(maxTextureX,minTextureY);
-					glVertex2f(tx+tileX,ty+(tileY*3));
+					glVertex2f(tx+tileX,ty+(tileY*2.5));
 					glColor4f(map[y][x+1].brightness*0.8f, map[y][x+1].brightness*0.8f, map[y][x+1].brightness*0.8f, transparent);
 					glTexCoord2f(maxTextureX,maxTextureY);
 					glVertex2f(tx+tileX,ty);
@@ -205,11 +203,6 @@ void drawMap(){
 			//draw sprite
 			if (map[y][x].spriteIndex != MAX_SPRITES){
 				int i=map[y][x].spriteIndex;
-				//add bot to visible
-				if (sprites[i].id == ID_BOT){
-					bots[botCount]=map[y][x].spriteIndex;
-					botCount++;
-				}
 				//draw sprite per tile
 				glColor3f(map[sprites[i].y][sprites[i].x].brightness, map[sprites[i].y][sprites[i].x].brightness, map[sprites[i].y][sprites[i].x].brightness);
 				//recalculate X and Y for sprites with offsets
