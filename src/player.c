@@ -20,16 +20,25 @@ void shootPlayerProjectile(int index, int x, int y){
 void playerControl(int index){
 	//hold position fire
 	if (keys[SHIFT] && keys[LMB]){
+		newPlayerProjectile=1;
+		newPlayerProjectileX=mouseTileX;
+		newPlayerProjectileY=mouseTileY;
 		shootPlayerProjectile(index, mouseTileX, mouseTileY);
 	}
 	//player movement with mouse and target fire
 	else if (keys[LMB]){
 		if (map[mouseTileY][mouseTileX].spriteIndex != MAX_SPRITES && sprites[map[mouseTileY][mouseTileX].spriteIndex].id == ID_BOT){
+			newPlayerProjectile=1;
+			newPlayerProjectileX=mouseTileX;
+			newPlayerProjectileY=mouseTileY;
 			shootPlayerProjectile(index, mouseTileX, mouseTileY);
 		}
 		else if (map[mouseTileY+1][mouseTileX+1].spriteIndex != MAX_SPRITES && sprites[map[mouseTileY+1][mouseTileX+1].spriteIndex].id == ID_BOT){
 			mouseTileY+=1;
 			mouseTileX+=1;
+			newPlayerProjectile=1;
+			newPlayerProjectileX=mouseTileX;
+			newPlayerProjectileY=mouseTileY;
 			shootPlayerProjectile(index, mouseTileX, mouseTileY);
 		}else{
 			newDest(index, mouseTileX, mouseTileY);

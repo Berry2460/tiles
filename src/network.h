@@ -7,7 +7,9 @@
 
 extern int isHost;
 extern int server;
-extern int clients[3];
+extern int clientSocket[3];
+extern int clientIndex[3];
+extern int playerIndex;
 extern int clientCount;
 extern char *joinAddr;
 

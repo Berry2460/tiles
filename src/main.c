@@ -18,9 +18,11 @@
 //network globals
 int isHost;
 int server;
-int clients[3];
+int clientSocket[3];
+int clientIndex[3];
 int clientCount;
 char *joinAddr;
+int playerIndex;
 
 //draw globals
 GLuint *textures;
@@ -32,6 +34,11 @@ int mouseTileY;
 Tile map[MAP_Y][MAP_X];
 Sprite sprites[MAX_SPRITES];
 int spriteCount;
+
+//player globals
+int newPlayerProjectile;
+int newPlayerProjectileX;
+int newPlayerProjectileY;
 
 //window globals
 int fps;
@@ -62,8 +69,8 @@ void checkConfig(){
 		screenHeight=720;
 		screenWidth=1280;
 		vsync=1;
-		fullscreen=false;
-		isHost=false;
+		fullscreen=0;
+		isHost=1;
 		joinAddr="127.0.0.1";
 		f=fopen("config.txt", "w");
 		fprintf(f, "ScreenHeight: %d\nScreenWidth: %d\nVsync: %d\nFullscreen: %d\nHostStatus: %d\nJoinAddress: %s", screenHeight, screenWidth, vsync, fullscreen, isHost, joinAddr);
@@ -94,8 +101,9 @@ void checkConfig(){
 int main(){
 	joinAddr=malloc(16*sizeof(char));
 	checkConfig();
+	int doNetwork=initNetwork();
 
-	if (initNetwork() == 0){
+	if (doNetwork == 0){
 		printf("Network initialized\n");
 	}
 	else{
@@ -122,22 +130,25 @@ int main(){
 
 	//netcode temporary workaround
 	if (!isHost){
-		createDummyPlayer(3, true, panim, camX, camY);
+		clientIndex[0]=createDummyPlayer(3, true, panim, camX, camY);
 		camX++;
 	}
 	else{
-		createDummyPlayer(3, true, panim, camX+1, camY);
+		clientIndex[0]=createDummyPlayer(3, true, panim, camX+1, camY);
 	}
 
-	int player=createPlayer(3, true, panim, camX, camY);
+	playerIndex=createPlayer(3, true, panim, camX, camY);
 	//render
 	while (windowLoop()){
 		glClear(GL_COLOR_BUFFER_BIT);
 		drawMap();
-		movePlayer(player);
+		if (doNetwork == 0){
+			updateNetwork();
+		}
+		movePlayer(playerIndex);
 		moveBots();
 		moveProjectiles();
-		playerControl(player);
+		playerControl(playerIndex);
 	}
 	free(textures);
 	free(t);

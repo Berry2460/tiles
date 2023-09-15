@@ -2,6 +2,7 @@
 #include "window.h"
 #include "ai.h"
 #include "missiles.h"
+#include "network.h"
 
 static float tileX;
 static float tileY;
@@ -46,6 +47,16 @@ void removeSprite(int index){
 	}
 	sprites[index]=sprites[index+1];
 	for (int i=index+1; i<spriteCount; i++){
+		if (sprites[i].id == ID_PLAYER){
+			if (i == playerIndex){
+				playerIndex--;
+			}
+			else{
+				for (int i=0; i<clientCount; i++){
+					clientIndex[i]--;
+				}
+			}
+		}
 		if (sprites[i].walk && (sprites[i].nextX+sprites[i].nextY > 0 || (sprites[i].nextX == 1 && sprites[i].nextY == -1))){
 			map[sprites[i].toStepY][sprites[i].toStepX].spriteIndex--;
 		}else{
