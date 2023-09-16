@@ -216,13 +216,13 @@ void drawMap(){
 				texMap(&minTextureX, &maxTextureX, &minTextureY, &maxTextureY, sprites[map[y][x].spriteIndex].animation[sprites[map[y][x].spriteIndex].frame*2], sprites[map[y][x].spriteIndex].animation[sprites[map[y][x].spriteIndex].frame*2+1], map[y][x].texture->size, map[y][x].texture->width, map[y][x].texture->height);
 				//verts
 				glTexCoord2f(minTextureX, maxTextureY);
-				glVertex2f(tx-((TILE_X*0.5f*scale)/screenWidth), ty-(TILE_Y*0.3f*scale)/screenHeight);
+				glVertex2f(tx-((TILE_X*0.5f*scale)/screenWidth), ty-(TILE_Y*0.2f*scale)/screenHeight);
 				glTexCoord2f(minTextureX, minTextureY);
-				glVertex2f(tx-((TILE_X*0.5f*scale)/screenWidth), ty+((TILE_Y*2.2f*scale)/screenHeight));
+				glVertex2f(tx-((TILE_X*0.5f*scale)/screenWidth), ty+((TILE_Y*2.3f*scale)/screenHeight));
 				glTexCoord2f(maxTextureX, minTextureY);
-				glVertex2f(tx+((TILE_X*0.5f*scale)/screenWidth), ty+((TILE_Y*2.2f*scale)/screenHeight));
+				glVertex2f(tx+((TILE_X*0.5f*scale)/screenWidth), ty+((TILE_Y*2.3f*scale)/screenHeight));
 				glTexCoord2f(maxTextureX, maxTextureY);
-				glVertex2f(tx+((TILE_X*0.5f*scale)/screenWidth), ty-(TILE_Y*0.3f*scale)/screenHeight);
+				glVertex2f(tx+((TILE_X*0.5f*scale)/screenWidth), ty-(TILE_Y*0.2f*scale)/screenHeight);
 			}
 			//draw projectiles
 			if (!map[y][x].wall){
