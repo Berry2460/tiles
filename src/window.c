@@ -109,7 +109,7 @@ bool windowLoop(){
 		frames++;
 		fps=1/(glfwGetTime()-start);
 		start=glfwGetTime();
-		if (frames > 300){
+		if (frames > fps){
 			char out[128];
 			sprintf(out, "%s FPS: %d", title, fps); //convert to chars
 			glfwSetWindowTitle(window, out);
