@@ -56,7 +56,8 @@ bool keysPress[KEYS];
 Projectile projectiles[MAX_PROJECTILES];
 unsigned char projectileCount;
 
-//RNG
+//AI globals
+double botTimer;
 int seed;
 
 void checkConfig(){
@@ -97,8 +98,9 @@ void checkConfig(){
 int main(){
 	joinAddr=malloc(16*sizeof(char));
 	checkConfig();
-	int doNetwork=initNetwork();
 
+	//init network
+	int doNetwork=initNetwork();
 	if (doNetwork == 0){
 		printf("Network initialized\n");
 	}
@@ -106,7 +108,7 @@ int main(){
 		printf("Failed to initialize network!\n");
 	}
 	
-	seed=250; //level generation RNG
+	seed=257; //level generation RNG
 	scale=1.0f;
 	camX=MAP_X/2.0f +5;
 	camY=MAP_Y/2.0f +5;
@@ -123,6 +125,7 @@ int main(){
 	startWindow("tiles");
 	Texture *t=initTexture("t0.bmp", 96);
 	generateLevel(t, 0, 0);
+	botTimer=glfwGetTime();
 
 	//netcode temporary workaround
 	if (!isHost){
@@ -132,8 +135,8 @@ int main(){
 	else{
 		clientIndex[0]=createDummyPlayer(3, true, panim, camX+1, camY);
 	}
-
 	playerIndex=createPlayer(3, true, panim, camX, camY);
+
 	//render
 	while (windowLoop()){
 		glClear(GL_COLOR_BUFFER_BIT);

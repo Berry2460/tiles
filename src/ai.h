@@ -8,7 +8,9 @@
 #include "draw.h"
 
 extern int seed;
+extern double botTimer;
 
 int newSeed();
+int modSeed();
 void moveBots();
 #endif

@@ -2,11 +2,14 @@
 #include <stdlib.h>
 #include <string.h>
 #include <stdio.h>
+#include "GLFW/glfw3.h"
 
 #include "network.h"
 #include "step.h"
 #include "player.h"
 #include "draw.h"
+#include "ai.h"
+#include "window.h"
 
 static WSADATA ws;
 static struct sockaddr_in addr;
@@ -14,6 +17,9 @@ static struct sockaddr_in addr;
 static void doPacketRoutine(int dest, int index){
 	Packet out;
 	Packet in;
+
+	out.time=glfwGetTime();
+	out.botTime=botTimer;
 
 	if (sprites[playerIndex].walk){
 		out.destX=sprites[playerIndex].stepDestX;
@@ -40,6 +46,9 @@ static void doPacketRoutine(int dest, int index){
 	int result=recv(dest, inBuffer, sizeof(Packet), 0);
 	if (result >= 0){
 		in=*((Packet *)inBuffer);
+		//sync time
+		botTimer=(botTimer+in.botTime)/2;
+		glfwSetTime((in.time+out.time)/2);
 		if (in.destX != -1 && in.destY != -1){
 			newDest(index, in.destX, in.destY);
 		}
@@ -80,6 +89,7 @@ int initNetwork(){
 		clientCount++;
 	}
 	else{ //join host
+		newSeed();
 		addr.sin_addr.s_addr = inet_addr(joinAddr);
 		if (connect(server, (struct sockaddr*)&addr, sizeof(struct sockaddr)) < 0){
 			return -1;

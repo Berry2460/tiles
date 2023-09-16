@@ -1,5 +1,7 @@
+#include "GLFW/glfw3.h"
 #include "ai.h"
 #include "draw.h"
+#include "network.h"
 
 static void newBotRoute(int index);
 
@@ -8,21 +10,29 @@ int newSeed(){
 	return seed;
 }
 
+int modSeed(int tomod){
+	int mod=(tomod+(tomod>>1)+1)%1000000007; //prime mod
+	return mod;
+}
+
+
 void moveBots(){
 	for (int i=0; i<spriteCount; i++){
 		if (sprites[i].id == ID_BOT){
 			if(sprites[i].walk){
 				step(i);
 			}
-			else if (glfwGetTime()-sprites[i].time > BOT_WAIT_TIME){
+			else if (glfwGetTime()-botTimer > BOT_WAIT_TIME){
 				newBotRoute(i);
 			}
 		}
 	}
+	if (glfwGetTime()-botTimer > BOT_WAIT_TIME){
+		botTimer=glfwGetTime();
+	}
 }
 
 static void newBotRoute(int index){
-	sprites[index].time=glfwGetTime();
 	int x=sprites[index].x;
 	int y=sprites[index].y;
 	newSeed();

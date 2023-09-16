@@ -1,6 +1,5 @@
 #include "draw.h"
 #include "window.h"
-#include "ai.h"
 #include "missiles.h"
 #include "network.h"
 
@@ -137,7 +136,8 @@ void drawMap(){
 			//texture mapping
 			texMap(&minTextureX, &maxTextureX, &minTextureY, &maxTextureY, map[y][x].textureX, map[y][x].textureY, map[y][x].texture->size, map[y][x].texture->width, map[y][x].texture->height);
 			//cull blacked tiles
-			if ((map[y][x].brightness + map[y+1][x].brightness + map[y][x+1].brightness + map[y+1][x+1].brightness) > 0){
+			if ((map[y][x].brightness + map[y+1][x].brightness + map[y][x+1].brightness + map[y+1][x+1].brightness +
+				 map[y-1][x].brightness + map[y][x-1].brightness + map[y-1][x-1].brightness) > 0){
 				//floor
 				glColor3f(map[y+1][x].brightness, map[y+1][x].brightness * pathing, map[y+1][x].brightness); //left
 				glTexCoord2f(minTextureX,minTextureY);

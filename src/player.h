@@ -1,7 +1,7 @@
 #ifndef PLAYER_H
 #define PLAYER_H
 
-#define PLAYER_LIGHT_BRIGHTNESS 1.3f
+#define PLAYER_LIGHT_BRIGHTNESS 1.4f
 #define PLAYER_LIGHT_SIZE 14
 #define PLAYER_SPEED 2.2f
 

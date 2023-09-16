@@ -17,7 +17,10 @@ int initNetwork();
 void updateNetwork();
 
 typedef struct Packet{
-	//int index; //player index
+	char newJoin; //flag for new joiners
+	char pnum; //player number
+	double time; //pass clocks
+	double botTime;
 	int destX; //player destination
 	int destY;
 	int shootX; //shoot projectile (-1 for none)

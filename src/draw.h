@@ -5,12 +5,12 @@
 //#define NO_TEXTURES
 //#define NO_CULLING
 
-#define MIN_SCALE 0.5f
+#define MIN_SCALE 0.3f
 #define MAX_SCALE 2.0f
 #define SCALE_AMOUNT 0.06f
 
-#define MAP_X 256
-#define MAP_Y 256
+#define MAP_X 128
+#define MAP_Y 128
 #define MAX_SPRITES 4096
 #define TILE_X 128.0f
 #define TILE_Y 64.0f
