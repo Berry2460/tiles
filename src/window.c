@@ -1,9 +1,10 @@
+#include <time.h>
 #include "window.h"
 #include "draw.h"
 #include "GLFW/glfw3.h"
 
 static char* title;
-static float start;
+static clock_t start;
 static GLFWwindow* window;
 
 static void mouse(GLFWwindow* window, double x, double y);
@@ -75,7 +76,7 @@ static void buttons(GLFWwindow* window, int key, int scancode, int action, int m
 
 int startWindow(char* winTitle){
 	title=winTitle;
-	start=glfwGetTime();
+	start=clock();
 	if (!glfwInit()){return -1;}
 	if (fullscreen){
 		window=glfwCreateWindow(screenWidth, screenHeight, title, glfwGetPrimaryMonitor(), NULL);
@@ -107,11 +108,11 @@ bool windowLoop(){
 	if (!glfwWindowShouldClose(window)){
 		//fps
 		frames++;
-		fps=1/(glfwGetTime()-start);
-		start=glfwGetTime();
+		fps=CLOCKS_PER_SEC/((double)(clock()-start));
+		start=clock();
 		if (frames > fps){
 			char out[128];
-			sprintf(out, "%s FPS: %d", title, fps); //convert to chars
+			sprintf(out, "%s FPS: %I64d", title, fps); //convert to chars
 			glfwSetWindowTitle(window, out);
 			frames=0;
 		}

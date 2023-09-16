@@ -15,7 +15,7 @@
 #include <stdbool.h>
 
 extern int frames;
-extern int fps;
+extern long long fps;
 extern int mouseX;
 extern int mouseY;
 extern int screenHeight;

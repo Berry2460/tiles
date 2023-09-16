@@ -41,7 +41,7 @@ int newPlayerProjectileX;
 int newPlayerProjectileY;
 
 //window globals
-int fps;
+long long fps;
 int frames;
 int mouseX;
 int mouseY;

@@ -9,7 +9,6 @@
 #include "player.h"
 #include "draw.h"
 #include "ai.h"
-#include "window.h"
 
 static WSADATA ws;
 static struct sockaddr_in addr;

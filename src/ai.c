@@ -10,12 +10,6 @@ int newSeed(){
 	return seed;
 }
 
-int modSeed(int tomod){
-	int mod=(tomod+(tomod>>1)+1)%1000000007; //prime mod
-	return mod;
-}
-
-
 void moveBots(){
 	for (int i=0; i<spriteCount; i++){
 		if (sprites[i].id == ID_BOT){
