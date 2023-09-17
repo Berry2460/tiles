@@ -5,8 +5,8 @@
 //#define NO_TEXTURES
 //#define NO_CULLING
 
-#define MIN_SCALE 0.3f
-#define MAX_SCALE 2.0f
+#define MIN_SCALE 0.6f
+#define MAX_SCALE 3.0f
 #define SCALE_AMOUNT 0.06f
 
 #define MAP_X 128
