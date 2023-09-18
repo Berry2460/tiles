@@ -10,6 +10,7 @@
 #include "player.h"
 #include "draw.h"
 #include "ai.h"
+#include "missiles.h"
 
 static WSADATA ws;
 static struct sockaddr_in addr;
@@ -20,62 +21,66 @@ static void doPacketRoutine(int dest, int index);
 static void *updateNetwork(void *var);
 
 static void doPacketRoutine(int dest, int index){
-	Packet out;
-	Packet in;
+	if (proceedNetwork){
+		proceedNetwork=0;
+		Packet out;
+		Packet in;
 
-	out.botReady=(glfwGetTime()-botTimer > BOT_WAIT_TIME);
-	out.seedCount=getSeedCount();
+		out.botReady=(glfwGetTime()-botTimer > BOT_WAIT_TIME);
+		out.seedCount=getSeedCount();
 
-	if (sprites[playerIndex].walk){
-		out.destX=sprites[playerIndex].stepDestX;
-		out.destY=sprites[playerIndex].stepDestY;
-	}
-	else{
-		out.destX=-1;
-		out.destY=-1;
-	}
-	
-	if (newPlayerProjectile){
-		out.shootX=newPlayerProjectileX;
-		out.shootY=newPlayerProjectileY;
-		newPlayerProjectile=0;
-	}
-	else{
-		out.shootX=-1;
-		out.shootY=-1;
-	}
-	
-	char *inBuffer=malloc(sizeof(Packet));
-	char *outBuffer=(char *)&out;
-	send(dest, outBuffer, sizeof(Packet), 0);
-	int result=recv(dest, inBuffer, sizeof(Packet), 0);
-	if (result >= 0){
-		in=*((Packet *)inBuffer);
-		//desync detection
-		if (getSeedCount() < in.seedCount){
-			printf("Desync detected! fixing...\n");
-			glfwSetTime(glfwGetTime()+BOT_WAIT_TIME);
-			setBotReady(1);
-			while (moveBots() > 0){}
+		if (sprites[playerIndex].walk){
+			out.destX=sprites[playerIndex].stepDestX;
+			out.destY=sprites[playerIndex].stepDestY;
+		}
+		else{
+			out.destX=-1;
+			out.destY=-1;
+		}
+		
+		if (newPlayerProjectile){
+			out.shootX=newPlayerProjectileX;
+			out.shootY=newPlayerProjectileY;
+			newPlayerProjectile=0;
+		}
+		else{
+			out.shootX=-1;
+			out.shootY=-1;
+		}
+		
+		char *inBuffer=malloc(sizeof(Packet));
+		char *outBuffer=(char *)&out;
+		send(dest, outBuffer, sizeof(Packet), 0);
+		int result=recv(dest, inBuffer, sizeof(Packet), 0);
+		if (result >= 0){
+			in=*((Packet *)inBuffer);
+			//desync detection
 			if (getSeedCount() < in.seedCount){
-				newSeed();
+				printf("Desync detected! %I64d != %I64d. fixing...\n", getSeedCount(), in.seedCount);
+				glfwSetTime(glfwGetTime()+BOT_WAIT_TIME);
+				setBotReady(1);
+				while (moveBots() > 0){
+					movePlayer(-1);
+					moveBots();
+					moveProjectiles();
+				}
+			}
+			//sync bots
+			setBotReady(in.botReady);
+			//sync actions
+			if (in.destX != -1 && in.destY != -1){
+				newDest(index, in.destX, in.destY);
+			}
+			if (in.shootX != -1 && in.shootY != -1){
+				shootPlayerProjectile(index, in.shootX, in.shootY);
 			}
 		}
-		//sync bots
-		setBotReady(in.botReady);
-		//sync actions
-		if (in.destX != -1 && in.destY != -1){
-			newDest(index, in.destX, in.destY);
+		else{
+			alive=0;
 		}
-		if (in.shootX != -1 && in.shootY != -1){
-			shootPlayerProjectile(index, in.shootX, in.shootY);
-		}
+		free(inBuffer);
+		Sleep(1.0f/TICK);
 	}
-	else{
-		alive=0;
-	}
-	free(inBuffer);
-	Sleep(1.0f/TICK);
 }
 
 static void *updateNetwork(void *var){

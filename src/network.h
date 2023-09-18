@@ -13,6 +13,7 @@ extern int clientIndex[3];
 extern int playerIndex;
 extern int clientCount;
 extern char *joinAddr;
+extern int proceedNetwork;
 
 int initNetwork();
 void startNetworkThread();

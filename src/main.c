@@ -23,6 +23,7 @@ int clientIndex[3];
 int clientCount;
 char *joinAddr;
 int playerIndex;
+int proceedNetwork;
 
 //draw globals
 GLuint *textures;
@@ -93,7 +94,6 @@ void checkConfig(){
 	}
 }
 
-
 //game loop
 int main(){
 	joinAddr=malloc(16*sizeof(char));
@@ -140,6 +140,7 @@ int main(){
 	startNetworkThread();
 	//render
 	while (windowLoop()){
+		proceedNetwork=1;
 		glClear(GL_COLOR_BUFFER_BIT);
 		drawMap();
 		movePlayer(playerIndex);

@@ -65,19 +65,16 @@ void playerControl(int index){
 }
 
 void movePlayer(int index){
-	Sprite *s=&sprites[index];
-	//attack animation
-	/*
-	if (glfwGetTime()-s->time > 0.3f && !s->walk){
-		s->frame=0; //temp
+	if (index > 0){
+		Sprite *s=&sprites[index];
+		addLight(s->x, s->y, PLAYER_LIGHT_SIZE, PLAYER_LIGHT_BRIGHTNESS, true);
+		step(index);
+		//follow cam
+		camX=s->x+s->offx;
+		camY=s->y-s->offy;
+		addLight(s->x, s->y, PLAYER_LIGHT_SIZE, PLAYER_LIGHT_BRIGHTNESS, false);
 	}
-	*/
-	addLight(s->x, s->y, PLAYER_LIGHT_SIZE, PLAYER_LIGHT_BRIGHTNESS, true);
-	step(index);
-	//follow cam
-	camX=s->x+s->offx;
-	camY=s->y-s->offy;
-	addLight(s->x, s->y, PLAYER_LIGHT_SIZE, PLAYER_LIGHT_BRIGHTNESS, false);
+	//move dummy players
 	for (int i=0; i<clientCount; i++){
 		step(clientIndex[i]);
 	}
