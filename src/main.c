@@ -137,13 +137,11 @@ int main(){
 	}
 	playerIndex=createPlayer(3, true, panim, camX, camY);
 
+	startNetworkThread();
 	//render
 	while (windowLoop()){
 		glClear(GL_COLOR_BUFFER_BIT);
 		drawMap();
-		if (doNetwork == 0){
-			updateNetwork();
-		}
 		movePlayer(playerIndex);
 		moveBots();
 		moveProjectiles();

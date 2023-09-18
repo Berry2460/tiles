@@ -4,6 +4,7 @@
 #include <stdbool.h>
 
 #define PORT 2000
+#define TICK 10 //hertz
 
 extern int isHost;
 extern int server;
@@ -14,13 +15,11 @@ extern int clientCount;
 extern char *joinAddr;
 
 int initNetwork();
-void updateNetwork();
+void startNetworkThread();
 
 typedef struct Packet{
-	char newJoin; //flag for new joiners
-	char pnum; //player number
-	double time; //pass clocks
-	double botTime;
+	char botReady; //sync bots
+	long long seedCount; //sync seed
 	int destX; //player destination
 	int destY;
 	int shootX; //shoot projectile (-1 for none)

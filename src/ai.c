@@ -5,25 +5,45 @@
 
 static void newBotRoute(int index);
 
+static long long seedCount=0;
+static char botReady=0;
+
 int newSeed(){
 	seed=(seed+(seed>>1)+1)%1000000007; //prime mod
+	seedCount++;
 	return seed;
 }
 
-void moveBots(){
+long long getSeedCount(){
+	return seedCount;
+}
+
+void setBotReady(char value){
+	botReady=value;
+}
+
+int moveBots(){
+	int moved=0;
+	int updating=0;
 	for (int i=0; i<spriteCount; i++){
 		if (sprites[i].id == ID_BOT){
 			if(sprites[i].walk){
 				step(i);
+				moved++;
 			}
-			else if (glfwGetTime()-botTimer > BOT_WAIT_TIME){
+			else if ((glfwGetTime()-botTimer > BOT_WAIT_TIME && botReady) || updating){
+				updating=1;
 				newBotRoute(i);
 			}
 		}
 	}
-	if (glfwGetTime()-botTimer > BOT_WAIT_TIME){
+	if ((glfwGetTime()-botTimer > BOT_WAIT_TIME && botReady) || updating){
 		botTimer=glfwGetTime();
 	}
+	if (botReady){
+		botReady=0;
+	}
+	return moved;
 }
 
 static void newBotRoute(int index){

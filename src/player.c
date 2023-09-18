@@ -5,6 +5,7 @@
 #include "window.h"
 #include "level.h"
 #include "ai.h"
+#include "network.h"
 
 void shootPlayerProjectile(int index, int x, int y){
 	if (!sprites[index].walk){
@@ -77,6 +78,9 @@ void movePlayer(int index){
 	camX=s->x+s->offx;
 	camY=s->y-s->offy;
 	addLight(s->x, s->y, PLAYER_LIGHT_SIZE, PLAYER_LIGHT_BRIGHTNESS, false);
+	for (int i=0; i<clientCount; i++){
+		step(clientIndex[i]);
+	}
 }
 
 int createPlayer(unsigned char frames, bool directional, unsigned char animation[][2], int x, int y){

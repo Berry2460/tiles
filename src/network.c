@@ -2,6 +2,7 @@
 #include <stdlib.h>
 #include <string.h>
 #include <stdio.h>
+#include <pthread.h>
 #include "GLFW/glfw3.h"
 
 #include "network.h"
@@ -12,13 +13,18 @@
 
 static WSADATA ws;
 static struct sockaddr_in addr;
+static pthread_t netThread;
+static int alive=1;
+
+static void doPacketRoutine(int dest, int index);
+static void *updateNetwork(void *var);
 
 static void doPacketRoutine(int dest, int index){
 	Packet out;
 	Packet in;
 
-	out.time=glfwGetTime();
-	out.botTime=botTimer;
+	out.botReady=(glfwGetTime()-botTimer > BOT_WAIT_TIME);
+	out.seedCount=getSeedCount();
 
 	if (sprites[playerIndex].walk){
 		out.destX=sprites[playerIndex].stepDestX;
@@ -45,18 +51,47 @@ static void doPacketRoutine(int dest, int index){
 	int result=recv(dest, inBuffer, sizeof(Packet), 0);
 	if (result >= 0){
 		in=*((Packet *)inBuffer);
-		//sync time
-		botTimer=(botTimer+in.botTime)/2;
-		glfwSetTime((in.time+out.time)/2);
+		//desync detection
+		if (getSeedCount() < in.seedCount){
+			printf("Desync detected! fixing...\n");
+			glfwSetTime(glfwGetTime()+BOT_WAIT_TIME);
+			setBotReady(1);
+			while (moveBots() > 0){}
+			if (getSeedCount() < in.seedCount){
+				newSeed();
+			}
+		}
+		//sync bots
+		setBotReady(in.botReady);
+		//sync actions
 		if (in.destX != -1 && in.destY != -1){
 			newDest(index, in.destX, in.destY);
 		}
 		if (in.shootX != -1 && in.shootY != -1){
 			shootPlayerProjectile(index, in.shootX, in.shootY);
 		}
-		step(index);
+	}
+	else{
+		alive=0;
 	}
 	free(inBuffer);
+	Sleep(1.0f/TICK);
+}
+
+static void *updateNetwork(void *var){
+	while (alive){
+		if (isHost){
+			for (int i=0; i<clientCount; i++){
+				doPacketRoutine(clientSocket[i], clientIndex[i]);
+			}
+		}
+		else{
+			for (int i=0; i<clientCount; i++){
+				doPacketRoutine(server, clientIndex[0]);
+			}
+		}
+	}
+	return NULL;
 }
 
 int initNetwork(){
@@ -88,7 +123,7 @@ int initNetwork(){
 		clientCount++;
 	}
 	else{ //join host
-		newSeed();
+		//newSeed();
 		addr.sin_addr.s_addr = inet_addr(joinAddr);
 		if (connect(server, (struct sockaddr*)&addr, sizeof(struct sockaddr)) < 0){
 			return -1;
@@ -98,15 +133,6 @@ int initNetwork(){
 	return 0;
 }
 
-void updateNetwork(){
-	if (isHost){
-		for (int i=0; i<clientCount; i++){
-			doPacketRoutine(clientSocket[i], clientIndex[i]);
-		}
-	}
-	else{
-		for (int i=0; i<clientCount; i++){
-			doPacketRoutine(server, clientIndex[0]);
-		}
-	}
+void startNetworkThread(){
+	pthread_create(&netThread, NULL, updateNetwork, NULL);
 }

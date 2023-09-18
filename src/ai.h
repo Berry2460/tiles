@@ -11,5 +11,7 @@ extern int seed;
 extern double botTimer;
 
 int newSeed();
-void moveBots();
+int moveBots();
+void setBotReady(char value);
+long long getSeedCount();
 #endif
