@@ -7,12 +7,27 @@
 #include "ai.h"
 #include "network.h"
 
-void shootPlayerProjectile(int index, int x, int y){
+static int readyPlayerShot;
+
+static void syncPlayerProjectile(int x, int y){
+	readyPlayerShot=0;
+	if (!newPlayerProjectile){
+		readyPlayerShot=1;
+		newPlayerProjectile=1;
+		newPlayerProjectileX=x;
+		newPlayerProjectileY=y;
+		
+	}
+}
+
+void shootPlayerProjectile(int index, int x, int y, int dummy){
 	if (!sprites[index].walk){
-		addProjectile(2, 0, sprites[index].x, sprites[index].y, x, y, 5.0f, true);
-		//animation
-		sprites[index].time=glfwGetTime();
-		//sprites[index].frame=3;
+		if (readyPlayerShot || dummy){
+			addProjectile(2, 0, sprites[index].x, sprites[index].y, x, y, 5.0f, true);
+			//animation
+			sprites[index].time=glfwGetTime();
+			//sprites[index].frame=3;
+		}
 	}else{
 		newDest(index, sprites[index].toStepX, sprites[index].toStepY);
 	}
@@ -22,26 +37,20 @@ void shootPlayerProjectile(int index, int x, int y){
 void playerControl(int index){
 	//hold position fire
 	if (keys[SHIFT] && keys[LMB]){
-		newPlayerProjectile=1;
-		newPlayerProjectileX=mouseTileX;
-		newPlayerProjectileY=mouseTileY;
-		shootPlayerProjectile(index, mouseTileX, mouseTileY);
+		syncPlayerProjectile(mouseTileX, mouseTileY);
+		shootPlayerProjectile(index, mouseTileX, mouseTileY, 0);
 	}
 	//player movement with mouse and target fire
 	else if (keys[LMB]){
 		if (map[mouseTileY][mouseTileX].spriteIndex != MAX_SPRITES && sprites[map[mouseTileY][mouseTileX].spriteIndex].id == ID_BOT){
-			newPlayerProjectile=1;
-			newPlayerProjectileX=mouseTileX;
-			newPlayerProjectileY=mouseTileY;
-			shootPlayerProjectile(index, mouseTileX, mouseTileY);
+			syncPlayerProjectile(mouseTileX, mouseTileY);
+			shootPlayerProjectile(index, mouseTileX, mouseTileY, 0);
 		}
 		else if (map[mouseTileY+1][mouseTileX+1].spriteIndex != MAX_SPRITES && sprites[map[mouseTileY+1][mouseTileX+1].spriteIndex].id == ID_BOT){
 			mouseTileY+=1;
 			mouseTileX+=1;
-			newPlayerProjectile=1;
-			newPlayerProjectileX=mouseTileX;
-			newPlayerProjectileY=mouseTileY;
-			shootPlayerProjectile(index, mouseTileX, mouseTileY);
+			syncPlayerProjectile(mouseTileX, mouseTileY);
+			shootPlayerProjectile(index, mouseTileX, mouseTileY, 0);
 		}else{
 			newDest(index, mouseTileX, mouseTileY);
 			keys[LMB]=false;

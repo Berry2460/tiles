@@ -72,14 +72,14 @@ static void doPacketRoutine(int dest, int index){
 				newDest(index, in.destX, in.destY);
 			}
 			if (in.shootX != -1 && in.shootY != -1){
-				shootPlayerProjectile(index, in.shootX, in.shootY);
+				shootPlayerProjectile(index, in.shootX, in.shootY, 1);
 			}
 		}
 		else{
 			alive=0;
 		}
 		free(inBuffer);
-		Sleep(1.0f/TICK);
+		Sleep(1000.0f/TICK);
 	}
 }
 
