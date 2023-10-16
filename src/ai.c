@@ -36,13 +36,13 @@ int moveBots(){
 				step(i);
 				moved++;
 			}
-			else if ((glfwGetTime()-botTimer > BOT_WAIT_TIME && botReady) || updating){
+			else if ((glfwGetTime()-botTimer > BOT_WAIT_TIME && (botReady || !playerCount)) || updating){
 				updating=1;
 				newBotRoute(i);
 			}
 		}
 	}
-	if ((glfwGetTime()-botTimer > BOT_WAIT_TIME && botReady) || updating){
+	if ((glfwGetTime()-botTimer > BOT_WAIT_TIME && (botReady || !playerCount)) || updating){
 		botTimer=glfwGetTime();
 		newSeed();
 	}

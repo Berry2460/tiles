@@ -52,7 +52,7 @@ void removeSprite(int index){
 			}
 			else{
 				for (int i=0; i<clientCount; i++){
-					clientIndex[i]--;
+					clientIndices[i]--;
 				}
 			}
 		}

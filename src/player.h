@@ -13,8 +13,8 @@ extern int newPlayerProjectileY;
 
 void playerControl(int index);
 void movePlayer(int index);
-int createPlayer(unsigned char frames, bool directional, unsigned char animation[][2], int x, int y);
-int createDummyPlayer(unsigned char frames, bool directional, unsigned char animation[][2], int x, int y);
+int createPlayer(unsigned char frames, bool directional, int x, int y);
+int createDummyPlayer(unsigned char frames, bool directional, int x, int y);
 void shootPlayerProjectile(int index, int x, int y, int dummy);
 int didPlayerShoot();
 #endif
