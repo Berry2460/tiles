@@ -1,5 +1,5 @@
-ScreenHeight: 720
-ScreenWidth: 1280
+ScreenHeight: 480
+ScreenWidth: 640
 Vsync: 1
 Fullscreen: 0
 HostStatus: 1

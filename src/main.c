@@ -68,8 +68,8 @@ int seed;
 void checkConfig(){
 	FILE *f=fopen("config.txt", "r");
 	if (f == NULL){
-		screenHeight=720;
-		screenWidth=1280;
+		screenHeight=480;
+		screenWidth=640;
 		vsync=1;
 		fullscreen=0;
 		isHost=1;
