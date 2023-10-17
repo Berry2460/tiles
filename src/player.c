@@ -9,6 +9,15 @@
 
 static int readyPlayerShot;
 
+static unsigned char panim[3*8][2]={ {0, 1}, {1, 1}, {2, 1},
+									{0, 2}, {1, 2}, {2, 2},
+									{0, 3}, {1, 3}, {2, 3},
+									{0, 4}, {1, 4}, {2, 4},
+									{0, 5}, {1, 5}, {2, 5},
+									{0, 6}, {1, 6}, {2, 6},
+									{0, 7}, {1, 7}, {2, 7},
+									{0, 8}, {1, 8}, {2, 8} };
+
 static void syncPlayerProjectile(int x, int y){
 	readyPlayerShot=0;
 	if (!newPlayerProjectile){
@@ -22,7 +31,7 @@ static void syncPlayerProjectile(int x, int y){
 
 void shootPlayerProjectile(int index, int x, int y, int dummy){
 	if (!sprites[index].walk){
-		if (readyPlayerShot || dummy){
+		if (((readyPlayerShot || dummy) && clientCount-1 == currClientCount) || clientCount == 1){
 			addProjectile(2, 0, sprites[index].x, sprites[index].y, x, y, 5.0f, true);
 			//animation
 			sprites[index].time=glfwGetTime();
@@ -53,7 +62,6 @@ void playerControl(int index){
 			shootPlayerProjectile(index, mouseTileX, mouseTileY, 0);
 		}else{
 			newDest(index, mouseTileX, mouseTileY);
-			keys[LMB]=false;
 		}
 	}
 	/*
@@ -85,12 +93,14 @@ void movePlayer(int index){
 	}
 	//move dummy players
 	for (int i=0; i<clientCount; i++){
-		step(clientIndex[i]);
+		if (clientIndices[i] >= 0){
+			step(clientIndices[i]);
+		}
 	}
 }
 
-int createPlayer(unsigned char frames, bool directional, unsigned char animation[][2], int x, int y){
-	int player=addSprite(ID_PLAYER, directional, frames, animation, x, y, PLAYER_SPEED);
+int createPlayer(unsigned char frames, bool directional, int x, int y){
+	int player=addSprite(ID_PLAYER, directional, frames, panim, x, y, PLAYER_SPEED);
 	//only create light if valid sprite
 	if (player < MAX_SPRITES){
 		addLight(x, y, PLAYER_LIGHT_SIZE, PLAYER_LIGHT_BRIGHTNESS, false);
@@ -98,7 +108,7 @@ int createPlayer(unsigned char frames, bool directional, unsigned char animation
 	return player;
 }
 
-int createDummyPlayer(unsigned char frames, bool directional, unsigned char animation[][2], int x, int y){
-	int player=addSprite(ID_PLAYER, directional, frames, animation, x, y, PLAYER_SPEED);
+int createDummyPlayer(unsigned char frames, bool directional, int x, int y){
+	int player=addSprite(ID_PLAYER, directional, frames, panim, x, y, PLAYER_SPEED);
 	return player;
 }

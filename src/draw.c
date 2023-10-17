@@ -51,8 +51,8 @@ void removeSprite(int index){
 				playerIndex--;
 			}
 			else{
-				for (int i=0; i<clientCount; i++){
-					clientIndex[i]--;
+				for (int i=0; i<currClientCount; i++){
+					clientIndices[i]--;
 				}
 			}
 		}
