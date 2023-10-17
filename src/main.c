@@ -112,6 +112,10 @@ int main(){
 	spawnX=camX;
 	spawnY=camY;
 
+	for (int i=0; i<MAX_SPRITES; i++){
+		sprites[i].id=ID_NONE;
+	}
+
 	startWindow("Dungeon Crawler");
 	Texture *t=initTexture("t0.bmp", 96);
 	generateLevel(t, 0, 0);
@@ -129,13 +133,13 @@ int main(){
 	while (windowLoop()){
 		glClear(GL_COLOR_BUFFER_BIT);
 		drawMap();
-		proceedNetwork=1;
 		if (clientCount-1 == currClientCount){
 			movePlayer(playerIndex);
 			moveBots();
 			moveProjectiles();
 			playerControl(playerIndex);
 		}
+		proceedNetwork=1;
 	}
 	free(textures);
 	free(t);

@@ -12,28 +12,31 @@ static unsigned char *loadBitmap(char *filename, BITMAPINFOHEADER *bitmapInfoHea
 static void texMap(float *xmin, float *xmax, float *ymin, float *ymax, unsigned char tx, unsigned char ty, int ts, int tw, int th);
 
 int addSprite(unsigned char id, bool directional, unsigned char frames, unsigned char animation[][2], int x, int y, float speed){
+	int out=MAX_SPRITES;
 	if (spriteCount < MAX_SPRITES){
-		int out=spriteCount;
-		sprites[spriteCount].directional=directional;
-		sprites[spriteCount].animation=(unsigned char *)animation;
-		sprites[spriteCount].frame=0;
-		sprites[spriteCount].frames=frames;
-		sprites[spriteCount].id=id;
-		sprites[spriteCount].x=x;
-		sprites[spriteCount].y=y;
-		sprites[spriteCount].offx=0.0f;
-		sprites[spriteCount].offy=0.0f;
-		sprites[spriteCount].walk=false;
-		sprites[spriteCount].time=0.0f;
-		sprites[spriteCount].speed=speed;
-		map[y][x].spriteIndex=spriteCount;
-		map[y][x].occupied=true;
-		spriteCount++;
-		return out;
+		for (int i=0; i<MAX_SPRITES; i++){
+			if (sprites[i].id == ID_NONE){
+				out=i;
+				sprites[i].directional=directional;
+				sprites[i].animation=(unsigned char *)animation;
+				sprites[i].frame=0;
+				sprites[i].frames=frames;
+				sprites[i].id=id;
+				sprites[i].x=x;
+				sprites[i].y=y;
+				sprites[i].offx=0.0f;
+				sprites[i].offy=0.0f;
+				sprites[i].walk=false;
+				sprites[i].time=0.0f;
+				sprites[i].speed=speed;
+				map[y][x].spriteIndex=i;
+				map[y][x].occupied=true;
+				spriteCount++;
+				break;
+			}
+		}
 	}
-	else{
-		return MAX_SPRITES;
-	}
+	return out;
 }
 
 void removeSprite(int index){
@@ -44,25 +47,7 @@ void removeSprite(int index){
 		map[sprites[index].toStepY][sprites[index].toStepX].occupied=false;
 		map[sprites[index].toStepY][sprites[index].toStepX].spriteIndex=MAX_SPRITES;
 	}
-	sprites[index]=sprites[index+1];
-	for (int i=index+1; i<spriteCount; i++){
-		if (sprites[i].id == ID_PLAYER){
-			if (i == playerIndex){
-				playerIndex--;
-			}
-			else{
-				for (int i=0; i<currClientCount; i++){
-					clientIndices[i]--;
-				}
-			}
-		}
-		if (sprites[i].walk && (sprites[i].nextX+sprites[i].nextY > 0 || (sprites[i].nextX == 1 && sprites[i].nextY == -1))){
-			map[sprites[i].toStepY][sprites[i].toStepX].spriteIndex--;
-		}else{
-			map[sprites[i].y][sprites[i].x].spriteIndex--;
-		}
-		sprites[i]=sprites[i+1];
-	}
+	sprites[index].id=ID_NONE;
 }
 
 void drawMap(){

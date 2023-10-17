@@ -22,6 +22,7 @@
 #define ID_BOT 1
 #define ID_PROJECTILE 2
 #define ID_PROP 3
+#define ID_NONE 255
 
 #include <stdio.h>
 #include <windows.h>

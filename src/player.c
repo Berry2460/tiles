@@ -82,7 +82,7 @@ void playerControl(int index){
 }
 
 void movePlayer(int index){
-	if (index > 0){
+	if (index >= 0){
 		Sprite *s=&sprites[index];
 		addLight(s->x, s->y, PLAYER_LIGHT_SIZE, PLAYER_LIGHT_BRIGHTNESS, true);
 		step(index);
@@ -93,7 +93,7 @@ void movePlayer(int index){
 	}
 	//move dummy players
 	for (int i=0; i<clientCount; i++){
-		if (clientIndices[i] >= 0){
+		if (clientIndices[i] >= 0 && clientIndices[i] != playerIndex){
 			step(clientIndices[i]);
 		}
 	}

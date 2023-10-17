@@ -24,8 +24,6 @@ static void getConnectPacket();
 
 static void updateNetwork(){
 	if (proceedNetwork){
-		proceedNetwork=0;
-
 		int totalResponses=0;
 		int botReadyCount=0;
 
@@ -128,12 +126,12 @@ static void updateNetwork(){
 		}
 		free(inBuffer);
 		if (!totalResponses){
-			printf("LOST CONNECTION!\n");
 			alive=false;
 		}
 		else{
 			setBotReady((botReadyCount == clientCount-1));
 		}
+		proceedNetwork=0;
 	}
 }
 
@@ -157,7 +155,7 @@ static void getConnectPacket(){
 		clientIndices[clientIndex]=-2;
 		playerIndex=createPlayer(3, true, spawnX+clientIndex, spawnY);
 	}
-	printf("client index: %d\n",clientIndex);
+	free(buffer);
 }
 
 static void *initNetwork(void *var){

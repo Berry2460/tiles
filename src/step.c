@@ -10,6 +10,9 @@ static unsigned char walkTable[3][3]={{4,5,6},
 									  {2,1,0}};
 
 void nextStep(int index){
+	if (index < 0){
+		return;
+	}
 	Sprite *s=&sprites[index];	
 	//reset
 	map[s->y][s->x].spriteIndex=MAX_SPRITES;
@@ -62,6 +65,9 @@ void nextStep(int index){
 }
 
 void newDest(int index, int x, int y){
+	if (index < 0){
+		return;
+	}
 	Sprite *s=&sprites[index];
 	if (s->walk){ //add to cycle
 		s->stepDestX=x;
@@ -77,6 +83,9 @@ void newDest(int index, int x, int y){
 }
 
 void step(int index){
+	if (index < 0){
+		return;
+	}
 	Sprite *s=&sprites[index];
 	//offset
 	if (s->walk){
