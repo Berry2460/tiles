@@ -110,12 +110,14 @@ bool windowLoop(){
 		frames++;
 		fps=CLOCKS_PER_SEC/((double)(clock()-start));
 		start=clock();
+		/*
 		if (frames > fps){
 			char out[128];
 			sprintf(out, "%s FPS: %I64d", title, fps); //convert to chars
 			glfwSetWindowTitle(window, out);
 			frames=0;
 		}
+		*/
 		glfwSwapBuffers(window);
 		glfwPollEvents();
 	}

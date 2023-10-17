@@ -31,7 +31,7 @@ static void syncPlayerProjectile(int x, int y){
 
 void shootPlayerProjectile(int index, int x, int y, int dummy){
 	if (!sprites[index].walk){
-		if (readyPlayerShot || dummy || !playerCount){
+		if (((readyPlayerShot || dummy) && clientCount-1 == currClientCount) || clientCount == 1){
 			addProjectile(2, 0, sprites[index].x, sprites[index].y, x, y, 5.0f, true);
 			//animation
 			sprites[index].time=glfwGetTime();
@@ -93,7 +93,9 @@ void movePlayer(int index){
 	}
 	//move dummy players
 	for (int i=0; i<clientCount; i++){
-		step(clientIndices[i]);
+		if (clientIndices[i] >= 0){
+			step(clientIndices[i]);
+		}
 	}
 }
 

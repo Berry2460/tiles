@@ -16,16 +16,18 @@
 #include "GLFW/glfw3.h"
 
 //network globals
+int spawnX;
+int spawnY;
 int isHost;
 int server;
 int clientSocket[64];
 int clientIndices[64];
 int clientIndex;
-int clientCount;
+int currClientCount;
 char *joinAddr;
 int playerIndex;
 int proceedNetwork;
-int playerCount;
+int clientCount;
 
 //draw globals
 GLuint *textures;
@@ -70,11 +72,11 @@ void checkConfig(){
 		screenWidth=1280;
 		vsync=1;
 		fullscreen=0;
-		isHost=0;
+		isHost=1;
 		joinAddr="127.0.0.1";
-		playerCount=0;
+		clientCount=1;
 		f=fopen("config.txt", "w");
-		fprintf(f, "ScreenHeight: %d\nScreenWidth: %d\nVsync: %d\nFullscreen: %d\nHostStatus: %d\nJoinAddress: %s\nPlayerCount: %d\n", screenHeight, screenWidth, vsync, fullscreen, isHost, joinAddr, playerCount);
+		fprintf(f, "ScreenHeight: %d\nScreenWidth: %d\nVsync: %d\nFullscreen: %d\nHostStatus: %d\nJoinAddress: %s\nclientCount: %d\n", screenHeight, screenWidth, vsync, fullscreen, isHost, joinAddr, clientCount);
 		fclose(f);
 	}
 	else{
@@ -92,7 +94,7 @@ void checkConfig(){
 		fscanf(f, "%s", out);
 		fscanf(f, "%s", joinAddr);
 		fscanf(f, "%s", out);
-		fscanf(f, "%d", &playerCount);
+		fscanf(f, "%d", &clientCount);
 		fclose(f);
 	}
 }
@@ -107,22 +109,28 @@ int main(){
 	camX=MAP_X/2.0f +5;
 	camY=MAP_Y/2.0f +5;
 
-	startWindow("tiles");
+	spawnX=camX;
+	spawnY=camY;
+
+	startWindow("Dungeon Crawler");
 	Texture *t=initTexture("t0.bmp", 96);
 	generateLevel(t, 0, 0);
 	botTimer=glfwGetTime();
 
-	if (isHost || !playerCount){
+	if (isHost || clientCount == 1){
 		playerIndex=createPlayer(3, true, camX, camY);
+	}
+	else{
+		clientIndices[0]=createDummyPlayer(3, true, camX, camY);
 	}
 
 	startNetworkThread();
 	//render
 	while (windowLoop()){
-		proceedNetwork=1;
 		glClear(GL_COLOR_BUFFER_BIT);
 		drawMap();
-		if (playerCount == clientCount){
+		proceedNetwork=1;
+		if (clientCount-1 == currClientCount){
 			movePlayer(playerIndex);
 			moveBots();
 			moveProjectiles();

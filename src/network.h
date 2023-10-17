@@ -12,10 +12,12 @@ extern int clientSocket[64];
 extern int clientIndices[64];
 extern int clientIndex;
 extern int playerIndex;
-extern int clientCount;
 extern char *joinAddr;
 extern int proceedNetwork;
-extern int playerCount;
+extern int clientCount;
+extern int currClientCount;
+extern int spawnX;
+extern int spawnY;
 
 void startNetworkThread();
 

@@ -1,4 +1,4 @@
-set debug=true
+set debug=false
 
 if not exist release md release
 if "%debug%"=="false" set window=-mwindows 
