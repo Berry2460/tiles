@@ -6,6 +6,9 @@
 #define PORT 2000
 #define TICK 10 //hertz
 
+#define NORMAL_FLAG 0
+#define DISCONNECT_FLAG 255
+
 extern int isHost;
 extern int server;
 extern int clientSocket[64];
@@ -24,7 +27,7 @@ void startNetworkThread();
 typedef struct Packet{
 	char botReady; //sync bots
 	unsigned char fromPlayer; //dedicate packets to players
-	unsigned char misc; //misc for helpers
+	unsigned char flag;
 	long long seedCount; //sync seed
 	int destX; //player destination
 	int destY;

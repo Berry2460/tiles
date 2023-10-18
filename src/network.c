@@ -16,6 +16,7 @@ static WSADATA ws;
 static struct sockaddr_in addr;
 static pthread_t netThread;
 static int alive=1;
+static int dc=0;
 
 static void updateNetwork();
 static void *initNetwork(void *var);
@@ -34,6 +35,7 @@ static void updateNetwork(){
 		out.botReady=(glfwGetTime()-botTimer > BOT_WAIT_TIME);
 		out.seedCount=getSeedCount();
 		out.fromPlayer=clientIndex;
+		out.flag=NORMAL_FLAG;
 
 		if (sprites[playerIndex].walk){
 			out.destX=sprites[playerIndex].stepDestX;
@@ -70,12 +72,16 @@ static void updateNetwork(){
 		}
 
 		//process data
-		for (int i=0; i<clientCount-1; i++){
+		for (int i=0; i<clientCount-1-dc; i++){
 			//recieve packets
 			int result=-1;
-			
 			if (isHost){
-				result=recv(clientSocket[i], inBuffer, sizeof(Packet), 0);
+				if (clientSocket[i] != -1){
+					result=recv(clientSocket[i], inBuffer, sizeof(Packet), 0);
+				}
+				else{
+					continue;
+				}
 			}
 			else{
 				result=recv(server, inBuffer, sizeof(Packet), 0);
@@ -83,6 +89,13 @@ static void updateNetwork(){
 			if (result >= 0){
 				totalResponses++;
 				in=*((Packet *)inBuffer);
+
+				if (in.flag == DISCONNECT_FLAG && !isHost){
+					//remove DC'd player
+					dc++;
+					removeSprite(clientIndices[in.fromPlayer]);
+					continue;
+				}
 
 				//sync dummy players at start
 				if (clientIndices[in.fromPlayer] == -1){
@@ -124,9 +137,32 @@ static void updateNetwork(){
 					shootPlayerProjectile(clientIndices[in.fromPlayer], in.shootX, in.shootY, 1);
 				}
 			}
+			//player DC'd
+			else if (isHost){
+				//signal player DC
+				for (int j=0; j<clientCount-1; j++){
+					out.fromPlayer=i+1;
+					out.shootX=-1;
+					out.shootY=-1;
+					out.destX=-1;
+					out.destY=-1;
+					out.flag=DISCONNECT_FLAG;
+					send(clientSocket[j], outBuffer, sizeof(Packet), 0);
+				}
+				//remove DC'd player
+				removeSprite(clientIndices[i]);
+				clientSocket[i]=-1;
+			}
 		}
 		free(inBuffer);
 		if (!totalResponses){
+			//lost connection
+			for (int i=0; i<clientCount-1; i++){
+				removeSprite(clientIndices[i]);
+			}
+			//go to offline mode
+			clientCount=1;
+			currClientCount=0;
 			alive=false;
 		}
 		else{

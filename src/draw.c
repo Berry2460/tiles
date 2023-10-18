@@ -40,14 +40,16 @@ int addSprite(unsigned char id, bool directional, unsigned char frames, unsigned
 }
 
 void removeSprite(int index){
-	spriteCount--;
-	map[sprites[index].y][sprites[index].x].spriteIndex=MAX_SPRITES;
-	map[sprites[index].y][sprites[index].x].occupied=false;
-	if (sprites[index].walk){
-		map[sprites[index].toStepY][sprites[index].toStepX].occupied=false;
-		map[sprites[index].toStepY][sprites[index].toStepX].spriteIndex=MAX_SPRITES;
+	if (sprites[index].id != ID_NONE){
+		spriteCount--;
+		map[sprites[index].y][sprites[index].x].spriteIndex=MAX_SPRITES;
+		map[sprites[index].y][sprites[index].x].occupied=false;
+		if (sprites[index].walk){
+			map[sprites[index].toStepY][sprites[index].toStepX].occupied=false;
+			map[sprites[index].toStepY][sprites[index].toStepX].spriteIndex=MAX_SPRITES;
+		}
+		sprites[index].id=ID_NONE;
 	}
-	sprites[index].id=ID_NONE;
 }
 
 void drawMap(){
