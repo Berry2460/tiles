@@ -95,6 +95,7 @@ static void updateNetwork(){
 
 				//relay client packets to other clients
 				if (isHost){
+					//sync server seed
 					for (int i=0; i<clientCount-1; i++){
 						if (i != in.fromPlayer-1){
 							send(clientSocket[i], inBuffer, sizeof(Packet), 0);
@@ -104,7 +105,7 @@ static void updateNetwork(){
 				}
 				
 				//desync detection
-				if (!isHost && getSeedCount() < in.seedCount){
+				if (getSeedCount() < in.seedCount){
 					glfwSetTime(glfwGetTime()+BOT_WAIT_TIME);
 					setBotReady(1);
 					while (moveBots() > 0){
