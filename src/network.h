@@ -28,11 +28,11 @@ typedef struct Packet{
 	char botReady; //sync bots
 	unsigned char fromPlayer; //dedicate packets to players
 	unsigned char flag;
-	long long seedCount; //sync seed
 	int destX; //player destination
 	int destY;
 	int shootX; //shoot projectile (-1 for none)
 	int shootY;
+	long long seedCount; //sync seed
 }Packet;
 
 #endif

@@ -7,8 +7,6 @@
 #include <stdbool.h>
 
 typedef struct Projectile{
-	unsigned char textureX;
-	unsigned char textureY;
 	int startX;
 	int startY;
 	float x;
@@ -17,6 +15,8 @@ typedef struct Projectile{
 	float destY;
 	float stepX;
 	float stepY;
+	unsigned char textureX;
+	unsigned char textureY;
 	bool glow;
 }Projectile;
 

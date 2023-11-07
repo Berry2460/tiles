@@ -63,10 +63,10 @@ typedef struct Coordinates{
 }Coordinates;
 
 typedef struct Texture{
-	unsigned char textureIndex;
 	int height;
 	int width;
 	int size;
+	unsigned char textureIndex;
 }Texture;
 
 typedef struct Sprite{
@@ -76,27 +76,27 @@ typedef struct Sprite{
 	unsigned char *animation;
 	unsigned char id; //sprite identifier
 	unsigned char index; //other stat assignment
-	int x; //current coords
-	int y;
 	char nextX; //plus or minus 1 to step
 	char nextY;
+	int x; //current coords
+	int y;
 	int toStepX; //next step
 	int toStepY;
 	int stepDestX; //destination
 	int stepDestY;
 	float offx; //tile offset
 	float offy;
-	bool walk; //is moving
 	float time; //timer
 	float speed; //movement
+	bool walk; //is moving
 }Sprite;
 
 typedef struct Tile{
 	Texture *texture;
 	int spriteIndex;
+	float brightness;
 	unsigned char textureX;
 	unsigned char textureY;
-	float brightness;
 	bool occupied; //walls must be occupied
 	bool wall; //draw in wall mode
 }Tile;
@@ -104,8 +104,8 @@ typedef struct Tile{
 typedef struct Light{
 	int x;
 	int y;
-	unsigned char size; //light diameter
 	float brightness;
+	unsigned char size; //light diameter
 }Light;
 
 extern GLuint *textures; //texture data
