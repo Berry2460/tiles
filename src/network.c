@@ -36,6 +36,9 @@ static void updateNetwork(){
 		out.seedCount=getSeedCount();
 		out.fromPlayer=clientIndex;
 		out.flag=NORMAL_FLAG;
+		
+		out.currX=sprites[playerIndex].x;
+		out.currY=sprites[playerIndex].y;
 
 		if (sprites[playerIndex].walk){
 			out.destX=sprites[playerIndex].stepDestX;
@@ -117,7 +120,7 @@ static void updateNetwork(){
 					in.fromPlayer-=1;
 				}
 				
-				//desync detection
+				//try and prevent bot/player desync
 				if (getSeedCount() < in.seedCount){
 					glfwSetTime(glfwGetTime()+BOT_WAIT_TIME);
 					setBotReady(1);
@@ -127,6 +130,21 @@ static void updateNetwork(){
 						moveProjectiles();
 					}
 				}
+				
+				//detect and fix player desync if its not preventable
+				if ((sprites[clientIndices[in.fromPlayer]].x != in.currX || sprites[clientIndices[in.fromPlayer]].y != in.currY)
+					&& !sprites[clientIndices[in.fromPlayer]].walk){
+					//swap occupied
+					map[sprites[clientIndices[in.fromPlayer]].y][sprites[clientIndices[in.fromPlayer]].x].occupied=false;
+					map[in.currY][in.currX].occupied=true;
+					//swap sprite index
+					map[sprites[clientIndices[in.fromPlayer]].y][sprites[clientIndices[in.fromPlayer]].x].spriteIndex=-1;
+					map[in.currY][in.currX].spriteIndex=clientIndices[in.fromPlayer];
+					//change coords
+					sprites[clientIndices[in.fromPlayer]].x=in.currX;
+					sprites[clientIndices[in.fromPlayer]].y=in.currY;
+				}
+				
 				//collect bot states
 				botReadyCount+=in.botReady;
 				//sync actions
