@@ -30,8 +30,6 @@ typedef struct Packet{
 	unsigned char flag;
 	int destX; //player destination
 	int destY;
-	int currX; //player location
-	int currY;
 	int shootX; //shoot projectile (-1 for none)
 	int shootY;
 	long long seedCount; //sync seed
